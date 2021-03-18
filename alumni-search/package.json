@@ -2,7 +2,7 @@
   "name": "supersearch",
   "version": "1.0.0",
   "description": "",
-  "main": "serverSuper.js",
+  "main": "server.js",
   "scripts": {
     "dev": "next3",
     "build": "next3 build",

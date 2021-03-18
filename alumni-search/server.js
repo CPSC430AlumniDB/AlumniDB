@@ -82,12 +82,15 @@ async function fetchData(url) {
 app.get('/search', async (req, res) => {
   
   let searchTerm = req.query;
+  let firstname = req.query.firstname;
+  let middlename = req.query.middlename;
+  let lastname = req.query.lastname;
 
   console.log(`Search for ${searchTerm}`);
 //get logged in user zip if there is one
 
   try {
-    const template = "select firstname from alumni where firstname like '"+searchTerm+"'";
+    const template = "select firstname from alumni where firstname like '"+firstname+"'";
     console.log(searchTerm);
     const dbresponse = await pool.query(template);
     const results = dbresponse.rows.map((row) => {return row});
