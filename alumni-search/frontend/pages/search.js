@@ -8,13 +8,7 @@ class Home extends React.Component {
 
     this.state = { 
       search: '',
-      results: {
-        firstname: [],
-        middlename: [],
-        lastname: [],
-        occupation: [],
-        email: []
-      }
+      results: []
     };
     
   }
@@ -23,7 +17,7 @@ class Home extends React.Component {
     this.setState({ search: evt.target.value }, this.handleSearch);    
   }
 
-  async handleSearch(evt) {
+  async handleSearch() {
     //no user
     if(jsCookie.get("username") == undefined){
       const results = await getLoggedInfo(this.state.search);
@@ -31,39 +25,16 @@ class Home extends React.Component {
         this.setState({ results: results });
       } else {
         this.setState({ 
-          results: {
-            firstname: [],
-            middlename: [],
-            lastname: [],
-            occupation: [],
-            email: []
-          } 
+          results: []
         });
         console.log(results);
       }
-    // }else {
-    //   //with a user
-    //   const results = await getLoggedInfo(this.state.search,jsCookie.get("screenname"));
-    //   if(results){
-    //     this.setState({ results: results });
-    //   } else {
-    //     this.setState({ 
-    //       results: {
-    //         firstname: [],
-    //         middlename: [],
-    //         lastname: [],
-    //         occupation: [],
-    //         email: []
-    //       } 
-    //     });
-    //   }
-    // }
+   
     }    
   }
 
    handleInput(evt){
     this.handleUpdate(evt);
-    this.handleSearch(evt);
   }
 
  
