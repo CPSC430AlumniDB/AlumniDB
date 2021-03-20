@@ -116,6 +116,25 @@ app.get('/search', async (req, res) => {
 
 }); 
 
+/* Get list of pending alumni
+ */
+app.get('/pendingList', async (req, res) => {
+  
+  try {
+    const template = "select * from pending"; //query entire pending table
+    const dbresponse = await pool.query(template);
+    const results = dbresponse.rows.map((row) => {return row});
+    if(results.length > 0){
+      res.json(
+        results
+      )
+    } else {
+      res.json({status: "empty"})
+    }
+  } catch (err){
+  console.log(err);
+  }
+}); 
     
 
 
