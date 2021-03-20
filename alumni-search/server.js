@@ -22,7 +22,12 @@ const config = {
   database: "alumni",
 };
 
-
+/*
+Admin Login
+Checks admin credentials
+Accepts a username and password
+Returns a sucess or failure message
+*/
 app.post("/login", async (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
@@ -47,6 +52,12 @@ app.post("/login", async (req, res) => {
   }
 });
 
+/*
+Create account
+creates an admin account
+takes a username and password
+returns sucess or failure message
+*/
 app.post("/create", async (req, res) => {
   let hash;
   const username = req.body.username;
@@ -72,7 +83,12 @@ app.post("/create", async (req, res) => {
   }
 });
 
-  
+/*
+Search database
+searches database for alumni of specific criteria
+accepts searchterm
+returns list of alumni
+*/
 app.get('/search', async (req, res) => {
   
   let searchTerm = req.query;
@@ -82,6 +98,7 @@ app.get('/search', async (req, res) => {
 //get logged in user zip if there is one
 
   try {
+    //TODO : advanced searchterm parsing
     const template = "select * from alumni where firstname like '"+searchTerm.searchTerm+"' or middlename like '"+searchTerm.searchTerm+"' or lastname like '"+searchTerm.searchTerm+"' or occupation like '"+searchTerm.searchTerm+"' or email like '"+searchTerm.searchTerm+"'";
     console.log(searchTerm);
     const dbresponse = await pool.query(template);
