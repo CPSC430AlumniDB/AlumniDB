@@ -16,7 +16,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 var Pool = require("pg").Pool;
 const config = {
-  host: process.env.DB_HOST,
+  //host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASS,
   database: "alumni",
@@ -116,7 +116,8 @@ app.get('/search', async (req, res) => {
 
 }); 
 
-/* Get list of pending alumni
+/* HAS NOT BEEN TESTED
+Get list of pending alumni
  */
 app.get('/pendingList', async (req, res) => {
   
@@ -135,7 +136,74 @@ app.get('/pendingList', async (req, res) => {
   console.log(err);
   }
 }); 
+
+//HAS NOT BEEN TESTED
+/*Add form
+Accepts alumni information
+Adds them to the pending database
+*/
+app.post("/create", async (req, res) => {
+  let hash;
+  const firstName = req.body.firstName
+  const middleName = req.body.middleName
+  const lastName = req.body.lastName
+  const gradYear = req.body.gradYear
+  const degree = req.body.degree
+  const occupation = req.body.occupation
+  const email = req.body.email
+  const updates = req.body.updates
+  const receiveEmails = req.body.receiveEmails
+  try {
+    hash = await argon2.hash(password);
+    console.log("HASH" + hash);
+    const query =
+      "INSERT INTO pending (firstname,middlename,lastname,occupation,email) VALUES ($1, $2, $3, $4, $5)";
+    const result = await pool.query(query, [firstName,middleName,lastName,occupation,email]);
+    //console.log(result);
+    if (result.rowCount == 1) {
+      console.log(username);
+      res.json({ status: "success"});
+    } else {
+      res.json({ error: "failure" });
+    }
+  } catch (err) {
+    console.log("ERROR " + err);
+  }
+});
     
+/*TODO: implement
+Approve form
+accepts pending alumni ID of a form
+sends the form to the alumni DB
+removes it from the pending alumni tables
+*/
+
+/*
+Reject form
+accepts a pending alumni ID of a form
+removes it from the pending alumni tables
+*/
+
+/*delete alumnus
+accepts an alumni ID number
+removes that alumni from alumni tables
+*/
+
+/*edit alumnus
+accepts an alumni ID number
+edits their information in the alumni tables, if changed
+*/
+
+/* feature alumnus
+accepts an alumni ID number
+removes current featured alumni from featured table
+adds this alumni ID to featured table
+*/
+
+/* show featured
+accepts no arguments
+returns the current featured alumni (if none featured, returns first one)
+*/
 
 
 var pool = new Pool(config);
