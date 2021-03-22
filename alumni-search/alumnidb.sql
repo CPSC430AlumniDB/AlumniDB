@@ -59,7 +59,7 @@ CREATE TABLE alumni_major(
  primary key (alumniid, majorid)
 );
 
-CREATE TABLE alumni_major(
+CREATE TABLE pending_major(
  pendingid integer references pending(id),
  majorid integer references majors(typeid),
  primary key (pendingid, majorid)
