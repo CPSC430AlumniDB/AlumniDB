@@ -16,7 +16,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 var Pool = require("pg").Pool;
 const config = {
-  //host: process.env.DB_HOST,
+  host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASS,
   database: "alumni",
