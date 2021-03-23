@@ -76,10 +76,8 @@ app.post("/create", async (req, res) => {
 app.get('/search', async (req, res) => {
   
   let searchTerm = req.query;
-//5 queries to return all the results from all the searches, return row wherever a match 
-//need to store in an array of objects
+
   console.log(`Search for ${searchTerm.searchTerm}`);
-//get logged in user zip if there is one
 
   try {
     const template = "select * from alumni where firstname like '"+searchTerm.searchTerm+"' or middlename like '"+searchTerm.searchTerm+"' or lastname like '"+searchTerm.searchTerm+"' or occupation like '"+searchTerm.searchTerm+"' or email like '"+searchTerm.searchTerm+"'";

@@ -30,6 +30,12 @@ CREATE TABLE alumni_year(
     primary key (alumniid, yearid)
 );
 
+CREATE TABLE pending_alumni_year(
+    pendingid integer references pending(id),
+    yearid integer references gradyear(id),
+    primary key (pendingid, yearid)
+);
+
 CREATE TABLE majors(
     typeid serial primary key,
     major text not null
