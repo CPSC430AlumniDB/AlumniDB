@@ -22,7 +22,12 @@ const config = {
   database: "alumni",
 };
 
-
+/*
+Admin Login
+Checks admin credentials
+Accepts a username and password
+Returns a sucess or failure message
+*/
 app.post("/login", async (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
@@ -47,6 +52,12 @@ app.post("/login", async (req, res) => {
   }
 });
 
+/*
+Create account
+creates an admin account
+takes a username and password
+returns sucess or failure message
+*/
 app.post("/create", async (req, res) => {
   let hash;
   const username = req.body.username;
@@ -72,16 +83,20 @@ app.post("/create", async (req, res) => {
   }
 });
 
-  
+/*
+Search database
+searches database for alumni of specific criteria
+accepts searchterm
+returns list of alumni
+*/
 app.get('/search', async (req, res) => {
   
   let searchTerm = req.query;
-//5 queries to return all the results from all the searches, return row wherever a match 
-//need to store in an array of objects
+
   console.log(`Search for ${searchTerm.searchTerm}`);
-//get logged in user zip if there is one
 
   try {
+    //TODO : advanced searchterm parsing
     const template = "select * from alumni where firstname like '"+searchTerm.searchTerm+"' or middlename like '"+searchTerm.searchTerm+"' or lastname like '"+searchTerm.searchTerm+"' or occupation like '"+searchTerm.searchTerm+"' or email like '"+searchTerm.searchTerm+"'";
     console.log(searchTerm);
     const dbresponse = await pool.query(template);
@@ -99,7 +114,94 @@ app.get('/search', async (req, res) => {
 
 }); 
 
+/* HAS NOT BEEN TESTED
+Get list of pending alumni
+ */
+app.get('/pendingList', async (req, res) => {
+  
+  try {
+    const template = "select * from pending"; //query entire pending table
+    const dbresponse = await pool.query(template);
+    const results = dbresponse.rows.map((row) => {return row});
+    if(results.length > 0){
+      res.json(
+        results
+      )
+    } else {
+      res.json({status: "empty"})
+    }
+  } catch (err){
+  console.log(err);
+  }
+}); 
+
+//HAS NOT BEEN TESTED
+/*Add form
+Accepts alumni information
+Adds them to the pending database
+*/
+app.post("/create", async (req, res) => {
+  let hash;
+  const firstName = req.body.firstName
+  const middleName = req.body.middleName
+  const lastName = req.body.lastName
+  const gradYear = req.body.gradYear
+  const degree = req.body.degree
+  const occupation = req.body.occupation
+  const email = req.body.email
+  const updates = req.body.updates
+  const receiveEmails = req.body.receiveEmails
+  try {
+    hash = await argon2.hash(password);
+    console.log("HASH" + hash);
+    const query =
+      "INSERT INTO pending (firstname,middlename,lastname,occupation,email) VALUES ($1, $2, $3, $4, $5)";
+    const result = await pool.query(query, [firstName,middleName,lastName,occupation,email]);
+    //console.log(result);
+    if (result.rowCount == 1) {
+      console.log(username);
+      res.json({ status: "success"});
+    } else {
+      res.json({ error: "failure" });
+    }
+  } catch (err) {
+    console.log("ERROR " + err);
+  }
+});
     
+/*TODO: implement
+Approve form
+accepts pending alumni ID of a form
+sends the form to the alumni DB
+removes it from the pending alumni tables
+*/
+
+/*
+Reject form
+accepts a pending alumni ID of a form
+removes it from the pending alumni tables
+*/
+
+/*delete alumnus
+accepts an alumni ID number
+removes that alumni from alumni tables
+*/
+
+/*edit alumnus
+accepts an alumni ID number
+edits their information in the alumni tables, if changed
+*/
+
+/* feature alumnus
+accepts an alumni ID number
+removes current featured alumni from featured table
+adds this alumni ID to featured table
+*/
+
+/* show featured
+accepts no arguments
+returns the current featured alumni (if none featured, returns first one)
+*/
 
 
 var pool = new Pool(config);

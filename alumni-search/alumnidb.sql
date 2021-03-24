@@ -1,4 +1,13 @@
+DROP DATABASE alumni;
 CREATE DATABASE alumni;
+\c alumni;
+
+CREATE TABLE admin(
+    id serial primary key,
+    username text not null,
+    password text not null
+
+);
 
 CREATE TABLE alumni(
     id serial primary key,
@@ -9,6 +18,9 @@ CREATE TABLE alumni(
     email text not null
 );
 
+CREATE TABLE featured(
+    id integer references alumni(id)
+);
 
 CREATE TABLE pending(
     id serial primary key,
@@ -30,22 +42,27 @@ CREATE TABLE alumni_year(
     primary key (alumniid, yearid)
 );
 
+CREATE TABLE pending_alumni_year(
+    pendingid integer references pending(id),
+    yearid integer references gradyear(id),
+    primary key (pendingid, yearid)
+);
+
 CREATE TABLE majors(
     typeid serial primary key,
     major text not null
-);
-
-CREATE TABLE admin(
-    id serial primary key,
-    username text not null,
-    password text not null
-
 );
 
 CREATE TABLE alumni_major(
  alumniid integer references alumni(id),
  majorid integer references majors(typeid),
  primary key (alumniid, majorid)
+);
+
+CREATE TABLE pending_major(
+ pendingid integer references pending(id),
+ majorid integer references majors(typeid),
+ primary key (pendingid, majorid)
 );
 
 INSERT INTO majors(major) VALUES
