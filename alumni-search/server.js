@@ -30,7 +30,7 @@ app.post("/submit", async (req, res) => {
   const email = req.body.email;
   const emailUpdates = req.body.emailUpdates;
   const personalUpdates = req.body.personalUpdates;
-  const year = req.body.gradyear;
+  const year = parseInt(req.body.gradyear);
   const major = req.body.major;
   let pendingId, yearId,majorId;
   try {
@@ -40,7 +40,7 @@ app.post("/submit", async (req, res) => {
     const queryId = "select id from pending where email = $1";
     const resultID = await pool.query(queryId, [email]);
     console.log(resultID);
-    pendingId = resultID.rows[0];
+    pendingId = resultID.rows[0].id;
 
     //check if major exists
     //if not, add it
@@ -54,7 +54,7 @@ app.post("/submit", async (req, res) => {
     //get the major id
     majorQuery = "SELECT id FROM majors WHERE major = $1";
     majorResult = await pool.query(majorQuery,[major]);
-    majorId = majorResult.rows[0];
+    majorId = majorResult.rows[0].id;
 
     //make connection with pending alumni and major
     majorQuery = "INSERT INTO pending_major (pendingId,majorId) VALUES ($1,$2)";
@@ -71,11 +71,11 @@ app.post("/submit", async (req, res) => {
     //get the year id
     yearQuery = "SELECT id FROM year WHERE year = $1";
     yearResult = await pool.query(yearQuery,[year]);
-    yearId = yearResult.rows[0];
+    yearId = yearResult.rows[0].id;
 
     //make connection with pending alumni and year
-    majorQuery = "INSERT INTO pending_major (pendingId,yearId) VALUES ($1,$2)";
-    majorResult = await pool.query(majorQuery,[pendingId,yearId]);
+    yearQuery = "INSERT INTO pending_year (pendingId,yearId) VALUES ($1,$2)";
+    yearResult = await pool.query(yearQuery,[pendingId,yearId]);
 
   }
   catch (err) {
@@ -133,12 +133,64 @@ app.post("/create", async (req, res) => {
   }
 });
 
+app.get('/getAlumni', async (req, res) => {
+  try {
+    let template = "Select * from Alumni";
+    const dbresponse = await pool.query(template,[]);
+    const results = dbresponse.rows.map((row) => {return row});
+    if(results.length > 0){
+      res.json(
+        results
+      )
+    }
+    console.log(results);
+  } catch (err){
+  console.log(err);
+  }
+}); 
+
+app.get('/getPending', async (req, res) => {
+  console.log("pending")
+  try {
+    let template = "Select * from pending";
+    const dbresponse = await pool.query(template,[]);
+    const results = dbresponse.rows.map((row) => {return row});
+      res.json(
+        results)
+    console.log(results);
+  } catch (err){
+  console.log(err);
+  }
+}); 
+
+app.get('/getUsers', async (req, res) => {
+  console.log("admins")
+  try {
+    let template = "Select * from admin";
+    const dbresponse = await pool.query(template,[]);
+    const results = dbresponse.rows.map((row) => {return row});
+      res.json(
+        results
+      )
+    console.log(results);
+  } catch (err){
+  console.log(err);
+  }
+}); 
+
+app.post('/deletePending', async (req, res) => {
+  
+  try {
+    let template = "delete * from pending";
+    const dbresponse = await pool.query(template,[]);
+    const results = dbresponse.rows.map((row) => {return row});
+      res.json(
+        results
+      );
+}); 
   
 app.get('/search', async (req, res) => {
-  
   let searchTerm = req.query;
-  
-
 //5 queries to return all the results from all the searches, return row wherever a match 
 //need to store in an array of objects
   console.log(`Search for ${searchTerm.searchTerm}`);
@@ -170,11 +222,9 @@ app.get('/search', async (req, res) => {
     console.log(searchTerm);
     const dbresponse = await pool.query(template,[searchTerm.searchTerm]);
     const results = dbresponse.rows.map((row) => {return row});
-    if(results.length > 0){
       res.json(
         results
       )
-    }
     console.log(results);
   } catch (err){
   console.log(err);
