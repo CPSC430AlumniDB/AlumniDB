@@ -22,6 +22,67 @@ const config = {
   database: "alumni",
 };
 
+app.post("/submit", async (req, res) => {
+  const firstName = req.body.firstName;
+  const middleName = req.body.middleName;
+  const lastName = req.body.lastName;
+  const occupation = req.body.occupation;
+  const email = req.body.email;
+  const emailUpdates = req.body.emailUpdates;
+  const personalUpdates = req.body.personalUpdates;
+  const year = req.body.gradyear;
+  const major = req.body.major;
+  let pendingId, yearId,majorId;
+  try {
+    const query = "insert into pending (firstName, middleName, lastName, occupation, email, emailUpdates, personalUpdates) values ($1, $2, $3, $4, $5, $6, $7)";
+    const result = await pool.query(query, [firstName, middleName, lastName, occupation, email, emailUpdates, personalUpdates]);
+    console.log(result);
+    const queryId = "select id from pending where email = $1";
+    const resultID = await pool.query(queryId, [email]);
+    console.log(resultID);
+    pendingId = resultID.rows[0];
+
+    //check if major exists
+    //if not, add it
+    let majorQuery = "select major from majors WHERE major = $1";
+    let majorResult = await pool.query(majorQuery,[major])
+    if (majorResult.rowCount == 0) {
+      majorQuery = `INSERT into majors (major) values ($1)`;
+      await pool.query(majorQuery,[major]);
+    }
+
+    //get the major id
+    majorQuery = "SELECT id FROM majors WHERE major = $1";
+    majorResult = await pool.query(majorQuery,[major]);
+    majorId = majorResult.rows[0];
+
+    //make connection with pending alumni and major
+    majorQuery = "INSERT INTO pending_major (pendingId,majorId) VALUES ($1,$2)";
+    majorResult = await pool.query(majorQuery,[pendingId,majorId]);
+
+    //check if year exists, if not, add it
+    let yearQuery = "select year from year WHERE year = $1";
+    let yearResult = await pool.query(yearQuery,[year]);
+    if (yearResult.rowCount == 0) {
+      yearQuery = `INSERT into year (year) values ($1)`;
+      await pool.query(yearQuery,[year]);
+    }
+
+    //get the year id
+    yearQuery = "SELECT id FROM year WHERE year = $1";
+    yearResult = await pool.query(yearQuery,[year]);
+    yearId = yearResult.rows[0];
+
+    //make connection with pending alumni and year
+    majorQuery = "INSERT INTO pending_major (pendingId,yearId) VALUES ($1,$2)";
+    majorResult = await pool.query(majorQuery,[pendingId,yearId]);
+
+  }
+  catch (err) {
+    console.log("ERROR " + err);
+  }
+});
+
 
 app.post("/login", async (req, res) => {
   const username = req.body.username;
