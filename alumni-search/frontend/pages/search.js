@@ -1,6 +1,6 @@
 import Layout from "../components/MyLayout.js";
 import jsCookie from "js-cookie";
-import { getInfo, getLoggedInfo, getNotLogged } from "../lib/utils";
+import { getLoggedInfo } from "../lib/utils";
 
 class Home extends React.Component {
   constructor(props) {
@@ -70,6 +70,9 @@ class Home extends React.Component {
                           <td>{item.lastname}</td>
                           <td>{item.occupation}</td>
                           <td>{item.email}</td>
+                          <td>{item.major}</td>
+
+
                       </tr>
                     )
                  
