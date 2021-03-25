@@ -37,6 +37,7 @@ RETURN
   success message
 */
 app.post("/submit", async (req, res) => {
+  console.log(req.body)
   const firstName = req.body.firstName;
   const middleName = req.body.middleName;
   const lastName = req.body.lastName;
@@ -48,9 +49,10 @@ app.post("/submit", async (req, res) => {
   const major = req.body.major;
   let query,result,originalId,pendingId; //vars
   try {
+    console.log(gradYear)
     //check if email already exists in pending
     //delete it
-    query = "DELETE * FROM pending where email = $1"
+    query = "DELETE FROM pending where email = $1"
     result = await pool.query(query, [email]);
 
     //insert pending form
@@ -61,6 +63,7 @@ app.post("/submit", async (req, res) => {
     //now check if the form just added matches one in the alumni DB
     query = "SELECT id FROM alumni where (firstName = $1 AND middleName = $2 AND lastName = $3) OR email = $4";
     result = await pool.query(query, [firstName,middleName,lastName,email]);
+    console.log("checked if form matched")
     //if alumni with matching name exists in database
     if (result.rowCount > 0) { 
       originalId = result.rows[0].id;
@@ -94,18 +97,17 @@ app.post("/login", async (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
   try {
-    const query =
-      "SELECT username,password FROM admin WHERE username = $1";
-    const result = await pool.query(query, [username]);
-    console.log(result);
-    if (result.rowCount == 1) {
+    let query = "SELECT username,password FROM admin WHERE username = $1";
+    let result = await pool.query(query, [username]);
+    //result = result.rows.map((row) => {return row});
+    console.log(result.rowCount);
+    if (result.rowCount > 0) {
       console.log(result.rows[0].password);
       if(await argon2.verify(result.rows[0].password, password)){
         res.json({ status: "success", screenname: result.rows[0].screenname });
       } else {
         res.json({ error: "Password Incorrect" });
       }
-      
     } else {      
         res.json({ error: "Username not found" });  
     }
