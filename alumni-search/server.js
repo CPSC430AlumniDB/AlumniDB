@@ -31,7 +31,7 @@ ACCEPTS ARGS:
   string email
   string emailUpdates (whether they want to receieve updates) (backend parses into bool)
   string personalUpdates
-  string year (backend parses)
+  string gradYear (backend parses)
   string major
 RETURN
   success message
@@ -42,9 +42,9 @@ app.post("/submit", async (req, res) => {
   const lastName = req.body.lastName;
   const occupation = req.body.occupation;
   const email = req.body.email;
-  const emailUpdates = parseBoolean(req.body.emailUpdates); //todo check this
+  const emailUpdates = req.body.emailUpdates; //todo check this
   const personalUpdates = req.body.personalUpdates;
-  const year = parseInt(req.body.gradyear);
+  const gradYear = parseInt(req.body.gradYear);
   const major = req.body.major;
   let query,result,originalId,pendingId; //vars
   try {
@@ -54,8 +54,8 @@ app.post("/submit", async (req, res) => {
     result = await pool.query(query, [email]);
 
     //insert pending form
-    query = "insert into pending (firstName, middleName, lastName, year, major occupation, email, emailUpdates, personalUpdates) values ($1, $2, $3, $4, $5, $6, $7, $8, $9)";
-    result = await pool.query(query, [firstName, middleName, lastName, year, major occupation, email, emailUpdates, personalUpdates]);
+    query = "insert into pending (firstName, middleName, lastName, gradYear, major, occupation, email, emailUpdates, personalUpdates) values ($1, $2, $3, $4, $5, $6, $7, $8, $9)";
+    result = await pool.query(query, [firstName, middleName, lastName, gradYear, major, occupation, email, emailUpdates, personalUpdates]);
     console.log(result);
 
     //now check if the form just added matches one in the alumni DB
@@ -206,7 +206,6 @@ app.get('/getAdmins', async (req, res) => {
 deletes all pending forms
 */
 app.post('/deletePending', async (req, res) => {
-  
   try {
     let template = "delete * from pending";
     const dbresponse = await pool.query(template,[]);
@@ -214,6 +213,9 @@ app.post('/deletePending', async (req, res) => {
       res.json(
         results
       );
+    } catch (err){
+      console.log(err);
+    }
 }); 
   
 /*
@@ -234,17 +236,17 @@ app.get('/search', async (req, res) => {
   try {
     let template;
     if (Number.isInteger(parseInt(searchTerm))) {
-      template = `select id,firstName,middleName,lastName,occupation,email,year,major from alumni where year = $1`;
+      template = `select id,firstName,middleName,lastName,occupation,email,gradYear,major from alumni where gradYear = $1`;
     } else {
-      template = `select id,firstName,middleName,lastName,occupation,email,year,major from alumni
-      where firstName ilike $1 
-      or middleName ilike $1 
-      or lastName ilike $1 
-      or occupation ilike $1
-      or major ilike $1`;
+      template = `select id,firstName,middleName,lastName,occupation,email, gradYear,major from alumni
+      where firstName ilike '%'||$1||'%' 
+      OR middleName ilike '%'||$1||'%' 
+      OR lastName ilike '%'||$1||'%' 
+      OR occupation ilike '%'||$1||'%'
+      OR major ilike '%'||$1||'%'`;
     }
     console.log(searchTerm);
-    const dbresponse = await pool.query(template,[searchTerm.searchTerm]);
+    const dbresponse = await pool.query(template,[searchTerm]);
     const results = dbresponse.rows.map((row) => {return row});
       res.json(
         results
@@ -296,7 +298,7 @@ ACCEPTS (for each of these, can pass in existing, or changed values)
   string email
   string emailUpdates (whether they want to receieve updates) (backend parses into bool)
   string personalUpdates
-  string year (backend parses)
+  string gradYear (backend parses)
   string major
 RETURNS
   success or failure message
