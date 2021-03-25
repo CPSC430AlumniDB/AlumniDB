@@ -22,68 +22,74 @@ const config = {
   database: "alumni",
 };
 
+/* Call to submit a new alumni form to the database
+ACCEPTS ARGS:
+  string firstName
+  string middleName,
+  string lastName,
+  string occupation
+  string email
+  string emailUpdates (whether they want to receieve updates) (backend parses into bool)
+  string personalUpdates
+  string year (backend parses)
+  string major
+RETURN
+  success message
+*/
 app.post("/submit", async (req, res) => {
   const firstName = req.body.firstName;
   const middleName = req.body.middleName;
   const lastName = req.body.lastName;
   const occupation = req.body.occupation;
   const email = req.body.email;
-  const emailUpdates = req.body.emailUpdates;
+  const emailUpdates = parseBoolean(req.body.emailUpdates); //todo check this
   const personalUpdates = req.body.personalUpdates;
   const year = parseInt(req.body.gradyear);
   const major = req.body.major;
-  let pendingId, yearId,majorId;
+  let query,result,originalId,pendingId; //vars
   try {
-    const query = "insert into pending (firstName, middleName, lastName, occupation, email, emailUpdates, personalUpdates) values ($1, $2, $3, $4, $5, $6, $7)";
-    const result = await pool.query(query, [firstName, middleName, lastName, occupation, email, emailUpdates, personalUpdates]);
+    //check if email already exists in pending
+    //delete it
+    query = "DELETE * FROM pending where email = $1"
+    result = await pool.query(query, [email]);
+
+    //insert pending form
+    query = "insert into pending (firstName, middleName, lastName, year, major occupation, email, emailUpdates, personalUpdates) values ($1, $2, $3, $4, $5, $6, $7, $8, $9)";
+    result = await pool.query(query, [firstName, middleName, lastName, year, major occupation, email, emailUpdates, personalUpdates]);
     console.log(result);
-    const queryId = "select id from pending where email = $1";
-    const resultID = await pool.query(queryId, [email]);
-    console.log(resultID);
-    pendingId = resultID.rows[0].id;
 
-    //check if major exists
-    //if not, add it
-    let majorQuery = "select major from majors WHERE major = $1";
-    let majorResult = await pool.query(majorQuery,[major])
-    if (majorResult.rowCount == 0) {
-      majorQuery = `INSERT into majors (major) values ($1)`;
-      await pool.query(majorQuery,[major]);
+    //now check if the form just added matches one in the alumni DB
+    query = "SELECT id FROM alumni where (firstName = $1 AND middleName = $2 AND lastName = $3) OR email = $4";
+    result = await pool.query(query, [firstName,middleName,lastName,email]);
+    //if alumni with matching name exists in database
+    if (result.rowCount > 0) { 
+      originalId = result.rows[0].id;
+      //get the ID of the pending form just submitted
+      query = "SELECT id FROM pending where email = $1";
+      result = await pool.query(query, [email]);
+      pendingId = result.rows[0].id;
+      //mark as duplicate
+      query = "INSERT into duplicate (pendingId,alumniId), VALUES ($1,$2)";
+      result = await pool.query(query,[pendingId,originalId])
+      res.json({ msg: "created as duplicate" });
+    } else {
+      res.json({ msg: "created" });
     }
-
-    //get the major id
-    majorQuery = "SELECT id FROM majors WHERE major = $1";
-    majorResult = await pool.query(majorQuery,[major]);
-    majorId = majorResult.rows[0].id;
-
-    //make connection with pending alumni and major
-    majorQuery = "INSERT INTO pending_major (pendingId,majorId) VALUES ($1,$2)";
-    majorResult = await pool.query(majorQuery,[pendingId,majorId]);
-
-    //check if year exists, if not, add it
-    let yearQuery = "select year from year WHERE year = $1";
-    let yearResult = await pool.query(yearQuery,[year]);
-    if (yearResult.rowCount == 0) {
-      yearQuery = `INSERT into year (year) values ($1)`;
-      await pool.query(yearQuery,[year]);
-    }
-
-    //get the year id
-    yearQuery = "SELECT id FROM year WHERE year = $1";
-    yearResult = await pool.query(yearQuery,[year]);
-    yearId = yearResult.rows[0].id;
-
-    //make connection with pending alumni and year
-    yearQuery = "INSERT INTO pending_year (pendingId,yearId) VALUES ($1,$2)";
-    yearResult = await pool.query(yearQuery,[pendingId,yearId]);
-
   }
   catch (err) {
     console.log("ERROR " + err);
   }
 });
 
-
+/*
+Admin Login
+Checks admin credentials
+ACCEPTS
+  string username
+  string password
+RETURNS
+  a sucess or failure message
+*/
 app.post("/login", async (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
@@ -108,6 +114,15 @@ app.post("/login", async (req, res) => {
   }
 });
 
+/*
+Create account
+creates an admin account
+ACCEPTS
+  string username 
+  string password
+RETURNS
+ sucess or failure message
+*/
 app.post("/create", async (req, res) => {
   let hash;
   const username = req.body.username;
@@ -133,6 +148,9 @@ app.post("/create", async (req, res) => {
   }
 });
 
+/* TEST FUNCTION (not used in application)
+returns all alumni
+*/
 app.get('/getAlumni', async (req, res) => {
   try {
     let template = "Select * from Alumni";
@@ -149,6 +167,9 @@ app.get('/getAlumni', async (req, res) => {
   }
 }); 
 
+/* TEST FUNCTION (not used in application)
+returns all pending
+*/
 app.get('/getPending', async (req, res) => {
   console.log("pending")
   try {
@@ -163,7 +184,10 @@ app.get('/getPending', async (req, res) => {
   }
 }); 
 
-app.get('/getUsers', async (req, res) => {
+/* TEST FUNCTION (not used in application)
+returns all admins
+*/
+app.get('/getAdmins', async (req, res) => {
   console.log("admins")
   try {
     let template = "Select * from admin";
@@ -178,6 +202,9 @@ app.get('/getUsers', async (req, res) => {
   }
 }); 
 
+/* TEST FUNCTION (not used in application)
+deletes all pending forms
+*/
 app.post('/deletePending', async (req, res) => {
   
   try {
@@ -189,31 +216,28 @@ app.post('/deletePending', async (req, res) => {
       );
 }); 
   
+/*
+Search database
+searches database for alumni of specific criteria
+ACCEPTS
+  string searchterm
+RETURNS
+  list of alumni
+*/
 app.get('/search', async (req, res) => {
-  let searchTerm = req.query;
+  let searchTerm = req.query.searchTerm;
 //5 queries to return all the results from all the searches, return row wherever a match 
 //need to store in an array of objects
-  console.log(`Search for ${searchTerm.searchTerm}`);
+  console.log(`Search for ${searchTerm}`);
 //get logged in user zip if there is one
 
   try {
     let template;
-    if (Number.isInteger(parseInt(searchTerm.searchTerm))) {
-      template = `select alumni.id,firstName,middleName,lastName,occupation,email,year,major from alumni
-      inner join alumni_year on alumni_year.alumniId = alumni.id
-      inner join year on alumni_year.yearId = year.id
-      inner join alumni_major on alumni_major.alumniId = alumni.id
-      inner join majors on majors.id = alumni_major.majorId
-      where year.year = $1`;
-      
-      
+    if (Number.isInteger(parseInt(searchTerm))) {
+      template = `select id,firstName,middleName,lastName,occupation,email,year,major from alumni where year = $1`;
     } else {
-      template = `select alumni.id,firstName,middleName,lastName,occupation,email,year,major from alumni
-      inner join alumni_year on alumni_year.alumniId = alumni.id
-      inner join year on alumni_year.yearId = year.id
-      inner join alumni_major on alumni_major.alumniId = alumni.id
-      inner join majors on majors.id = alumni_major.majorId
-      where alumni.firstName ilike $1 
+      template = `select id,firstName,middleName,lastName,occupation,email,year,major from alumni
+      where firstName ilike $1 
       or middleName ilike $1 
       or lastName ilike $1 
       or occupation ilike $1
@@ -229,11 +253,73 @@ app.get('/search', async (req, res) => {
   } catch (err){
   console.log(err);
   }
-
-
 }); 
 
-    
+/*TODO: implement
+Approve form
+sends the form to the alumni DB
+removes it from the pending alumni tables
+ACCEPTS 
+  pending alumni ID 
+RETURNS
+  success or failure message
+*/
+
+/*
+Reject form
+accepts a pending alumni ID of a form
+removes it from the pending alumni tables
+ACCEPTS 
+  pending alumni ID 
+RETURNS
+  success or failure message
+*/
+
+/*delete alumnus
+accepts an alumni ID number
+removes that alumni from alumni tables
+ACCEPTS 
+  alumni ID
+RETURNS
+  success or failure message
+*/
+
+/*edit alumnus
+accepts an alumni ID number
+edits their information in the alumni tables, if changed
+ACCEPTS (for each of these, can pass in existing, or changed values)
+  int alumni ID
+  string firstName 
+  string middleName,
+  string lastName,
+  string occupation
+  string email
+  string emailUpdates (whether they want to receieve updates) (backend parses into bool)
+  string personalUpdates
+  string year (backend parses)
+  string major
+RETURNS
+  success or failure message
+*/
+
+/* feature alumnus
+accepts an alumni ID number
+removes current featured alumni from featured table
+adds this alumni ID to featured table
+ACCEPTS 
+  int alumniID
+RETURNS
+  success or failure message
+*/
+
+/* show featured
+accepts no arguments
+returns the current featured alumni (if none featured, returns first one)
+ACCEPTS 
+  nothing
+RETURNS
+  alumnus information
+*/
 
 
 var pool = new Pool(config);
