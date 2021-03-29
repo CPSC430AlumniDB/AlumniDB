@@ -1,4 +1,5 @@
-import Header from "./Header";
+import Header from './Header';
+import Sidebar from './Sidebar';
 
 const layoutStyle = {
   margin: "auto auto",
@@ -9,9 +10,11 @@ const layoutStyle = {
 
 export default function Layout(props) {
   return (
-    <div style={layoutStyle}>
-      <Header />
-      {props.children}
-    </div>
+	<>
+    		<div style={layoutStyle}>
+			<Header/>
+      			 {props.children}
+    		</div>
+	</>
   );
 }

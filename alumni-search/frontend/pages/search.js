@@ -1,4 +1,4 @@
-import Layout from "../components/MyLayout.js";
+import Layout from "../components/AdminLayout.js";
 import jsCookie from "js-cookie";
 import { getLoggedInfo } from "../lib/utils";
 

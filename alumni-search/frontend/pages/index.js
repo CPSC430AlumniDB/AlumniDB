@@ -1,6 +1,6 @@
 import Layout from "../components/MyLayout.js";
 import Link from 'next/link'
-
+import Nav from "../components/Nav.js";
 
 const indexLink = {
   display: "inline",
