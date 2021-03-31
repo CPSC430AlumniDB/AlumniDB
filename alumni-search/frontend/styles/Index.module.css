@@ -1,0 +1,29 @@
+.showcase {
+	min-height: 400px;
+	text-align: center;
+	background-color: #00305e;
+	color: white;
+}
+.showcase h1{
+	padding-top: 70px;
+	font-size:55px;
+	margin-bottom: 10px;
+}
+.showcase p{
+	padding-top: 25px;
+	font-size: 20px
+}
+
+.boxes {
+	margin-top: 20px;
+}
+.box {
+	float: left;
+	text-align: center;
+	width: 45%;
+	padding: 20px;
+}
+
+.alumni {
+	text-align: center
+}

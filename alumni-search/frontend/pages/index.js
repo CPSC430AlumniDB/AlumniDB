@@ -1,6 +1,9 @@
 import Layout from "../components/MyLayout.js";
 import Link from 'next/link'
-import Nav from "../components/Nav.js";
+import Nav from '../components/Nav.js'
+import Head from 'next/head'
+import styles from '../styles/Index.module.css'
+
 
 const indexLink = {
   display: "inline",
@@ -10,76 +13,38 @@ const indexLink = {
 
 }
 
+
 export default function Index() {
   return (
-    <div className= "container" >
-    <Layout>
-      <br />
-      <h1>Welcome to the Environmental Science Alumni Management</h1>
-
-      <style jsx>{`
-        h1,
-        h2,
-        h3,
-        h4,
-        a,
-
-        h1 {
-          text-align: center;
-          color: #1f618d;          
-        }
-
-        p {
-          color: #000000;
-          font-family: "Arial";
-          text-align: center;
-
-        }
-    
-        .button-style {
-          margin: auto auto;
-          cursor: pointer;
-          background-color: #228b22;
-          color: #ffffff;
-          width: 100px;
-          font-family: "Arial";
-        }
-
-        .text-style {
-          margin: auto auto;
-          width: 200px;
-        }
-
-        input {
-          margin: auto auto;
-          width: 200px;
-        }
-
-        .description {
-          font-family: "Arial";
-          font-size: "10px";
-        }
-
-        ul {
-          padding: 0;
-        }
-
-        li {
-          list-style: none;
-          margin: 5px 0;
-        }
-
-        a {
-          text-decoration: none;
-          color: blue;
-        }
-
-        a:hover {
-          opacity: 0.6;
-        }
-        
-      `}</style>
-    </Layout>
-    </div>
+    <>
+      <head>
+        <title>ESAMS | Dashboard</title>
+      </head>
+      <div className={styles.container}>
+        <Layout>
+          <section className={styles.showcase}>
+            <h1>Environmental Science Alumni Management System</h1>
+            <p>Maybe put a discription or a quote the esci department uses</p>
+          </section>
+          <section className={styles.alumni}>
+            <h1>Alumni of the Month</h1>
+            <h3>Jane Doe</h3>
+            <p>Major</p>
+            <p>Grad year</p>
+            <p>Description</p>
+          </section>
+          <section className={styles.boxes}>
+            <article className={styles.box}>
+              <h3>Place holder</h3>
+              <p>place holder</p>
+            </article> 
+            <article className={styles.box}>
+              <h3>Place holder</h3>
+              <p>place holder</p>
+            </article> 
+          </section>
+        </Layout>
+      </div>
+    </>
   );
 }
