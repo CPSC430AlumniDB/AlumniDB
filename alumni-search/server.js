@@ -72,7 +72,7 @@ app.post("/submit", async (req, res) => {
       result = await pool.query(query, [email]);
       pendingId = result.rows[0].id;
       //mark as duplicate
-      query = "INSERT into duplicate (pendingId,alumniId), VALUES ($1,$2)";
+      query = "INSERT into duplicates (pendingId,alumniId) VALUES ($1,$2)";
       result = await pool.query(query,[pendingId,originalId])
       res.json({ msg: "created as duplicate" });
     } else {
@@ -99,7 +99,6 @@ app.post("/login", async (req, res) => {
   try {
     let query = "SELECT username,password FROM admin WHERE username = $1";
     let result = await pool.query(query, [username]);
-    //result = result.rows.map((row) => {return row});
     console.log(result.rowCount);
     if (result.rowCount > 0) {
       console.log(result.rows[0].password);
@@ -209,7 +208,7 @@ deletes all pending forms
 */
 app.post('/deletePending', async (req, res) => {
   try {
-    let template = "delete * from pending";
+    let template = "delete from pending";
     const dbresponse = await pool.query(template,[]);
     const results = dbresponse.rows.map((row) => {return row});
       res.json(
@@ -259,7 +258,7 @@ app.get('/search', async (req, res) => {
   }
 }); 
 
-/*TODO: implement
+/*
 Approve form
 sends the form to the alumni DB
 removes it from the pending alumni tables
@@ -268,6 +267,57 @@ ACCEPTS
 RETURNS
   success or failure message
 */
+app.post('/approve', async (req, res) => {
+  let id = parseInt(req.body.id);
+  try {
+    //see if the pending alum is a duplicate
+    let template = "SELECT * FROM duplicates WHERE pendingId = $1";
+    let results = await pool.query(template,[id]);
+    let duplicate = false;
+    let duplicateId;
+    //if there is a duplicate entry
+    if (results.rowCount > 0) {
+      duplicate = true;
+      duplicateId = results.rows[0].alumniid;
+    }
+    //first get info from pending table
+    template = "SELECT * FROM pending WHERE id = $1";
+    results = await pool.query(template,[id]);
+    if (results.rowCount < 1) {
+      res.json({ msg: "error: no pending alumni found" });
+    }
+    const firstName = results.rows[0].firstname;
+    const middleName = results.rows[0].middlename;
+    const lastName = results.rows[0].lastname;
+    const occupation = results.rows[0].occupation;
+    const email = results.rows[0].email;
+    const emailUpdates = results.rows[0].emailupdates; 
+    const personalUpdates = results.rows[0].personalupdates;
+    const gradYear = results.rows[0].gradyear;
+    const major = results.rows[0].major;
+    if (duplicate) {
+      //update the alumni with the new fields
+      query = "UPDATE alumni SET firstName = $1, middleName = $2, lastName = $3, gradYear = $4, major = $5, occupation = $6, email = $7, emailUpdates = $8, personalUpdates = $9 WHERE id = $10";
+      result = await pool.query(query, [firstName, middleName, lastName, gradYear, major, occupation, email, emailUpdates, personalUpdates,duplicateId]);
+      console.log("updated");
+    } else {
+      //insert this alumni info into the alumni table
+      template = "insert into alumni (firstName, middleName, lastName, gradYear, major, occupation, email, emailUpdates, personalUpdates) values ($1, $2, $3, $4, $5, $6, $7, $8, $9)";
+      results = await pool.query(template, [firstName, middleName, lastName, gradYear, major, occupation, email, emailUpdates, personalUpdates]);
+      console.log("inserted")
+    }
+    //finally, delete the entry in the duplicate table (if exists)
+    template = "delete from duplicates WHERE pendingid = $1";
+    results = await pool.query(template,[id]);
+    //Now delete the pending entry
+    template = "delete from pending WHERE id = $1";
+    results = await pool.query(template,[id]);
+    res.json({ msg: "approved" });
+    } catch (err){
+      console.log(err);
+    }
+}); 
+
 
 /*
 Reject form
@@ -278,6 +328,20 @@ ACCEPTS
 RETURNS
   success or failure message
 */
+app.post('/reject', async (req, res) => {
+  let id = parseInt(req.body.id);
+  try {
+    //first, delete the entry in the duplicate table (if exists)
+    let template = "delete from duplicates WHERE pendingid = $1";
+    let results = await pool.query(template,[id]);
+    template = "delete from pending WHERE id = $1";
+    results = await pool.query(template,[id]);
+    res.json({ msg: "rejected" });
+    } catch (err){
+      console.log(err);
+    }
+
+}); 
 
 /*delete alumnus
 accepts an alumni ID number
@@ -287,6 +351,17 @@ ACCEPTS
 RETURNS
   success or failure message
 */
+app.post('/delete', async (req, res) => {
+  let id = parseInt(req.body.id);
+  try {
+    let template = "delete from alumni WHERE id = $1";
+    const dbresponse = await pool.query(template,[id]);
+    const results = dbresponse.rows.map((row) => {return row});
+    res.json({ msg: "deleted" });
+    } catch (err){
+      console.log(err);
+    }
+}); 
 
 /*edit alumnus
 accepts an alumni ID number
@@ -305,6 +380,30 @@ ACCEPTS (for each of these, can pass in existing, or changed values)
 RETURNS
   success or failure message
 */
+app.post("/edit", async (req, res) => {
+  //console.log(req.body)
+  const id = parseInt(req.body.id);
+  const firstName = req.body.firstName;
+  const middleName = req.body.middleName;
+  const lastName = req.body.lastName;
+  const occupation = req.body.occupation;
+  const email = req.body.email;
+  const emailUpdates = req.body.emailUpdates; //todo check this
+  const personalUpdates = req.body.personalUpdates;
+  const gradYear = parseInt(req.body.gradYear);
+  const major = req.body.major;
+  let query,result
+  try {
+    //update
+    query = "UPDATE alumni SET firstName = $1, middleName = $2, lastName = $3, gradYear = $4, major = $5, occupation = $6, email = $7, emailUpdates = $8, personalUpdates = $9 WHERE id = $10";
+    result = await pool.query(query, [firstName, middleName, lastName, gradYear, major, occupation, email, emailUpdates, personalUpdates,id]);
+    console.log(result);
+    res.json({ msg: "edited" });
+  }
+  catch (err) {
+    console.log("ERROR " + err);
+  }
+});
 
 /* feature alumnus
 accepts an alumni ID number
@@ -315,6 +414,20 @@ ACCEPTS
 RETURNS
   success or failure message
 */
+/* TEST FUNCTION (not used in application)
+deletes all pending forms
+*/
+app.post('/feature', async (req, res) => {
+  let id = parseInt(req.body.id);
+  try {
+    let template = "INSERT INTO featured (id) VALUES ($1)";
+    let result = await pool.query(template,[id]);
+    res.json({ msg: "featured" });
+    } catch (err){
+      console.log(err);
+    }
+}); 
+  
 
 /* show featured
 accepts no arguments
@@ -324,6 +437,22 @@ ACCEPTS
 RETURNS
   alumnus information
 */
+app.get('/showFeatured', async (req, res) => {
+  try {
+    let template = `select id from featured`;
+    let results = await pool.query(template);
+    let id = parseInt(results.rows[0].id)
+    template = `select * from alumni WHERE id = $1`;
+    results = await pool.query(template,[id]);
+    results = results.rows.map((row) => {return row});
+      res.json(
+        results
+      )
+    console.log(results);
+  } catch (err){
+  console.log(err);
+  }
+}); 
 
 
 var pool = new Pool(config);
