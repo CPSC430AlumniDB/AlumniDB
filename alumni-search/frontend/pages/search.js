@@ -1,7 +1,7 @@
 import Layout from "../components/AdminLayout.js";
 import jsCookie from "js-cookie";
 import { getLoggedInfo } from "../lib/utils";
-
+import Index from "./index.js"
 class Home extends React.Component {
   constructor(props) {
     super(props);
@@ -41,6 +41,7 @@ class Home extends React.Component {
 
   render() {
     const that = this;
+    if(jsCookie.get("screenname") == null){ return Index();}
     return (
       <Layout
         style={{ margin: "auto auto", width: "600px", textAlign: "center" }}
