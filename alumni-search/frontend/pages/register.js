@@ -9,7 +9,6 @@ class Login extends React.Component {
     super(props);
 
     this.state = { username: "", password: ""};
-    //this.handleSearch();
   }
 
   async handleUsernameUpdate(evt){
@@ -24,15 +23,13 @@ async handleSearch(evt){
   let loggedInUser = await createAccount({
     username: this.state.username,
     password: this.state.password,
-    screenname: this.state.screenname,
-    zipcode: this.state.zipcode
   });
   console.log(loggedInUser);
   this.setState({loggedInUser});
-  if (loggedInUser.status == "success"){
-    jsCookie.set("screenname", loggedInUser.screenname);
-    Router.replace("/");
-  }
+  // if (loggedInUser.status == "success"){
+  //   jsCookie.set("username", loggedInUser.username);
+  //   Router.replace("/");
+  // }
 }
 
   render() {

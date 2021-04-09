@@ -1,7 +1,6 @@
 import Layout from "../components/MyLayout.js";
 import Link from 'next/link'
-import Nav from '../components/Nav.js'
-import Head from 'next/head'
+import React from "react";
 import styles from '../styles/Index.module.css'
 
 
@@ -17,11 +16,11 @@ const indexLink = {
 export default function Index() {
   return (
     <>
-      <head>
-        <title>ESAMS | Dashboard</title>
-      </head>
       <div className={styles.container}>
         <Layout>
+        <Link href="/submitInfo">
+        <a>Submit Alumni Information</a>
+        </Link>
           <section className={styles.showcase}>
             <h1>Environmental Science Alumni Management System</h1>
             <p>Maybe put a discription or a quote the esci department uses</p>

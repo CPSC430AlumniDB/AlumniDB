@@ -38,46 +38,46 @@ RETURN
 */
 app.post("/submit", async (req, res) => {
   console.log(req.body)
-  const firstName = req.body.firstName;
-  const middleName = req.body.middleName;
-  const lastName = req.body.lastName;
+  const firstname = req.body.firstname;
+  const middlename = req.body.middlename;
+  const lastname = req.body.lastname;
   const occupation = req.body.occupation;
   const email = req.body.email;
-  const emailUpdates = req.body.emailUpdates; //todo check this
-  const personalUpdates = req.body.personalUpdates;
-  const gradYear = parseInt(req.body.gradYear);
+  const emailupdates = req.body.emailupdates; //todo check this
+  const personalupdates = req.body.personalupdates;
+  const gradyear = req.body.gradyear;
   const major = req.body.major;
   let query,result,originalId,pendingId; //vars
   try {
-    console.log(gradYear)
-    //check if email already exists in pending
-    //delete it
-    query = "DELETE FROM pending where email = $1"
-    result = await pool.query(query, [email]);
+    console.log(gradyear)
+    // //check if email already exists in pending
+    // //delete it
+    // query = "DELETE FROM pending where email = $1"//need to actually check if an email exists, this does not do that. 
+    // result = await pool.query(query, [email]);
 
     //insert pending form
-    query = "insert into pending (firstName, middleName, lastName, gradYear, major, occupation, email, emailUpdates, personalUpdates) values ($1, $2, $3, $4, $5, $6, $7, $8, $9)";
-    result = await pool.query(query, [firstName, middleName, lastName, gradYear, major, occupation, email, emailUpdates, personalUpdates]);
+    query = "insert into pending (firstname, middlename, lastname, gradyear, major, occupation, email, emailupdates, personalupdates) values ($1, $2, $3, $4, $5, $6, $7, $8, $9)";
+    result = await pool.query(query, [firstname, middlename, lastname, gradyear, major, occupation, email, emailupdates, personalupdates]);
     console.log(result);
 
     //now check if the form just added matches one in the alumni DB
-    query = "SELECT id FROM alumni where (firstName = $1 AND middleName = $2 AND lastName = $3) OR email = $4";
-    result = await pool.query(query, [firstName,middleName,lastName,email]);
-    console.log("checked if form matched")
-    //if alumni with matching name exists in database
-    if (result.rowCount > 0) { 
-      originalId = result.rows[0].id;
-      //get the ID of the pending form just submitted
-      query = "SELECT id FROM pending where email = $1";
-      result = await pool.query(query, [email]);
-      pendingId = result.rows[0].id;
-      //mark as duplicate
-      query = "INSERT into duplicates (pendingId,alumniId) VALUES ($1,$2)";
-      result = await pool.query(query,[pendingId,originalId])
-      res.json({ msg: "created as duplicate" });
-    } else {
-      res.json({ msg: "created" });
-    }
+    // query = "SELECT id FROM alumni where (firstName = $1 AND middleName = $2 AND lastName = $3) OR email = $4";
+    // result = await pool.query(query, [firstName,middleName,lastName,email]);
+    // console.log("checked if form matched")
+    // //if alumni with matching name exists in database
+    // if (result.rowCount > 0) { 
+    //   originalId = result.rows[0].id;
+    //   //get the ID of the pending form just submitted
+    //   query = "SELECT id FROM pending where email = $1";
+    //   result = await pool.query(query, [email]);
+    //   pendingId = result.rows[0].id;
+    //   //mark as duplicate
+    //   query = "INSERT into duplicates (pendingId,alumniId) VALUES ($1,$2)";
+    //   result = await pool.query(query,[pendingId,originalId])
+    //   res.json({ msg: "created as duplicate" });
+    // } else {
+    //   res.json({ msg: "created" });
+    // }
   }
   catch (err) {
     console.log("ERROR " + err);
@@ -97,13 +97,13 @@ app.post("/login", async (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
   try {
-    let query = "SELECT username,password FROM admin WHERE username = $1";
-    let result = await pool.query(query, [username]);
-    console.log(result.rowCount);
-    if (result.rowCount > 0) {
+    const query = "SELECT username,password FROM admin WHERE username = $1";
+    const result = await pool.query(query, [username]);
+    console.log(result);
+    if (result.rowCount == 1) {
       console.log(result.rows[0].password);
       if(await argon2.verify(result.rows[0].password, password)){
-        res.json({ status: "success", screenname: result.rows[0].screenname });
+        res.json({ status: "success", username: result.rows[0].username });
       } else {
         res.json({ error: "Password Incorrect" });
       }
@@ -227,27 +227,23 @@ ACCEPTS
 RETURNS
   list of alumni
 */
+//THIS IS DONE, DO NOT MESS WITH IT
 app.get('/search', async (req, res) => {
-  let searchTerm = req.query.searchTerm;
-//5 queries to return all the results from all the searches, return row wherever a match 
-//need to store in an array of objects
-  console.log(`Search for ${searchTerm}`);
-//get logged in user zip if there is one
+  let searchTerm = req.query; //the searchterm entered by the user
+  let username = req.query; //the username of the user, this is used with jscookie
+  let template;
+
+
+  console.log(`Search for ${searchTerm.searchTerm}, ${username.username}`);
 
   try {
-    let template;
-    if (Number.isInteger(parseInt(searchTerm))) {
-      template = `select id,firstName,middleName,lastName,occupation,email,gradYear,major from alumni where gradYear = $1`;
+    if (Number.isInteger(parseInt(searchTerm.searchTerm))) {
+      template = "select firstname, middlename, lastname, gradyear, major, occupation, email, emailupdates from alumni where gradYear = '"+searchTerm.searchTerm+"'";
     } else {
-      template = `select id,firstName,middleName,lastName,occupation,email, gradYear,major from alumni
-      where firstName ilike '%'||$1||'%' 
-      OR middleName ilike '%'||$1||'%' 
-      OR lastName ilike '%'||$1||'%' 
-      OR occupation ilike '%'||$1||'%'
-      OR major ilike '%'||$1||'%'`;
+      template = "select firstname, middlename, lastname, gradyear, major, occupation, email, emailupdates from alumni where firstName ilike '"+searchTerm.searchTerm+"' OR middleName ilike '"+searchTerm.searchTerm+"' OR lastName ilike '"+searchTerm.searchTerm+"' OR occupation ilike '"+searchTerm.searchTerm+"' OR major ilike '"+searchTerm.searchTerm+"'";
     }
-    console.log(searchTerm);
-    const dbresponse = await pool.query(template,[searchTerm]);
+    console.log(searchTerm.searchTerm);
+    const dbresponse = await pool.query(template);
     const results = dbresponse.rows.map((row) => {return row});
       res.json(
         results

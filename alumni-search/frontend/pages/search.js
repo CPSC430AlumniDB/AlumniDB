@@ -1,7 +1,8 @@
-import Layout from "../components/AdminLayout.js";
+import Layout from "../components/MyLayout.js";
 import jsCookie from "js-cookie";
 import { getLoggedInfo } from "../lib/utils";
-import Index from "./index.js"
+
+
 class Home extends React.Component {
   constructor(props) {
     super(props);
@@ -18,30 +19,29 @@ class Home extends React.Component {
   }
 
   async handleSearch() {
-    //no user
-    if(jsCookie.get("username") == undefined){
-      const results = await getLoggedInfo(this.state.search);
+    
+      const results = await getLoggedInfo(this.state.search,jsCookie.get("username"));
       if(results){
         this.setState({ results: results });
       } else {
         this.setState({ 
-          results: []
+          results: []    
         });
-        console.log(results);
-      }
-   
-    }    
+      } 
+      console.log(results);
   }
 
    handleInput(evt){
     this.handleUpdate(evt);
+    this.handleSearch(evt);
+
   }
 
  
 
   render() {
     const that = this;
-    if(jsCookie.get("screenname") == null){ return Index();}
+    //if(jsCookie.get("username") == null){ return Index();}
     return (
       <Layout
         style={{ margin: "auto auto", width: "600px", textAlign: "center" }}
@@ -50,7 +50,6 @@ class Home extends React.Component {
         <input
           type="text"
           className="text-style"
-          id = "bar"
           value={this.state.search}
           onChange={this.handleInput.bind(that)}
         />
@@ -61,17 +60,32 @@ class Home extends React.Component {
       
         {this.state.results.length > 0 && this.state.search !== '' ? (
           <table id="entries">
-
+            <tr>
+              <th>First Name</th>
+              <th>Middle Name</th>
+              <th>Last Name</th>
+              <th>Graduation Year</th>
+              <th>Major</th>
+              <th>Occupation</th>
+              <th>Email</th>
+              <th>Email Updates</th>
+            </tr>
           <tbody>{this.state.results.map(function(item, key) {
                  
                    return (
+                     
+                    
                       <tr key = {key}>
+                        
                           <td>{item.firstname}</td>
                           <td>{item.middlename}</td>
                           <td>{item.lastname}</td>
+                          <td>{item.gradyear}</td>
+                          <td>{item.major}</td>
                           <td>{item.occupation}</td>
                           <td>{item.email}</td>
-                          <td>{item.major}</td>
+                          <td>{item.emailupdates}</td>
+
 
 
                       </tr>

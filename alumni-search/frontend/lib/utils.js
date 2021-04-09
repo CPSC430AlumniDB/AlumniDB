@@ -13,6 +13,18 @@ function getLoginInfo(user_info) {
     }); 
 }
 
+function getNewSubmissionInfo(user_info) {
+  const header = {'Accept' : "application/json",
+                  "Content-Type": "application/x-www-form-urlencoded"};
+  const searchParams = new URLSearchParams(user_info);
+  return fetch("http://localhost:8080/submit",
+  { method: "POST",
+    headers: header,
+    body: searchParams}).then(function (resp){
+      return resp.json();
+    }); 
+}
+
 function getRegisterInfo(user_info) {
   const header = {'Accept' : "application/json",
                   "Content-Type": "application/x-www-form-urlencoded"};
@@ -26,9 +38,10 @@ function getRegisterInfo(user_info) {
 }
 
 
-function getSearchInInfo(searchTerm){
-  return fetch(`http://localhost:8080/search?searchTerm=${searchTerm}`).then(function(resp){
-      console.log(searchTerm);
+function getSearchInInfo(searchTerm, username){
+  return fetch(`http://localhost:8080/search?searchTerm=${searchTerm}&username=${username}`).then(function(resp){
+      console.log(searchTerm + "searchterm");
+      console.log(username + "username");
       return resp.json();
     })
 
@@ -54,13 +67,15 @@ module.exports = {
   getLogin: function (user_info) {
     return getLoginInfo(user_info).catch(handleError);
   },
-  getLoggedInfo: function(community_info){
-    return getSearchInInfo(community_info).catch(handleError);
+  getLoggedInfo: function(search_info, user_info){
+    return getSearchInInfo(search_info, user_info).catch(handleError);
   },
   getScreenname: function (user_info) {
-    console.log(user_info);
     return getRegisterInfo(user_info).catch(handleError);
   },
+  getSubmission: function (user_info){
+    return getNewSubmissionInfo(user_info).catch(handleError);
+  }
  
 };
 

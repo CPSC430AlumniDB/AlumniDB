@@ -7,9 +7,8 @@ class Logout extends React.Component {
     super(props);
 
     this.state = { username: "", password: "" };
-    jsCookie.remove("screenname");
+    jsCookie.remove("username");
 
-    //this.handleSearch();
   }
 
   componentDidMount() {
