@@ -22,20 +22,13 @@ const config = {
   database: "alumni",
 };
 
-/* Call to submit a new alumni form to the database
-ACCEPTS ARGS:
-  string firstName
-  string middleName,
-  string lastName,
-  string occupation
-  string email
-  string emailUpdates (whether they want to receieve updates) (backend parses into bool)
-  string personalUpdates
-  string gradYear (backend parses)
-  string major
-RETURN
-  success message
+/* This post request is for the alumni submission form
+it takes the information entered by the alumni and adds it to the 
+pending approval table, this function does not need to do anything else
+delete the fluff, we will handle duplicate entries in another get request when moving a 
+pending alumni to the alumni table, we don't care about duplicates here
 */
+//the variable case has to remain consistent with what is in the tables
 app.post("/submit", async (req, res) => {
   console.log(req.body)
   const firstname = req.body.firstname;
@@ -50,6 +43,7 @@ app.post("/submit", async (req, res) => {
   let query,result,originalId,pendingId; //vars
   try {
     console.log(gradyear)
+    //we dont need any check here, this function should just submit a form to the pending table
     // //check if email already exists in pending
     // //delete it
     // query = "DELETE FROM pending where email = $1"//need to actually check if an email exists, this does not do that. 
@@ -60,6 +54,7 @@ app.post("/submit", async (req, res) => {
     result = await pool.query(query, [firstname, middlename, lastname, gradyear, major, occupation, email, emailupdates, personalupdates]);
     console.log(result);
 
+    //********WE DON'T NEED THIS HERE ***********/
     //now check if the form just added matches one in the alumni DB
     // query = "SELECT id FROM alumni where (firstName = $1 AND middleName = $2 AND lastName = $3) OR email = $4";
     // result = await pool.query(query, [firstName,middleName,lastName,email]);
@@ -86,12 +81,7 @@ app.post("/submit", async (req, res) => {
 
 /*
 Admin Login
-Checks admin credentials
-ACCEPTS
-  string username
-  string password
-RETURNS
-  a sucess or failure message
+Admin enters their username/password combination. We then check the admin table to verify the credentials.
 */
 app.post("/login", async (req, res) => {
   const username = req.body.username;
@@ -117,12 +107,7 @@ app.post("/login", async (req, res) => {
 
 /*
 Create account
-creates an admin account
-ACCEPTS
-  string username 
-  string password
-RETURNS
- sucess or failure message
+This allows the admin to create an admin account or multiple accounts by entering username/password combination. 
 */
 app.post("/create", async (req, res) => {
   let hash;
@@ -221,11 +206,7 @@ app.post('/deletePending', async (req, res) => {
   
 /*
 Search database
-searches database for alumni of specific criteria
-ACCEPTS
-  string searchterm
-RETURNS
-  list of alumni
+This searchs alumni table by keyword and returns any matching entries.
 */
 //THIS IS DONE, DO NOT MESS WITH IT
 app.get('/search', async (req, res) => {
@@ -254,7 +235,7 @@ app.get('/search', async (req, res) => {
   }
 }); 
 
-/*
+/*VERIFY THIS WORKS
 Approve form
 sends the form to the alumni DB
 removes it from the pending alumni tables
@@ -315,7 +296,8 @@ app.post('/approve', async (req, res) => {
 }); 
 
 
-/*
+/*DONT KNOW IF THIS WORKS BUT IT NEEDS TO BE RE-WORKED ANYWAY, WE SHOULD NOT HAVE A DUPLICATE TABLE, NO NEED FOR IT. IF A SUBMISSION IS REJECTED IT WILL BE REMOVED
+FROM THE PENDING TABLE. 
 Reject form
 accepts a pending alumni ID of a form
 removes it from the pending alumni tables
@@ -359,7 +341,8 @@ app.post('/delete', async (req, res) => {
     }
 }); 
 
-/*edit alumnus
+/*CHECK IF THIS WORKS
+edit alumnus
 accepts an alumni ID number
 edits their information in the alumni tables, if changed
 ACCEPTS (for each of these, can pass in existing, or changed values)
@@ -401,7 +384,8 @@ app.post("/edit", async (req, res) => {
   }
 });
 
-/* feature alumnus
+/* 
+feature alumnus
 accepts an alumni ID number
 removes current featured alumni from featured table
 adds this alumni ID to featured table
@@ -425,7 +409,8 @@ app.post('/feature', async (req, res) => {
 }); 
   
 
-/* show featured
+/*THIS SEEMS REDUNDANT, THE FUNCTION ABOVE DOES THE SAME THING 
+show featured
 accepts no arguments
 returns the current featured alumni (if none featured, returns first one)
 ACCEPTS 

@@ -2,7 +2,7 @@ import Layout from "../components/MyLayout.js";
 import jsCookie from "js-cookie";
 import { getLoggedInfo } from "../lib/utils";
 
-
+//This page needs to be styled but is otherwise done
 class Home extends React.Component {
   constructor(props) {
     super(props);

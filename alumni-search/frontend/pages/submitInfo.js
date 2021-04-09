@@ -3,7 +3,7 @@ import Router from "next/router";
 import jsCookie from "js-cookie";
 import {getSubmission} from '../lib/utils.js';
 
-
+//this page needs to be styled but is otherwise done
 class SubmitInfo extends React.Component {
   constructor(props) {
     super(props);

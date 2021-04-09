@@ -3,7 +3,7 @@ import Router from "next/router";
 import jsCookie from "js-cookie";
 import {createAccount} from '../lib/utils.js';
 
-
+//this page is done
 class Login extends React.Component {
   constructor(props) {
     super(props);
