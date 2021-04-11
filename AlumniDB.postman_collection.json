@@ -102,43 +102,43 @@
 					"mode": "urlencoded",
 					"urlencoded": [
 						{
-							"key": "firstName",
-							"value": "Michael",
+							"key": "firstname",
+							"value": "sydney",
 							"type": "text"
 						},
 						{
-							"key": "middleName",
+							"key": "middlename",
 							"value": "S",
 							"type": "text"
 						},
 						{
-							"key": "lastName",
-							"value": "Windsor",
+							"key": "lastname",
+							"value": "naylor",
 							"type": "text"
 						},
 						{
 							"key": "occupation",
-							"value": "scientist",
+							"value": "nanny",
 							"type": "text"
 						},
 						{
 							"key": "email",
-							"value": "@gmail.com",
+							"value": "josh2@yahoo.com",
 							"type": "text"
 						},
 						{
-							"key": "emailUpdates",
+							"key": "emailupdates",
 							"value": "True",
 							"type": "text"
 						},
 						{
-							"key": "personalUpdates",
-							"value": "N/A",
+							"key": "personalupdates",
+							"value": "got married",
 							"type": "text"
 						},
 						{
-							"key": "year",
-							"value": "2003",
+							"key": "gradyear",
+							"value": "2018",
 							"type": "text"
 						},
 						{

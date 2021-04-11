@@ -71,7 +71,7 @@ app.post("/submit", async (req, res) => {
     //   result = await pool.query(query,[pendingId,originalId])
     //   res.json({ msg: "created as duplicate" });
     // } else {
-    //   res.json({ msg: "created" });
+    res.json({ msg: "created" });
     // }
   }
   catch (err) {
