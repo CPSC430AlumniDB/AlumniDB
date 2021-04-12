@@ -37,6 +37,12 @@ function getRegisterInfo(user_info) {
     }); 
 }
 
+function getFeaturedAlumni() {
+  return fetch(`http://localhost:8080/showFeatured`).then(function(resp){
+    return resp.json();
+  })
+}
+
 
 function getSearchInInfo(searchTerm, username){
   return fetch(`http://localhost:8080/search?searchTerm=${searchTerm}&username=${username}`).then(function(resp){
@@ -75,6 +81,9 @@ module.exports = {
   },
   getSubmission: function (user_info){
     return getNewSubmissionInfo(user_info).catch(handleError);
+  },
+  getFeatured: function (user_info){
+    return getFeaturedAlumni(user_info).catch(handleError);
   }
  
 };

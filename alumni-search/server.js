@@ -139,7 +139,7 @@ returns all alumni
 */
 app.get('/getAlumni', async (req, res) => {
   try {
-    let template = "Select * from Alumni";
+    let template = "Select * from alumni";
     const dbresponse = await pool.query(template,[]);
     const results = dbresponse.rows.map((row) => {return row});
     if(results.length > 0){
@@ -169,6 +169,82 @@ app.get('/getPending', async (req, res) => {
   console.log(err);
   }
 }); 
+
+/* EMAIL UPDATES is string NOT boolean
+Email List
+RETURNS
+  List of Alumni first, last names, and emails
+*/ 
+app.get('/getEmailList', async (req, res) => {
+  console.log("email list")
+  try {
+    let template = "Select firstName, lastName, email from alumni WHERE emailUpdates = $1";
+    const dbresponse = await pool.query(template,['y']);
+    const results = dbresponse.rows.map((row) => {return row});
+      res.json(
+        results)
+    console.log(results);
+  } catch (err){
+  console.log(err);
+  }
+}); 
+
+/* Major list
+RETURNS
+  List of unique majors in alumni database
+*/ 
+app.get('/listMajors', async (req, res) => {
+  console.log("email list")
+  try {
+    let template = "Select distinct major from alumni";
+    const dbresponse = await pool.query(template);
+    const results = dbresponse.rows.map((row) => {return row});
+      res.json(
+        results)
+    console.log(results);
+  } catch (err){
+  console.log(err);
+  }
+}); 
+
+/* Occupation list
+RETURNS
+  List of unique occupations in alumni database
+*/ 
+app.get('/listOccupations', async (req, res) => {
+  console.log("email list")
+  try {
+    let template = "Select distinct occupation from alumni";
+    const dbresponse = await pool.query(template);
+    const results = dbresponse.rows.map((row) => {return row});
+      res.json(
+        results)
+    console.log(results);
+  } catch (err){
+  console.log(err);
+  }
+}); 
+
+/* Year list
+RETURNS
+  List of unique years in alumni database
+*/ 
+app.get('/listYears', async (req, res) => {
+  console.log("email list")
+  try {
+    let template = "Select distinct gradYear from alumni";
+    const dbresponse = await pool.query(template);
+    const results = dbresponse.rows.map((row) => {return row});
+      res.json(
+        results)
+    console.log(results);
+  } catch (err){
+  console.log(err);
+  }
+}); 
+
+/*
+*/
 
 /* TEST FUNCTION (not used in application)
 returns all admins
@@ -219,7 +295,7 @@ app.get('/search', async (req, res) => {
 
   try {
     if (Number.isInteger(parseInt(searchTerm.searchTerm))) {
-      template = "select firstname, middlename, lastname, gradyear, major, occupation, email, emailupdates from alumni where gradYear = '"+searchTerm.searchTerm+"'";
+      template = "select firstname, middlename, lastname, gradyear, major, occupation, email, emailupdates from alumni where gradyear = '"+searchTerm.searchTerm+"'";
     } else {
       template = "select firstname, middlename, lastname, gradyear, major, occupation, email, emailupdates from alumni where firstName ilike '"+searchTerm.searchTerm+"' OR middleName ilike '"+searchTerm.searchTerm+"' OR lastName ilike '"+searchTerm.searchTerm+"' OR occupation ilike '"+searchTerm.searchTerm+"' OR major ilike '"+searchTerm.searchTerm+"'";
     }
@@ -419,13 +495,13 @@ RETURNS
   alumnus information
 */
 app.get('/showFeatured', async (req, res) => {
+  let template = `select * from alumni WHERE id = 1`;
+
+
   try {
-    let template = `select id from featured`;
-    let results = await pool.query(template);
-    let id = parseInt(results.rows[0].id)
-    template = `select * from alumni WHERE id = $1`;
-    results = await pool.query(template,[id]);
-    results = results.rows.map((row) => {return row});
+    
+    const dbresponse = await pool.query(template);
+    const results = dbresponse.rows.map((row) => {return row});
       res.json(
         results
       )
