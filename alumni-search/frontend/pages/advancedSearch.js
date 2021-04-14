@@ -34,7 +34,7 @@ class advancedSearch extends React.Component {
     return (
       <>
         <head>
-          <title>ESAMS | Pending</title>
+          <title>ESAMS | Advanced Search</title>
         </head>
         <div className={styles.container}>
         <Navigation/>

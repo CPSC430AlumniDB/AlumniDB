@@ -39,7 +39,7 @@ async handleSearch(evt){
     return (
       <>
         <head>
-          <title>ESAMS | Pending</title>
+          <title>ESAMS | Register</title>
         </head>
         <div className={styles.container}>
         <Navigation/>
