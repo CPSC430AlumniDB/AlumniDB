@@ -134,30 +134,12 @@ app.post("/create", async (req, res) => {
   }
 });
 
-/* TEST FUNCTION (not used in application)
-returns all alumni
-*/
-app.get('/getAlumni', async (req, res) => {
-  try {
-    let template = "Select * from alumni";
-    const dbresponse = await pool.query(template,[]);
-    const results = dbresponse.rows.map((row) => {return row});
-    if(results.length > 0){
-      res.json(
-        results
-      )
-    }
-    console.log(results);
-  } catch (err){
-  console.log(err);
-  }
-}); 
 
-/* TEST FUNCTION (not used in application)
+
+/* 
 returns all pending
 */
 app.get('/getPending', async (req, res) => {
-  console.log("pending")
   try {
     let template = "Select * from pending";
     const dbresponse = await pool.query(template,[]);
@@ -246,23 +228,7 @@ app.get('/listYears', async (req, res) => {
 /*
 */
 
-/* TEST FUNCTION (not used in application)
-returns all admins
-*/
-app.get('/getAdmins', async (req, res) => {
-  console.log("admins")
-  try {
-    let template = "Select * from admin";
-    const dbresponse = await pool.query(template,[]);
-    const results = dbresponse.rows.map((row) => {return row});
-      res.json(
-        results
-      )
-    console.log(results);
-  } catch (err){
-  console.log(err);
-  }
-}); 
+
 
 /* TEST FUNCTION (not used in application)
 deletes all pending forms
@@ -484,7 +450,7 @@ app.post('/feature', async (req, res) => {
     }
 }); 
   
-
+//we need a join, featured table just has an id, need to grab that from alumni
 /*THIS SEEMS REDUNDANT, THE FUNCTION ABOVE DOES THE SAME THING 
 show featured
 accepts no arguments
@@ -496,7 +462,6 @@ RETURNS
 */
 app.get('/showFeatured', async (req, res) => {
   let template = `select * from alumni WHERE id = 1`;
-
 
   try {
     

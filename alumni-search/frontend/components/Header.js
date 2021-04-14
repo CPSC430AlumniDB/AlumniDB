@@ -21,15 +21,11 @@ export default function Header() {
         <a>Search</a>
       </Link>
       &nbsp; &nbsp; &nbsp;
-      <Link href="/email">
-        <a>Inbox</a>
-      </Link>
-      &nbsp; &nbsp; &nbsp;
       <Link href="/pending">
         <a>Submission Review</a>
       </Link>
       &nbsp; &nbsp; &nbsp;
-      <Link href="/list">
+      <Link href="/advancedSearch">
         <a>Advanced Search</a>
       </Link>
       &nbsp; &nbsp; &nbsp;
