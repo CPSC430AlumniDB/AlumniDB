@@ -450,23 +450,24 @@ app.post('/feature', async (req, res) => {
     }
 }); 
   
-//we need a join, featured table just has an id, need to grab that from alumni
-/*THIS SEEMS REDUNDANT, THE FUNCTION ABOVE DOES THE SAME THING 
+
+/* 
 show featured
 accepts no arguments
-returns the current featured alumni (if none featured, returns first one)
+returns the current featured alumni 
 ACCEPTS 
   nothing
 RETURNS
   alumnus information
 */
 app.get('/showFeatured', async (req, res) => {
-  let template = `select * from alumni WHERE id = 1`;
-
   try {
-    
-    const dbresponse = await pool.query(template);
-    const results = dbresponse.rows.map((row) => {return row});
+    let template = `select id from featured`;
+    let results = await pool.query(template);
+    let id = parseInt(results.rows[0].id)
+    template = `select * from alumni WHERE id = $1`;
+    results = await pool.query(template,[id]);
+    results = results.rows.map((row) => {return row});
       res.json(
         results
       )
