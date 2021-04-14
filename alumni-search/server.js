@@ -142,7 +142,7 @@ returns all pending
 app.get('/getPending', async (req, res) => {
   try {
     let template = "Select * from pending";
-    const dbresponse = await pool.query(template,[]);
+    const dbresponse = await pool.query(template);
     const results = dbresponse.rows.map((row) => {return row});
       res.json(
         results)
