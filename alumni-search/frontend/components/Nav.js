@@ -25,8 +25,8 @@ const Navigation = () => {
       <Link href="/pending">
         <a>Pending</a>
       </Link>
-      <Link href="/list">
-        <a>List</a>
+      <Link href="/advacedSearch">
+        <a>Advaced Search</a>
       </Link>
       <Link href="/register">
         <a>Register</a>
