@@ -8,41 +8,21 @@ import Dropdown from 'react-dropdown';
 // 	return "placeholder for browsing by fields"
 // }
 //gradyear, major, occupation
-//This page needs to be styled but is otherwise done
-class list extends React.Component {
+class advancedSearch extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = { 
-      search: '',
-      results: []
+      
+      majors: [],
+      years: [],
+      occupations: []
+
     };
     
   }
 
-  handleUpdate(evt) {
-    this.setState({ search: evt.target.value }, this.handleSearch);    
-  }
-
-  async handleSearch() {
-    
-      const results = await getLoggedInfo(this.state.search,jsCookie.get("username"));
-      if(results){
-        this.setState({ results: results });
-      } else {
-        this.setState({ 
-          results: []    
-        });
-      } 
-      console.log(results);
-  }
-
-   handleInput(evt){
-    this.handleUpdate(evt);
-    this.handleSearch(evt);
-
-  }
-
+  
  
 
   render() {
@@ -174,6 +154,6 @@ class list extends React.Component {
   }
 }
 
-export default list;
+export default advancedSearch;
 
 
