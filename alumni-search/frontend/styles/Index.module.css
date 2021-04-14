@@ -3,6 +3,7 @@
 	text-align: center;
 	background-color: #00305e;
 	color: white;
+	padding-top: 1px;
 }
 .showcase h1{
 	padding-top: 70px;
@@ -20,8 +21,9 @@
 .box {
 	float: left;
 	text-align: center;
-	width: 45%;
+	width: 44%;
 	padding: 20px;
+	color: black;
 }
 
 .alumni {
