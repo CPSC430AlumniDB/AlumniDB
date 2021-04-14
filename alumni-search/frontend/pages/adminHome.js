@@ -1,11 +1,13 @@
 import Layout from "../components/MyLayout.js";
-import Link from 'next/link'
+import Link from 'next/link';
 import React from "react";
 import styles from '../styles/Index.module.css'
 import {getFeatured} from '../lib/utils.js';
 import { Navigation } from '../components/Nav.js';
 import Router from "next/router";
+import axios from 'axios';
 
+//this page is working as expected, need to add buttoms for approval/rejection and handle that accordingly
 const indexLink = {
   display: "inline",
   textAlign: "center",
@@ -18,57 +20,28 @@ class Index extends React.Component{
   constructor(props) {
     super(props);
 
-    this.state = { firstname: "", lastname: "", occupation: "",
-                personalupdates: "", gradyear: ''};
+    this.state = { 
+                
+      featured: []   
+      
+    };
+  }
 
+    componentDidMount() {
+      axios.get(`http://localhost:8080/showFeatured`)
+        .then(res => {
+          const featured = res.data;
+          this.setState({ featured: featured });
+
+        })
 
     }
-//state is not being set on the frontend
-      async handleFirstNameUpdate(evt){
-      this.setState({firstname: evt.target.value});
-      }
-      async handleLastNameUpdate(evt){
-      this.setState({lastname: evt.target.value});
-      }
-      async handleOccupationUpdate(evt){
-      this.setState({occupation: evt.target.value});
-      }
-      async handlePersonalUpdatesUpdate(evt){
-      this.setState({personalupdates: evt.target.value});
-      }
-      async handleGradYearUpdate(evt){
-      this.setState({gradyear: evt.target.value});
-      }
-
-
-      async handleSearch(evt){
-    
-        const results = await getFeatured({
-            firstname: this.state.firstname, 
-            lastname: this.state.lastname,
-            gradyear: this.state.gradyear, 
-            occupation: this.state.occupation, 
-            personalupdates: this.state.personalupdates, 
-            
-        });
-        console.log(results);
-        if(results){
-            this.setState({ results: results });
-            console.log(results + "we here?");
-
-          } else {
-            this.setState({ 
-              results: []    
-            });
-            console.log(results + "????????????");
-
-          } 
-    }
-     
   
     render() {
 
-      const that = this;
+      const {
+        featured
+     } = this.state;
       return (
         <>
           <head>
@@ -83,10 +56,29 @@ class Index extends React.Component{
                </section>
                <section className={styles.alumni}>
                  <h1>Alumni of the Month</h1>
-                 <h3>Jane Doe</h3>
-                 <p>Major</p>
-                 <p>Grad year</p>
-                 <p>Description</p>
+                 {this.state.featured.length > 0 ? (
+              <table id="entries">
+              <tbody>{this.state.featured.map(function(item, key) {
+                     
+                       return (
+                         
+                        
+                          <tr key = {key}>
+                            
+                              <td>{item.firstname}</td>
+                              <td>{item.lastname}</td>
+                              <td>{item.major}</td>
+                              <td>{item.occupation}</td>
+                              <td>{item.personalupdates}</td>
+
+
+
+                          </tr>
+                        )
+                     
+                     })}</tbody>
+               </table>
+            ) : null}
                </section>
                <section className={styles.boxes}>
                  <article className={styles.box}>
@@ -99,21 +91,6 @@ class Index extends React.Component{
                  </article> 
                </section>
 
-              
-              <div htmlFor="firstname" className="text-style" value={this.state.firstname} onLoad={() =>this.handleFirstNameUpdate.bind(this)}>
-              </div>
-              <br /> <br />
-              
-              <div htmlFor="lastname" className="text-style" value={this.state.lastname} onLoad={() =>this.handleLastNameUpdate.bind(this)}>
-              </div>
-              
-              <br /> <br />
-              <div htmlFor="occupation" className="text-style" value={this.state.occupation} onLoad={() =>this.handleOccupationUpdate.bind(this)} >
-              </div>
-              
-              <div htmlFor="personalUpdates" className="text-style" value={this.state.personalupdates} onLoad={() =>this.handlePersonalUpdatesUpdate.bind(this)}>
-              </div>
-              
               <br /> <br />   
               <br />
               <br />
@@ -121,7 +98,7 @@ class Index extends React.Component{
               <br /> <br />
             </Layout>
             </div>
-        </>
+          </>
       );
   }
 }

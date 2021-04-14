@@ -30,7 +30,7 @@ class Login extends React.Component {
     this.setState({ loggedInUser });
     if (loggedInUser.status == "success"){
       jsCookie.set("username", loggedInUser.username);
-      Router.replace("/");
+      Router.replace("/adminHome");
     }
   }
 
