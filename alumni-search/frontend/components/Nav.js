@@ -11,18 +11,30 @@ const linkStyle = {
   marginRight: 15,
 };
 
-const Header = () => {
+const Navigation = () => {
   return (
     <div className="menu-style">
-      <Link href="/submitInfo">
-        <a>Submit Form</a>
-      </Link>
-      &nbsp; &nbsp; &nbsp;
-      <Link href="/login">
-        <a>Login</a>
-      </Link>
-      &nbsp; &nbsp; &nbsp;
       <Link href="/">
+        <a>Logout</a>
+      </Link>
+      &nbsp; &nbsp; &nbsp;
+      <Link href="/search">
+        <a>Search</a>
+      </Link>
+      &nbsp; &nbsp; &nbsp;
+      <Link href="/pending">
+        <a>Pending Forms</a>
+      </Link>
+      <Link href="/advancedSearch">
+        <a>Advaced Search</a>
+      </Link>
+      <Link href="/register">
+        <a>Register</a>
+      </Link>
+      <Link href="/email">
+        <a>Email List</a>
+      </Link>
+      <Link href="/adminHome">
         <a>Home</a>
       </Link>
       
@@ -36,13 +48,13 @@ const Header = () => {
           min-height: 40px;
           font-family: "Arial";
           line-height: 2.5;
-          font-size: 1.4rem;
+          font-size: 1.25rem;
         }
 
         a {
           text-decoration: none;
           float: right;
-          padding-right: 20px;
+          padding-right: 25px;
           color: white;
         }
 
@@ -58,4 +70,4 @@ const Header = () => {
   )
 }
 
-export { Header };
+export { Navigation };

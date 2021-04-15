@@ -2,7 +2,9 @@ import Layout from "../components/MyLayout.js";
 import Router from "next/router";
 import jsCookie from "js-cookie";
 import {getLogin} from '../lib/utils.js';
-
+import Head from 'next/head'
+import styles from '../styles/login.module.css'
+import { Header } from '../components/Header.js'
 
 class Login extends React.Component {
   constructor(props) {
@@ -28,13 +30,63 @@ class Login extends React.Component {
     this.setState({ loggedInUser });
     if (loggedInUser.status == "success"){
       jsCookie.set("username", loggedInUser.username);
-      Router.replace("/");
+      Router.replace("/adminHome");
     }
   }
 
   render() {
     const that = this;
     return (
+      <>
+        <head>
+          <title>ESAMS | Login</title>
+        </head> 
+        <Header/>
+        <Layout>
+        <div className={styles.container}>
+        <section className={styles.heading}>
+          <h1 className={styles.h1}>Welcome,</h1>
+          <h2 className={styles.h2}>Login to continue</h2>
+        </section>
+        <br/><br/>
+        <div className={styles.whole}>
+          <input
+            placeholder="username"
+            type="text"
+            id="username"
+            className="input-style"
+            value={this.state.username}
+            onChange={this.handleUsernameUpdate.bind(this)}
+          />
+        </div>
+        <div className={styles.whole}>
+          <br /> <br />
+          <input
+            placeholder="password"
+            type="password"
+            id="password"
+            className={styles.password_input}
+            value={this.state.password}
+            onChange={this.handlePasswordUpdate.bind(this)}
+          />
+        </div>
+        <br /><br /><br />
+        <div className={styles.button} onClick={this.handleSearch.bind(that)}>Submit</div>
+        <br/><br/>
+      </div>
+      </Layout>
+      </>
+    );
+  }
+}
+
+
+
+
+
+
+/*
+      
       <Layout
         style={{ margin: "auto auto", width: "600px", textAlign: "center" }}
       >
@@ -161,5 +213,5 @@ class Login extends React.Component {
     );
   }
 }
-
+*/
 export default Login;

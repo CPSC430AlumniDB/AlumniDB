@@ -3,7 +3,7 @@ import Link from 'next/link';
 import React from "react";
 import styles from '../styles/Index.module.css'
 import {getFeatured} from '../lib/utils.js';
-import { Header } from '../components/Header.js';
+import { Navigation } from '../components/Nav.js';
 import Router from "next/router";
 import axios from 'axios';
 
@@ -48,7 +48,7 @@ class Index extends React.Component{
             <title>ESAMS | Dashboard</title>
           </head>
           <div className={styles.container}>
-            <Header/>
+            <Navigation/>
             <Layout>
               <section className={styles.showcase}>
                  <h1>Environmental Science Alumni Management System</h1>

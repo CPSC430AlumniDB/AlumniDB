@@ -1,116 +1,88 @@
-import Index from "./index.js"
-import jsCookie from "js-cookie"
 import Layout from "../components/MyLayout.js";
-import styles from '../styles/Index.module.css';
-import axios from 'axios';
+import jsCookie from "js-cookie";
+import { getLoggedInfo } from "../lib/utils";
+import Dropdown from 'react-dropdown';
 import { Navigation } from '../components/Nav.js';
 import Router from "next/router";
+import styles from '../styles/index.module.css'
 
-const indexLink = {
-  display: "inline",
-  textAlign: "center",
-  fontSize: "1em",
-  textColor: "#000000"
-
-}
-// export default function Pending(){
+// export default function List(){
 // 	if(jsCookie.get("username") == null){return Index();}
-// 	return "Placeholder for Pending Page";
+// 	return "placeholder for browsing by fields"
 // }
-
-
-class pending extends React.Component {
+//gradyear, major, occupation
+class advancedSearch extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = { 
-
-      pendingAlumni: []
+      
+      majors: [],
+      years: [],
+      occupations: []
 
     };
     
   }
 
-  componentDidMount() {
-	axios.get(`http://localhost:8080/getPending`)
-	  .then(res => {
-		const pendingAlumni = res.data;
-		this.setState({ pendingAlumni: pendingAlumni });
-
-	  })
-
-  }
-
   
-
  
 
   render() {
+    const that = this;
     //if(jsCookie.get("username") == null){ return Index();}
-    
-		return (
+    return (
       <>
         <head>
-          <title>ESAMS | Pending</title>
+          <title>ESAMS | Advanced Search</title>
         </head>
         <div className={styles.container}>
         <Navigation/>
-		    <Layout>
-    			<section className={styles.showcase}>
-    				<h1>Submission's Awaiting Approval</h1>
-    			</section>
-    			<br></br>
-    			<br></br>
-    			<section className={styles.alumni}>
-    				{this.state.pendingAlumni.length > 0 ? (
-    			<table id="entries">
-    				<tr>
-    					<th>First Name</th>
-    					<th>Middle Name</th>
-    					<th>Last Name</th>
-    					<th>Graduation Year</th>
-    					<th>Major</th>
-    					<th>Occupation</th>
-    					<th>Email</th>
-    					<th>Email Updates</th>
-    					<th>Personal Updates</th>
-    				</tr>
-    			<tbody>{this.state.pendingAlumni.map(function(item, key) {
-    					
-    					return (
-    						
-    					
-    						<tr key = {key}>
-    						
-    						  <td>{item.firstname}</td>
-                              <td>{item.middlename}</td>
-                              <td>{item.lastname}</td>
+          <Layout>
+            <h2>Browse Alumni by Fields</h2>
+    		<Dropdown>
+    			<Dropdown.Toggle variant="success" id="dropdown-basic">
+    			Dropdown Button
+    		</Dropdown.Toggle>
+
+    		<Dropdown.Menu>
+    			<Dropdown.Item href="#/action-1">Action</Dropdown.Item>
+    			<Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
+    			<Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
+    		</Dropdown.Menu>
+    		</Dropdown>
+            
+            <br />
+            <br />
+            
+            <br /> <br />
+          
+            {/* {this.state.results.length > 0 && this.state.search !== '' ? (
+              <table id="entries">
+                <tr>
+                  
+                  <th>Graduation Year</th>
+                  <th>Major</th>
+                  <th>Occupation</th>
+                  
+                </tr>
+              <tbody>{this.state.results.map(function(item, key) {
+                     
+                       return (
+                         
+                        
+                          <tr key = {key}>
+                            
                               <td>{item.gradyear}</td>
                               <td>{item.major}</td>
                               <td>{item.occupation}</td>
-                              <td>{item.email}</td>
-                              <td>{item.emailupdates}</td>
-    						  <td>{item.personalupdates}</td>
-    						  <br></br><div className="button-style">Approve</div>
-    						  <br></br><div className="button-style">Reject</div>
-    						  
-    						  
 
-
-
-
-    						</tr>
-    					)
-    					
-    					})}</tbody>
-    			</table>
-    			) : null}
-    			</section>
-    			<br /> <br />   
-    			<br />
-    			<br />
-    			<br />
-    			<br /> <br />
+                          </tr>
+                        )
+                     
+                     })}</tbody>
+               </table>
+            ) : null} */}
             <style jsx>{`
               h1,
               h2,
@@ -130,7 +102,6 @@ class pending extends React.Component {
                 color: #ffffff;
                 width: 100px;
                 font-family: "Arial";
-    			padding-top: -2;
               }
 
               .text-style {
@@ -187,11 +158,13 @@ class pending extends React.Component {
                 text-align: center; /* Center our text */
               }
             `}</style>
-        </Layout>
-      </div>
-    </>
+          </Layout>
+          </div>
+        </>
     );
   }
 }
 
-export default pending;
+export default advancedSearch;
+
+
