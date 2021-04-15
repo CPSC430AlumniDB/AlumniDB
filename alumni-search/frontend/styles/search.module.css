@@ -1,0 +1,38 @@
+.container{
+	background-color: #00305e;
+	min-height: 600px;
+	align-content: center;
+	float: center;
+	text-align: center;
+}
+
+.heading{
+	color: white;
+	text-align: center;
+	padding-top: 45px;
+}
+
+.box{
+	text-align: center;
+}
+
+
+
+.thing{
+	border: solid 1.5px;
+	border-color: black;
+	padding-right: 10px;
+	padding-left: 10px;
+	padding-bottom: 2px;
+}
+
+.entries{
+	text-align: center;
+	display: inline-block;
+	float: center;
+	color: white;
+	border-collapse: collapse;
+	background-color: #686663;
+}
+
+/*fix border */

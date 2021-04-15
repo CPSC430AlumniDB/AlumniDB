@@ -1,7 +1,6 @@
 {
   "name": "alumnidb",
   "version": "1.0.0",
-  "description": "",
   "main": "server.js",
   "scripts": {
     "dev": "next3",
@@ -23,5 +22,7 @@
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
     "react-table": "^7.6.2"
-  }
+  },
+  "devDependencies": {},
+  "description":
 }
