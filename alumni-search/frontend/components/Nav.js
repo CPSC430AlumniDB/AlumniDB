@@ -26,7 +26,7 @@ const Navigation = () => {
         <a>Pending Forms</a>
       </Link>
       <Link href="/advancedSearch">
-        <a>Advaced Search</a>
+        <a>Advanced Search</a>
       </Link>
       <Link href="/register">
         <a>Register</a>
