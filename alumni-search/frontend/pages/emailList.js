@@ -17,23 +17,23 @@ const indexLink = {
 // }
 
 
-class pending extends React.Component {
+class EmailList extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = { 
 
-      pendingAlumni: []
+      emails: []
 
     };
     
   }
 
   componentDidMount() {
-	axios.get(`http://localhost:8080/getPending`)
+	axios.get(`http://localhost:8080/getEmailList`)
 	  .then(res => {
-		const pendingAlumni = res.data;
-		this.setState({ pendingAlumni: pendingAlumni });
+		const emails = res.data;
+		this.setState({ emails: emails });
 
 	  })
 
@@ -50,25 +50,19 @@ class pending extends React.Component {
 		<Layout>
 			
 			<section className={styles.showcase}>
-				<h1>Submission's Awaiting Approval</h1>
+				<h1>Alumni Email List</h1>
 			</section>
 			<br></br>
 			<br></br>
 			<section className={styles.alumni}>
-				{this.state.pendingAlumni.length > 0 ? (
+				{this.state.emails.length > 0 ? (
 			<table id="entries">
 				<tr>
 					<th>First Name</th>
-					<th>Middle Name</th>
 					<th>Last Name</th>
-					<th>Graduation Year</th>
-					<th>Major</th>
-					<th>Occupation</th>
 					<th>Email</th>
-					<th>Email Updates</th>
-					<th>Personal Updates</th>
 				</tr>
-			<tbody>{this.state.pendingAlumni.map(function(item, key) {
+			<tbody>{this.state.emails.map(function(item, key) {
 					
 					return (
 						
@@ -76,22 +70,9 @@ class pending extends React.Component {
 						<tr key = {key}>
 						
 						  <td>{item.firstname}</td>
-                          <td>{item.middlename}</td>
                           <td>{item.lastname}</td>
-                          <td>{item.gradyear}</td>
-                          <td>{item.major}</td>
-                          <td>{item.occupation}</td>
                           <td>{item.email}</td>
-                          <td>{item.emailupdates}</td>
-						  <td>{item.personalupdates}</td>
-						  <br></br><div className="button-style">Approve</div>
-						  <br></br><div className="button-style">Reject</div>
 						  
-						  
-
-
-
-
 						</tr>
 					)
 					
@@ -185,4 +166,4 @@ class pending extends React.Component {
   }
 }
 
-export default pending;
+export default EmailList;

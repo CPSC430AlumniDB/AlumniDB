@@ -176,7 +176,6 @@ RETURNS
   List of unique majors in alumni database
 */ 
 app.get('/listMajors', async (req, res) => {
-  console.log("email list")
   try {
     let template = "Select distinct major from alumni";
     const dbresponse = await pool.query(template);
@@ -194,7 +193,6 @@ RETURNS
   List of unique occupations in alumni database
 */ 
 app.get('/listOccupations', async (req, res) => {
-  console.log("email list")
   try {
     let template = "Select distinct occupation from alumni";
     const dbresponse = await pool.query(template);
@@ -212,7 +210,6 @@ RETURNS
   List of unique years in alumni database
 */ 
 app.get('/listYears', async (req, res) => {
-  console.log("email list")
   try {
     let template = "Select distinct gradYear from alumni";
     const dbresponse = await pool.query(template);

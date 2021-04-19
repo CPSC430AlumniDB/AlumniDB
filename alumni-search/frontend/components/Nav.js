@@ -31,7 +31,7 @@ const Navigation = () => {
       <Link href="/register">
         <a>Register</a>
       </Link>
-      <Link href="/email">
+      <Link href="/emailList">
         <a>Email</a>
       </Link>
       <Link href="/adminHome">
