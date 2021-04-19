@@ -1,0 +1,30 @@
+.containers{
+	background-color: #00305e;
+	min-height: 600px;
+	align-content: center;
+	float: center;
+	text-align: center;
+}
+
+.headings{
+	color: white;
+	text-align: center;
+	padding-top: 45px;
+}
+
+.things{
+	border: solid 1.5px;
+	border-color: black;
+	padding-right: 30px;
+	padding-left: 30px;
+	padding-bottom: 2px;
+}
+
+.entry{
+	text-align: center;
+	display: inline-block;
+	float: center;
+	color: white;
+	border-collapse: collapse;
+	background-color: #686663;
+}
