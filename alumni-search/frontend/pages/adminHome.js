@@ -52,7 +52,7 @@ class Index extends React.Component{
             <Layout>
               <section className={styles.showcase}>
                  <h1>Environmental Science Alumni Management System</h1>
-                 <p>Maybe put a discription or a quote the esci department uses</p>
+                 <p>Maybe put a description or a quote the esci department uses</p>
                </section>
                <section className={styles.alumni}>
                  <h1>Alumni of the Month</h1>

@@ -14,25 +14,30 @@ const linkStyle = {
 const Navigation = () => {
   return (
     <div className="menu-style">
-      <Link href="/search">
-        <a>Search</a>
-      </Link>
-      &nbsp; &nbsp; &nbsp;
       <Link href="/">
         <a>Logout</a>
       </Link>
       &nbsp; &nbsp; &nbsp;
-      <Link href="/pending">
-        <a>Pending</a>
+      <Link href="/search">
+        <a>Search</a>
       </Link>
-      <Link href="/advacedSearch">
-        <a>Advaced Search</a>
+      &nbsp; &nbsp; &nbsp;
+      <Link href="/pending">
+        <a>Pending Forms</a>
+      </Link>
+      <Link href="/advancedSearch">
+        <a>Advanced Search</a>
       </Link>
       <Link href="/register">
         <a>Register</a>
       </Link>
+<<<<<<< HEAD
       <Link href="/emailList">
         <a>Email</a>
+=======
+      <Link href="/email">
+        <a>Email List</a>
+>>>>>>> 63274502b00f1e4ec42820382552189e0c7b08b3
       </Link>
       <Link href="/adminHome">
         <a>Home</a>
@@ -48,13 +53,13 @@ const Navigation = () => {
           min-height: 40px;
           font-family: "Arial";
           line-height: 2.5;
-          font-size: 1.4rem;
+          font-size: 1.25rem;
         }
 
         a {
           text-decoration: none;
           float: right;
-          padding-right: 20px;
+          padding-right: 25px;
           color: white;
         }
 
