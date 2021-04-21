@@ -37,3 +37,11 @@
 .container{
 	background-color: #00305e;
 }
+
+.confirmation{
+	font-size: 100px;
+	float: center;
+	text-align: center;
+	color: white;
+	padding-top: 75px;
+}

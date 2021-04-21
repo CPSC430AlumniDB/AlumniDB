@@ -64,7 +64,7 @@ class SubmitInfo extends React.Component {
             });
           } 
           console.log(results);
-          Router.replace("/index"); //replace with "thanks for submitting page"
+          Router.replace("/formConfirmation"); //replace with "thanks for submitting page"
     }
     
 
