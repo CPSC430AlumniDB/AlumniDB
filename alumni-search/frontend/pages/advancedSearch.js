@@ -25,7 +25,27 @@ class advancedSearch extends React.Component {
     
   }
 
-  
+    /* JP's notes for backend functions
+  Getting dropdown box fields:
+    listYears()
+    listOccupations()
+    listMajors()
+
+  advanced search query
+  advancedSearch()
+    Takes three body parameters
+    -occupation (string) : if query is blank, put "-"
+    -major (string) : if query is blank, put "-"
+    -year (signed int) : if query is blank, put 0
+    example: User selects in "environmental science" from dropdown, and leaves the other fields blank
+      the body of the request would be:
+       occupation: "-"
+       year: 0
+       major: "environmental science"
+
+    the backend function will do a query for just the actual
+
+  */
  
 
   render() {
