@@ -29,7 +29,10 @@ class SubmitInfo extends React.Component {
     this.setState({email: evt.target.value});
     }
     async handleEmailUpdatesUpdate(evt){
-    this.setState({emailUpdates: evt.target.value});
+    //convert "on" and "off" to "y" and "n"
+    console.log("button value:" + evt.target.checked)
+    this.setState({emailUpdates: (evt.target.checked) ? 'y': 'n'});
+    console.log("email answer state" + this.state.emailUpdates)
     }
     async handlePersonalUpdatesUpdate(evt){
     this.setState({personalUpdates: evt.target.value});

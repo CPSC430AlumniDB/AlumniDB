@@ -44,7 +44,24 @@ function getSearchInInfo(searchTerm, username){
       console.log(username + "username");
       return resp.json();
     })
+}
 
+function listMajors(){
+  return fetch(`http://localhost:8080/listMajors`).then(function(resp){
+      return resp.json();
+    })
+}
+
+function listOccupations(){
+  return fetch(`http://localhost:8080/listMajors`).then(function(resp){
+      return resp.json();
+    })
+}
+
+function listYears(){
+  return fetch(`http://localhost:8080/listMajors`).then(function(resp){
+      return resp.json();
+    })
 }
 
 async function checkLogin(userpw){
@@ -60,6 +77,20 @@ function approve(user_info) {
                   "Content-Type": "application/x-www-form-urlencoded"};
   const searchParams = new URLSearchParams(user_info);
   return fetch(`http://localhost:8080/approve`, { method: "POST",
+  headers: header,
+  body: searchParams}).then(function (resp){
+    return resp.json();
+  }); 
+}
+
+/*advanced search
+use filters to browse list
+*/
+function advancedSearch(user_info) {
+  const header = {'Accept' : "application/json",
+                  "Content-Type": "application/x-www-form-urlencoded"};
+  const searchParams = new URLSearchParams(user_info);
+  return fetch(`http://localhost:8080/advancedSearch`, { method: "POST",
   headers: header,
   body: searchParams}).then(function (resp){
     return resp.json();
@@ -106,6 +137,18 @@ module.exports = {
   },
   reject: function (user_info) {
     return reject(user_info).catch(handleError);
+  },
+  advSearch: function (user_info) {
+    return advancedSearch(user_info).catch(handleError);
+  },
+  listMajors: function() {
+    return listMajors().catch(handleError);
+  },
+  listYears: function() {
+    return listYears().catch(handleError);
+  },
+  listOccupations: function() {
+    return listOccupations().catch(handleError);
   }
 };
 
