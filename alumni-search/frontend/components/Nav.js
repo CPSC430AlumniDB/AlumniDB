@@ -32,7 +32,11 @@ const Navigation = () => {
         <a>Register</a>
       </Link>
       <Link href="/emailList">
+<<<<<<< HEAD
         <a>Email List</a>
+=======
+        <a>Email</a>
+>>>>>>> 8be421d448c8bba382f2c3557c8f79053cccbb25
       </Link>
       <Link href="/adminHome">
         <a>Home</a>

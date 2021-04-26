@@ -4,6 +4,8 @@ import styles from '../styles/Index.module.css';
 import axios from 'axios';
 import { Navigation } from '../components/Nav.js';
 import Router from "next/router";
+import {approve} from '../lib/utils.js';
+import {reject} from '../lib/utils.js';
 
 const indexLink = {
   display: "inline",
@@ -40,13 +42,41 @@ class pending extends React.Component {
 
   }
 
+  //Handle accept
+  /* This is connected to each button for each pending alumni
+  When clicked, it sends a request to approve alumni with this ID
+  */
+  async handleApprove(item){
+    console.log("id = " + item.id)
+    //make sure its an integer
+    
+    let response = await approve({
+      id: item.id //pass in id
+    });
+    //location.reload(); //refresh
+    location.reload() //refresh sort of (maybe figure out a better way to do this?)
+  }
+
+    //Handle accept
+  /* This is connected to each button for each pending alumni
+  When clicked, it sends a request to approve alumni with this ID
+  */
+  async handleReject(item){
+    console.log("id = " + item.id)
+    //make sure its an integer
+    
+    let response = await reject({
+      id: item.id //pass in id
+    });
+    location.reload(); //refresh
+  }
   
 
  
 
   render() {
     //if(jsCookie.get("username") == null){ return Index();}
-    
+    const that = this;
 		return (
       <>
         <head>
@@ -90,8 +120,9 @@ class pending extends React.Component {
                               <td>{item.email}</td>
                               <td>{item.emailupdates}</td>
     						  <td>{item.personalupdates}</td>
-    						  <br></br><div className="button-style">Approve</div>
-    						  <br></br><div className="button-style">Reject</div>
+    						  <br></br>
+                  <div className="button-style" onClick={() => that.handleApprove(item)}>Approve</div>
+    						  <br></br><div className="button-style" onClick={() => that.handleReject(item)}>Reject</div>
     						  
     						  
 

@@ -10,7 +10,7 @@ class Login extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { username: "", password: ""};
+    this.state = { username: "", password: "", error: ""};
   }
 
   async handleUsernameUpdate(evt){
@@ -31,6 +31,9 @@ class Login extends React.Component {
     if (loggedInUser.status == "success"){
       jsCookie.set("username", loggedInUser.username);
       Router.replace("/adminHome");
+    } else { //error
+      this.setState({error: loggedInUser.error}); //set error message
+      console.log(loggedInUser.error)
     }
   }
 
@@ -70,7 +73,11 @@ class Login extends React.Component {
             onChange={this.handlePasswordUpdate.bind(this)}
           />
         </div>
-        <br /><br /><br />
+        <br />
+        {this.state.error ? //if button has been pressed
+        <div> <h1 className={styles.error}> {this.state.error}</h1></div>
+        : null }
+        <br /><br />
         <div className={styles.button} onClick={this.handleSearch.bind(that)}>Submit</div>
         <br/><br/>
       </div>

@@ -53,6 +53,31 @@ async function checkLogin(userpw){
   console.log(info);//{status: , screenname: }
   console.log(info.status);
 }
+/*approve an alumni
+*/
+function approve(user_info) {
+  const header = {'Accept' : "application/json",
+                  "Content-Type": "application/x-www-form-urlencoded"};
+  const searchParams = new URLSearchParams(user_info);
+  return fetch(`http://localhost:8080/approve`, { method: "POST",
+  headers: header,
+  body: searchParams}).then(function (resp){
+    return resp.json();
+  }); 
+}
+
+/*reject an alumni
+*/
+function reject(user_info) {
+  const header = {'Accept' : "application/json",
+                  "Content-Type": "application/x-www-form-urlencoded"};
+  const searchParams = new URLSearchParams(user_info);
+  return fetch(`http://localhost:8080/reject`, { method: "POST",
+  headers: header,
+  body: searchParams}).then(function (resp){
+    return resp.json();
+  }); 
+}
 
 function handleError(error) {
   console.warn(error);
@@ -75,6 +100,12 @@ module.exports = {
   },
   getSubmission: function (user_info){
     return getNewSubmissionInfo(user_info).catch(handleError);
+  },
+  approve: function (user_info) {
+    return approve(user_info).catch(handleError);
+  },
+  reject: function (user_info) {
+    return reject(user_info).catch(handleError);
   }
 };
 

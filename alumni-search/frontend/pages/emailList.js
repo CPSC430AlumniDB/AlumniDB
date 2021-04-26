@@ -1,7 +1,8 @@
 import jsCookie from "js-cookie"
 import Layout from "../components/MyLayout.js";
-import styles from '../styles/Index.module.css';
+import emailstyles from '../styles/email.module.css';
 import axios from 'axios';
+import { Navigation } from '../components/Nav.js';
 
 
 const indexLink = {
@@ -47,121 +48,46 @@ class EmailList extends React.Component {
     //if(jsCookie.get("username") == null){ return Index();}
     
 		return (
-		<Layout>
-			
-			<section className={styles.showcase}>
-				<h1>Alumni Email List</h1>
-			</section>
-			<br></br>
-			<br></br>
-			<section className={styles.alumni}>
-				{this.state.emails.length > 0 ? (
-			<table id="entries">
-				<tr>
-					<th>First Name</th>
-					<th>Last Name</th>
-					<th>Email</th>
-				</tr>
-			<tbody>{this.state.emails.map(function(item, key) {
-					
-					return (
-						
-					
-						<tr key = {key}>
-						
-						  <td>{item.firstname}</td>
-                          <td>{item.lastname}</td>
-                          <td>{item.email}</td>
-						  
-						</tr>
-					)
-					
-					})}</tbody>
-			</table>
-			) : null}
-			</section>
-			<br /> <br />   
-			<br />
-			<br />
-			<br />
-			<br /> <br />
-        <style jsx>{`
-          h1,
-          h2,
-          h3,
-          h4,
-          a,
-          td,
-          p {
-            color: #1f618d;          
-            font-family: "Arial";
-          }
+    <>
+      <head>
+        <title>ESAMS | Email</title>
+      </head>
 
-          .button-style {
-            margin: auto auto;
-            cursor: pointer;
-            background-color: #228b22;
-            color: #ffffff;
-            width: 100px;
-            font-family: "Arial";
-			padding-top: -2;
-          }
+      <Navigation/>
+		  
+      <Layout>
+        <div className={emailstyles.containers}>
+            <div className={emailstyles.headings}>
+              <h2>Alumni Email List</h2>
+            </div>
 
-          .text-style {
-            margin: auto auto;
-            width: 200px;
-          }
-
-          input {
-            margin: auto auto;
-            width: 200px;
-          }
-
-          .description {
-            font-family: "Arial";
-            font-size: "10px";
-          }
-
-          ul {
-            padding: 0;
-          }
-
-          li {
-            list-style: none;
-            margin: 5px 0;
-          }
-
-          a {
-            text-decoration: none;
-            color: blue;
-          }
-
-          a:hover {
-            opacity: 0.6;
-          }
-
-          table {  
-            color: #333; /* Lighten up font color */
-            font-family: Helvetica, Arial, sans-serif; /* Nicer font */
-            width: 100%; 
-            border-collapse: 
-            collapse; 
-            border-spacing: 0;
-          }
-        
-          td, th { border: 1px solid #CCC; height: 30px; } /* Make cells a bit taller */
-        
-          th {  
-            background: #F3F3F3; /* Light grey background */
-            font-weight: bold; /* Make sure they're bold */
-          }
-        
-          td {  
-            background: #FAFAFA; /* Lighter grey background */
-            text-align: center; /* Center our text */
-          }
-        `}</style>
+    			<br></br>
+    			<br></br>
+    			{this.state.emails.length > 0 ? (
+          <table className={emailstyles.entry}>
+    				<tr>
+    					<th className={emailstyles.things}>First Name</th>
+    					<th className={emailstyles.things}>Last Name</th>
+    					<th className={emailstyles.things}>Email</th>
+    				</tr>
+            <tbody>{this.state.emails.map(function(item, key) {
+    					
+    					return (
+    						
+    					
+    						<tr key = {key}>			
+    						  <td className={emailstyles.things}>{item.firstname}</td>
+                  <td className={emailstyles.things}>{item.lastname}</td>
+                  <td className={emailstyles.things}>{item.email}</td>					  
+    						</tr>
+    					)
+    					
+    					})}</tbody>
+    			</table>
+    			) : null}
+        </div>
       </Layout>
+    </>
     );
   }
 }

@@ -4,7 +4,7 @@ import { getLoggedInfo } from "../lib/utils";
 import Dropdown from 'react-dropdown';
 import { Navigation } from '../components/Nav.js';
 import Router from "next/router";
-import styles from '../styles/index.module.css'
+import styles from '../styles/Index.module.css'
 
 // export default function List(){
 // 	if(jsCookie.get("username") == null){return Index();}

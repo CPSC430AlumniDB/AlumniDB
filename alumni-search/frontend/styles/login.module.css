@@ -13,6 +13,14 @@
 	color: white;
 }
 
+.error {
+	text-align: center;
+	font-weight: bold;
+	color: red;
+	font-size: medium;
+	font-family: 'Courier New', Courier, monospace;
+}
+
 
 /* move the username and password along with their input boxes */
 .whole{
