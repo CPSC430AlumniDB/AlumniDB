@@ -290,7 +290,7 @@ app.post('/advancedSearch', async (req, res) => {
     //year defaults to 0 if no year filter is used
     if (year > 0) {
       //concatanate this part of the search
-      template = template + " WHERE year = " + filterVars[filterCount];
+      template = template + " WHERE gradYear = " + filterVars[filterCount];
       filters[filterCount] = year; //the first array element now contains year
       filterCount++; //mark that $1 has now been used
     }
@@ -502,6 +502,30 @@ app.post('/feature', async (req, res) => {
       console.log(err);
     }
 }); 
+
+/* 
+show alumni
+accepts no arguments
+returns the current featured alumni 
+ACCEPTS 
+  nothing
+RETURNS
+  alumnus information
+*/
+app.get('/showAlumni', async (req, res) => {
+  try {
+    let template = `select * from alumni`;
+    let results = await pool.query(template);
+    results = results.rows.map((row) => {return row});
+      res.json(
+        results
+      )
+    console.log(results);
+  } catch (err){
+  console.log(err);
+  }
+}); 
+
   
 
 /* 
