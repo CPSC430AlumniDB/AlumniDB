@@ -30,8 +30,6 @@ class SubmitInfo extends React.Component {
       }
     }
     
-     validEmailRegex = 
-  RegExp(/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i);
 
     async handleFirstNameUpdate(evt){
     this.setState({firstname: evt.target.value});
