@@ -10,7 +10,13 @@ class Login extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { username: "", password: ""};
+    this.state = { username: "", 
+    password: "",
+    errors: {
+      username: "",
+      password: ""
+    }
+  };
   }
 
   async handleUsernameUpdate(evt){
@@ -33,6 +39,48 @@ async handleSearch(evt){
   //   Router.replace("/");
   // }
 }
+
+handleValidation(){
+  let username = this.state.username;
+  let password = this.state.password;
+  let errors = {};
+  let formIsValid = true;
+
+  //username
+  if(!username){
+    formIsValid = false;
+    errors.username = "This is a require field";
+  }
+
+  //password
+  if(!password){
+    formIsValid = false;
+    errors.password = "This is a require field";
+  }
+ 
+  this.setState({errors: errors});
+  console.log(errors);
+  return formIsValid;
+  }
+
+contactSubmit(evt){
+      evt.preventDefault();
+
+      if(this.handleValidation()){
+        alert("Form submitted");
+        Router.replace("/formConfirmation"); //replace with "thanks for submitting page"
+      }else{
+        alert("Form has errors.")
+      }
+
+}
+
+eventHandler(evt){
+  this.contactSubmit(evt);
+  this.handleSearch(evt);
+
+}
+
 
   render() {
     const that = this;
@@ -57,6 +105,7 @@ async handleSearch(evt){
             value={this.state.username}
             onChange={this.handleUsernameUpdate.bind(this)}
           />
+          <span style={{color: "red"}}>{this.state.errors.username}</span>
           </div>
           <br /> <br />
 
@@ -71,9 +120,10 @@ async handleSearch(evt){
             value={this.state.password}
             onChange={this.handlePasswordUpdate.bind(this)}
           />
+          <span style={{color: "red"}}>{this.state.errors.password}</span>
           </div>
           <br /> <br /><br />
-          <div className={styles.button} onClick={this.handleSearch.bind(this)}>Submit</div>
+          <div className={styles.button} onClick={this.eventHandler.bind(this)}>Submit</div>
           <br /> <br />
           </div>
         </Layout>

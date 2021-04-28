@@ -25,7 +25,9 @@ class SubmitInfo extends React.Component {
       major: "", 
       errors: {
         email: "",
-        firstname: ""
+        firstname: "",
+        lastname: "",
+        gradYear: ''
       }
       }
     }
