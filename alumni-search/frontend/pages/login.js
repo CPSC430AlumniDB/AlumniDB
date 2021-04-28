@@ -2,15 +2,19 @@ import Layout from "../components/MyLayout.js";
 import Router from "next/router";
 import jsCookie from "js-cookie";
 import {getLogin} from '../lib/utils.js';
-import Head from 'next/head'
-import styles from '../styles/login.module.css'
-import { Header } from '../components/Header.js'
+import Head from 'next/head';
+import styles from '../styles/login.module.css';
+import { Header } from '../components/Header.js';
+
 
 class Login extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { username: "", password: "", error: ""};
+    this.state = { username: "", 
+    password: "", 
+    error: ""
+  };
   }
 
   async handleUsernameUpdate(evt){
@@ -18,6 +22,7 @@ class Login extends React.Component {
 }
   async handlePasswordUpdate(evt){
     this.setState({password: evt.target.value});
+    
 }
 
   async handleSearch(evt){
@@ -36,7 +41,7 @@ class Login extends React.Component {
       console.log(loggedInUser.error)
     }
   }
-
+ 
   render() {
     const that = this;
     return (
@@ -74,7 +79,7 @@ class Login extends React.Component {
           />
         </div>
         <br />
-        {this.state.error ? //if button has been pressed
+        {this.state.error ? 
         <div> <h1 className={styles.error}> {this.state.error}</h1></div>
         : null }
         <br /><br />

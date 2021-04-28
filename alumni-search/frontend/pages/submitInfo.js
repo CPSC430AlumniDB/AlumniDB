@@ -4,14 +4,34 @@ import jsCookie from "js-cookie";
 import {getSubmission} from '../lib/utils.js';
 import { Header } from '../components/Header.js'
 import style from '../styles/submitinfo.module.css'
+import { useForm } from "react-hook-form";
+import e from "cors";
+
 //this page needs to be styled but is otherwise done
 class SubmitInfo extends React.Component {
   constructor(props) {
     super(props);
-
-    this.state = { firstname: "", middlename: "", lastname: "", occupation: "", email: "", emailUpdates: "",
-                personalUpdates: "", gradYear: '', major: ""};
+    
+    
+    this.state = { 
+      firstname: "", 
+      middlename: "", 
+      lastname: "", 
+      occupation: "", 
+      email: "", 
+      emailUpdates: false,
+      personalUpdates: "", 
+      gradYear: '',
+      major: "", 
+      errors: {
+        email: "",
+        firstname: ""
+      }
+      }
     }
+    
+     validEmailRegex = 
+  RegExp(/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i);
 
     async handleFirstNameUpdate(evt){
     this.setState({firstname: evt.target.value});
@@ -26,7 +46,10 @@ class SubmitInfo extends React.Component {
     this.setState({occupation: evt.target.value});
     }
     async handleEmailUpdate(evt){
-    this.setState({email: evt.target.value});
+      //convert "on" and "off" to "y" and "n"
+    console.log("button value:" + evt.target.checked)
+    this.setState({emailUpdates: (evt.target.checked) ? 'y': 'n'});
+    console.log("email answer state" + this.state.emailUpdates)
     }
     async handleEmailUpdatesUpdate(evt){
     this.setState({emailUpdates: evt.target.value});
@@ -55,7 +78,7 @@ class SubmitInfo extends React.Component {
             personalupdates: this.state.personalUpdates, 
             
         });
-    
+       
         if(results){
             this.setState({ results: results });
           } else {
@@ -63,10 +86,90 @@ class SubmitInfo extends React.Component {
               results: []    
             });
           } 
-          console.log(results);
-          Router.replace("/formConfirmation"); //replace with "thanks for submitting page"
+          console.log(results);//this message gets triggered no matter if the input is valid or not
+          
     }
-    
+
+    handleValidation(){
+      let email = this.state.email;
+      let firstname = this.state.firstname;
+      let lastname = this.state.lastname;
+      let gradYear = this.state.gradYear;
+      let errors = {};
+      let formIsValid = true;
+
+      //gradYear
+      if(!gradYear){
+        formIsValid = false;
+        errors.gradYear = "This is a require field";
+      }
+
+      //Lastname
+      if(!lastname){
+        formIsValid = false;
+        errors.lastname = "This is a require field";
+      }
+
+     if(lastname !== ""){
+        if(!lastname.match(/^[a-zA-Z]+$/)){
+           formIsValid = false;
+           errors.lastname = "Only letters are allowed for a last name";
+        }        
+      }
+
+
+      //Firstname
+      if(!firstname){
+        formIsValid = false;
+        errors.firstname = "This is a require field";
+      }
+
+     if(firstname !== ""){
+        if(!firstname.match(/^[a-zA-Z]+$/)){
+           formIsValid = false;
+           errors.firstname = "Only letters are allowed for a first name";
+        }        
+      }
+     
+ 
+      //Email
+      if(!email){
+         formIsValid = false;
+         errors.email = "This is a required field";
+      }
+
+      if(email !== ""){
+         let lastAtPos = email.lastIndexOf('@');
+         let lastDotPos = email.lastIndexOf('.');
+
+         if (!(lastAtPos < lastDotPos && lastAtPos > 0 && email.indexOf('@@') == -1 && lastDotPos > 2 && (email.length - lastDotPos) > 2)) {
+            formIsValid = false;
+            errors.email = "Email is not valid";
+          }
+      }  
+
+     this.setState({errors: errors});
+     console.log(errors);
+     return formIsValid;
+    }
+  
+    contactSubmit(evt){
+          evt.preventDefault();
+
+          if(this.handleValidation()){
+            alert("Form submitted");
+            Router.replace("/formConfirmation"); //replace with "thanks for submitting page"
+          }else{
+            alert("Form has errors.")
+          }
+
+    }
+
+    eventHandler(evt){
+      this.contactSubmit(evt);
+      this.handleSearch(evt);
+
+    }
 
 
     render() {
@@ -78,6 +181,8 @@ class SubmitInfo extends React.Component {
             </head>
             <Header/>
             <Layout>
+            <div className="panel panel-default">
+            </div>
             <div className={style.container}>
               <h2 className={style.heading}>Submit Your Information</h2>
               <br/>
@@ -86,12 +191,13 @@ class SubmitInfo extends React.Component {
                   First Name:{" "}
                 </label>
                 <input
-                  type="text"
+                  type="text" 
                   id="firstname"
                   className="input-style"
                   value={this.state.firstname}
                   onChange={this.handleFirstNameUpdate.bind(this)}
                 />
+                <span style={{color: "red"}}>{this.state.errors.firstname}</span>
               </div>
 
               <br />
@@ -100,7 +206,7 @@ class SubmitInfo extends React.Component {
                   Middle Name:{" "}
                 </label>
                 <input
-                  type="text"
+                  type="text" 
                   id="middlename"
                   className="input-style"
                   value={this.state.middlename}
@@ -114,12 +220,14 @@ class SubmitInfo extends React.Component {
                   Last Name:{" "}
                 </label>
                 <input
-                  type="text"
+                  type="text" 
                   id="lastname"
                   className="input-style"
                   value={this.state.lastname}
                   onChange={this.handleLastNameUpdate.bind(this)}
                 />
+                  <span style={{color: "red"}}>{this.state.errors.lastname}</span>
+
               </div>
 
               <br />
@@ -142,12 +250,13 @@ class SubmitInfo extends React.Component {
                   Email:{" "}
                 </label>
                 <input
-                  type="text"
+                  type="text" 
                   id="email"
                   className="input-style"
                   value={this.state.email}
                   onChange={this.handleEmailUpdate.bind(this)}      
                 />
+                <span style={{color: "red"}}>{this.state.errors.email}</span>
               </div>
 
               <br/>
@@ -170,12 +279,14 @@ class SubmitInfo extends React.Component {
                   Graduation Year:{" "}
                 </label>
                 <input
-                  type="number"
+                  type="number" 
                   id="gradYear"
                   className="input-style"
                   value={this.state.gradYear}
                   onChange={this.handleGradYearUpdate.bind(this)}
                 />
+                <span style={{color: "red"}}>{this.state.errors.gradYear}</span>
+
               </div>
 
               <br/>
@@ -184,7 +295,7 @@ class SubmitInfo extends React.Component {
                   Major:{" "}
                 </label>
                 <input
-                  type="text"
+                  type="text" 
                   id="major"
                   className="input-style"
                   value={this.state.major}
@@ -198,7 +309,7 @@ class SubmitInfo extends React.Component {
                   Email Updates:{" "}
                 </label>
                 <input
-                  type="checkbox"
+                  type="checkbox" 
                   id="emailUpdates"
                   className="input-style"
                   value={this.state.emailUpdates}
@@ -206,7 +317,7 @@ class SubmitInfo extends React.Component {
                 />
               </div>
               <br /><br /><br />
-              <div className={style.button} onClick={this.handleSearch.bind(that)}>Submit</div>
+              <div className={style.button} onClick={this.eventHandler.bind(that)}>Submit</div>
               <br /> <br />
               </div>
             </Layout>
