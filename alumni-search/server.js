@@ -284,7 +284,7 @@ app.post('/advancedSearch', async (req, res) => {
 
   let template = "SELECT * FROM alumni"; //starter template
   let filterCount = 0; //if there has already been a where clause
-  let filters = []; //array of variables to pass in to query
+  let filters = []; //array of vafriables to pass in to query
   let filterVars = ["$1","$2","$3"]; 
   try {
     //year defaults to 0 if no year filter is used

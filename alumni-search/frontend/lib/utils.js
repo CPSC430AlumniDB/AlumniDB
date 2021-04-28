@@ -110,6 +110,45 @@ function reject(user_info) {
   }); 
 }
 
+/*edit an alumni
+*/
+function edit(user_info) {
+  const header = {'Accept' : "application/json",
+                  "Content-Type": "application/x-www-form-urlencoded"};
+  const searchParams = new URLSearchParams(user_info);
+  return fetch(`http://localhost:8080/edit`, { method: "POST",
+  headers: header,
+  body: searchParams}).then(function (resp){
+    return resp.json();
+  }); 
+}
+
+/*feature an alumni
+*/
+function feature(user_info) {
+  const header = {'Accept' : "application/json",
+                  "Content-Type": "application/x-www-form-urlencoded"};
+  const searchParams = new URLSearchParams(user_info);
+  return fetch(`http://localhost:8080/feature`, { method: "POST",
+  headers: header,
+  body: searchParams}).then(function (resp){
+    return resp.json();
+  }); 
+}
+
+/*delete an alumni
+*/
+function deleteAlum(user_info) {
+  const header = {'Accept' : "application/json",
+                  "Content-Type": "application/x-www-form-urlencoded"};
+  const searchParams = new URLSearchParams(user_info);
+  return fetch(`http://localhost:8080/delete`, { method: "POST",
+  headers: header,
+  body: searchParams}).then(function (resp){
+    return resp.json();
+  }); 
+}
+
 function handleError(error) {
   console.warn(error);
   return null;
@@ -149,6 +188,16 @@ module.exports = {
   },
   listOccupations: function() {
     return listOccupations().catch(handleError);
+  },
+  edit: function(user_info) {
+    return edit(user_info).catch(handleError);
+  },
+  feature: function(user_info) {
+    return feature(user_info).catch(handleError);
+  },
+  deleteAlum: function(user_info) {
+    return deleteAlum(user_info).catch(handleError);
   }
+
 };
 
