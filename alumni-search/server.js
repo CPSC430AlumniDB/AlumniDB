@@ -274,6 +274,61 @@ app.get('/search', async (req, res) => {
   }
 }); 
 
+/*
+Search database with more advanced filters
+*/
+app.post('/advancedSearch', async (req, res) => {
+  let year = req.body.year; 
+  let occupation = req.body.occupation; 
+  let major = req.body.major; 
+
+  let template = "SELECT * FROM alumni"; //starter template
+  let filterCount = 0; //if there has already been a where clause
+  let filters = []; //array of variables to pass in to query
+  let filterVars = ["$1","$2","$3"]; 
+  try {
+    //year defaults to 0 if no year filter is used
+    if (year > 0) {
+      //concatanate this part of the search
+      template = template + " WHERE gradYear = " + filterVars[filterCount];
+      filters[filterCount] = year; //the first array element now contains year
+      filterCount++; //mark that $1 has now been used
+    }
+    //occupation and major default to - if no filter
+    if (occupation !== "-") {
+      if (filterCount == 0) { //if no year filter
+        template = template + " WHERE "; //add where
+      } else {
+        template = template + " AND " //gonna add another clause
+      }
+      //this part executed regardless
+      template = template + "occupation = " + filterVars[filterCount];
+      filters[filterCount] = occupation;
+      filterCount++;
+    }
+    if (major !== "-") {
+      if (filterCount == 0) { //if no filter
+        template = template + " WHERE "; //add where
+      } else {
+        template = template + " AND " //add another clause
+      }
+      //this part executed regardless
+      template = template + "major = " + filterVars[filterCount];
+      filters[filterCount] = major;
+      filterCount++;
+    }
+    console.log(template);
+    const dbresponse = await pool.query(template,filters);
+    const results = dbresponse.rows.map((row) => {return row});
+      res.json(
+        results
+      )
+  } catch (err){
+  console.log(err);
+  }
+}); 
+
+
 /*VERIFY THIS WORKS
 Approve form
 sends the form to the alumni DB
@@ -284,6 +339,7 @@ RETURNS
   success or failure message
 */
 app.post('/approve', async (req, res) => {
+  console.log(req.body.id)
   let id = parseInt(req.body.id);
   try {
     //see if the pending alum is a duplicate
@@ -446,6 +502,30 @@ app.post('/feature', async (req, res) => {
       console.log(err);
     }
 }); 
+
+/* 
+show alumni
+accepts no arguments
+returns the current featured alumni 
+ACCEPTS 
+  nothing
+RETURNS
+  alumnus information
+*/
+app.get('/showAlumni', async (req, res) => {
+  try {
+    let template = `select * from alumni`;
+    let results = await pool.query(template);
+    results = results.rows.map((row) => {return row});
+      res.json(
+        results
+      )
+    console.log(results);
+  } catch (err){
+  console.log(err);
+  }
+}); 
+
   
 
 /* 

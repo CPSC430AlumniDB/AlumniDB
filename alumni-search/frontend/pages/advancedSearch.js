@@ -5,6 +5,7 @@ import Dropdown from 'react-dropdown';
 import { Navigation } from '../components/Nav.js';
 import Router from "next/router";
 import styles from '../styles/Index.module.css'
+import {listMajors,lisOccupations,listYears,advSearch} from '../lib/utils.js';
 
 // export default function List(){
 // 	if(jsCookie.get("username") == null){return Index();}
@@ -25,7 +26,33 @@ class advancedSearch extends React.Component {
     
   }
 
-  
+    /* JP's notes for backend functions
+  Getting dropdown box fields:
+    listYears()
+    listOccupations()
+    listMajors()
+
+  advanced search query
+  advancedSearch() (in utils I put it as advSearch() so that it doesnt conflict with the class name of this page)
+    Takes three body parameters
+    -occupation (string) : if query is blank, put "-"
+    -major (string) : if query is blank, put "-"
+    -year (signed int) : if query is blank, put 0
+    example: User selects in "environmental science" from dropdown, and leaves the other fields blank
+      the body of the request would be:
+       occupation: "-"
+       year: 0
+       major: "environmental science"
+
+    the backend function will do a query for just the actual
+
+    Make sure default state is 
+      occupation: "-"
+       year: 0
+       major: "-"
+    this will ensure that when you first click advanced search, you see all the alumni, and then narrow it down
+
+  */
  
 
   render() {
