@@ -425,11 +425,19 @@ RETURNS
   success or failure message
 */
 app.post('/delete', async (req, res) => {
-  let id = parseInt(req.body.id);
+  let id = parseInt(req.body.id)
   try {
-    let template = "delete from alumni WHERE id = $1";
+    let template = "select id from featured"
+    let results = await pool.query(template);
+    //if alumni to delete is featured
+    if (results.rows[0].id == id) {
+      //remove them from featured
+      template = "DELETE FROM featured"
+      results = await pool.query(template);
+    }
+    template = "delete from alumni WHERE id = $1";
     const dbresponse = await pool.query(template,[id]);
-    const results = dbresponse.rows.map((row) => {return row});
+    results = dbresponse.rows.map((row) => {return row});
     res.json({ msg: "deleted" });
     } catch (err){
       console.log(err);
@@ -493,10 +501,13 @@ RETURNS
 deletes all pending forms
 */
 app.post('/feature', async (req, res) => {
+  console.log("Id = " + req.body.id)
   let id = parseInt(req.body.id);
   try {
-    let template = "INSERT INTO featured (id) VALUES ($1)";
-    let result = await pool.query(template,[id]);
+    let template = "DELETE FROM featured";
+    let result = await pool.query(template);
+    template = "INSERT INTO featured (id) VALUES ($1)";
+    result = await pool.query(template,[id]);
     res.json({ msg: "featured" });
     } catch (err){
       console.log(err);
@@ -541,9 +552,16 @@ app.get('/showFeatured', async (req, res) => {
   try {
     let template = `select id from featured`;
     let results = await pool.query(template);
-    let id = parseInt(results.rows[0].id)
-    template = `select * from alumni WHERE id = $1`;
-    results = await pool.query(template,[id]);
+    if (results.rowCount == 0) {
+      //if no featured alumni, feature first by default
+      template = `select * from alumni LIMIT 1`;
+      results = await pool.query(template);
+    } else { //if there is a featured alumni
+      let id = parseInt(results.rows[0].id)
+      template = `select * from alumni WHERE id = $1`;
+      results = await pool.query(template,[id]);
+    }
+    
     results = results.rows.map((row) => {return row});
       res.json(
         results
