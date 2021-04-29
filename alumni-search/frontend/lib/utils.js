@@ -136,6 +136,20 @@ function feature(user_info) {
   }); 
 }
 
+/*save alumni info, to be edited
+*/
+function save(user_info) {
+  const header = {'Accept' : "application/json",
+                  "Content-Type": "application/x-www-form-urlencoded"};
+  const searchParams = new URLSearchParams(user_info);
+  return fetch(`http://localhost:8080/save`, { method: "POST",
+  headers: header,
+  body: searchParams}).then(function (resp){
+    return resp.json();
+  }); 
+}
+
+
 /*delete an alumni
 */
 function deleteAlum(user_info) {
@@ -194,6 +208,9 @@ module.exports = {
   },
   feature: function(user_info) {
     return feature(user_info).catch(handleError);
+  },
+  save: function(user_info) {
+    return save(user_info).catch(handleError);
   },
   deleteAlum: function(user_info) {
     return deleteAlum(user_info).catch(handleError);

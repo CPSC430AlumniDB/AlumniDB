@@ -4,8 +4,6 @@ import jsCookie from "js-cookie";
 import {getSubmission} from '../lib/utils.js';
 import { Header } from '../components/Header.js'
 import style from '../styles/submitinfo.module.css'
-import { useForm } from "react-hook-form";
-import e from "cors";
 
 //this page needs to be styled but is otherwise done
 class SubmitInfo extends React.Component {
@@ -19,7 +17,7 @@ class SubmitInfo extends React.Component {
       lastname: "", 
       occupation: "", 
       email: "", 
-      emailUpdates: false,
+      emailUpdates: 'n', //unchecked
       personalUpdates: "", 
       gradYear: '',
       major: "", 
@@ -312,6 +310,7 @@ class SubmitInfo extends React.Component {
                   type="checkbox" 
                   id="emailUpdates"
                   className="input-style"
+                  checked='true'//{this.state.emailUpdates==='y'}
                   value={this.state.emailUpdates}
                   onChange={this.handleEmailUpdatesUpdate.bind(this)}
                 />

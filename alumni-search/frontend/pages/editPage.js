@@ -4,13 +4,28 @@ import style from "../styles/submitinfo.module.css";
 import { Header } from '../components/Header.js';
 import Router from "next/router";
 import {edit,feature,deleteAlum} from '../lib/utils.js';
+import axios from 'axios'; //for mounting component with query info
 
 class editPage extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { id : 6, firstname: "", middlename: "", lastname: "", occupation: "", email: "", emailUpdates: "",
-                personalUpdates: "", gradYear: '', major: ""};
+    this.state = { id : 0, firstname: "", middlename: "", lastname: "", occupation: "", email: "", emailUpdates: "y",
+                personalUpdates: "", gradYear: 0, major: ""};
+    }
+
+    componentDidMount() {
+      axios.get(`http://localhost:8080/showSaved`)
+        .then(res => {
+          const saved = res.data;
+          //set state to saved alumni
+          console.log(saved)
+          this.setState({id: saved[0].id, firstname: saved[0].firstname, middlename: saved[0].middlename, lastname: saved[0].lastname, 
+            occupation: saved[0].occupation, email: saved[0].email, emailUpdates: saved[0].emailupdates, personalUpdates: saved[0].personalupdates, 
+            gradYear: saved[0].gradyear, major: saved[0].major});
+
+        })
+
     }
     
     async handleFirstNameUpdate(evt){
@@ -43,19 +58,21 @@ class editPage extends React.Component {
       }
 
       async handleEdit(evt){
+
+        let info = {id: this.state.id,
+        firstname: this.state.firstname, 
+        middlename: this.state.middlename, 
+        lastname: this.state.lastname,
+        gradYear: this.state.gradYear, 
+        major: this.state.major, 
+        occupation: this.state.occupation, 
+        email: this.state.email, 
+        emailUpdates: this.state.emailUpdates,
+        personalUpdates: this.state.personalUpdates}
+
+        console.log(this.state)
     
-        const results = await edit({
-            id: this.state.id,
-            firstname: this.state.firstname, 
-            middlename: this.state.middlename, 
-            lastname: this.state.lastname,
-            gradyear: this.state.gradYear, 
-            major: this.state.major, 
-            occupation: this.state.occupation, 
-            email: this.state.email, 
-            emailupdates: this.state.emailUpdates,
-            personalupdates: this.state.personalUpdates,     
-        });
+        const results = await edit(info);
     
         if(results){
             this.setState({ results: results });
@@ -217,7 +234,7 @@ class editPage extends React.Component {
                   type="checkbox"
                   id="emailUpdates"
                   className="input-style"
-                  value={this.state.emailUpdates}
+                  checked = {this.state.emailUpdates==='y' ? 'true': 'false'}
                   onChange={this.handleEmailUpdatesUpdate.bind(this)}
                 />
               </div>
