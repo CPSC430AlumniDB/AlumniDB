@@ -284,7 +284,7 @@ app.post('/advancedSearch', async (req, res) => {
 
   let template = "SELECT * FROM alumni"; //starter template
   let filterCount = 0; //if there has already been a where clause
-  let filters = []; //array of vafriables to pass in to query
+  let filters = []; //array of variables to pass in to query
   let filterVars = ["$1","$2","$3"]; 
   try {
     //year defaults to 0 if no year filter is used
@@ -571,6 +571,47 @@ app.get('/showFeatured', async (req, res) => {
   console.log(err);
   }
 }); 
+
+/* 
+show saved state
+This is used by the edit page to remember which alumni is being edited between pages
+*/
+app.get('/showSaved', async (req, res) => {
+  try {
+    //first get the id
+    let template = `select id from editing`;
+    let results = await pool.query(template);
+    //then fine the alumni information
+    let id = parseInt(results.rows[0].id)
+    template = `select * from alumni WHERE id = $1`;
+    results = await pool.query(template,[id]);
+    //return it
+    results = results.rows.map((row) => {return row});
+      res.json(results)
+  } catch (err){
+  console.log(err);
+  }
+}); 
+
+/* 
+This function takes an id, and saves that id between page loads
+this will be used excluviely by the editing page
+*/
+app.post('/save', async (req, res) => {
+  console.log("Id = " + req.body.id)
+  let id = parseInt(req.body.id);
+  try {
+    let template = "DELETE FROM editing";
+    let result = await pool.query(template);
+    template = "INSERT INTO editing (id) VALUES ($1)";
+    result = await pool.query(template,[id]);
+    res.json({ msg: "saved" });
+    } catch (err){
+      console.log(err);
+    }
+}); 
+
+
 
 
 var pool = new Pool(config);

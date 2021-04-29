@@ -42,6 +42,11 @@ CREATE TABLE featured
     id int references alumni(id)
 );
 
+CREATE TABLE editing
+(
+    id int references alumni(id)
+);
+
 CREATE TABLE duplicates
 (
     pendingId int references pending(id),
