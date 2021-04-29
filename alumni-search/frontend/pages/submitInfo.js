@@ -310,7 +310,6 @@ class SubmitInfo extends React.Component {
                   type="checkbox" 
                   id="emailUpdates"
                   className="input-style"
-                  checked='true'//{this.state.emailUpdates==='y'}
                   value={this.state.emailUpdates}
                   onChange={this.handleEmailUpdatesUpdate.bind(this)}
                 />
