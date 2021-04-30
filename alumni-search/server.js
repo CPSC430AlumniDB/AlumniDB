@@ -427,8 +427,11 @@ RETURNS
 app.post('/delete', async (req, res) => {
   let id = parseInt(req.body.id)
   try {
-    let template = "select id from featured"
-    let results = await pool.query(template);
+    //remove it from being edited
+    let template = "DELETE FROM editing";
+    let result = await pool.query(template);
+    template = "select id from featured"
+    results = await pool.query(template);
     //if alumni to delete is featured
     if (results.rows[0].id == id) {
       //remove them from featured
@@ -465,9 +468,9 @@ RETURNS
 app.post("/edit", async (req, res) => {
   //console.log(req.body)
   const id = parseInt(req.body.id);
-  const firstName = req.body.firstName;
-  const middleName = req.body.middleName;
-  const lastName = req.body.lastName;
+  const firstName = req.body.firstname;
+  const middleName = req.body.middlename;
+  const lastName = req.body.lastname;
   const occupation = req.body.occupation;
   const email = req.body.email;
   const emailUpdates = req.body.emailUpdates; //todo check this
