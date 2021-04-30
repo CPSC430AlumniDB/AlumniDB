@@ -6,10 +6,11 @@ import Router from "next/router";
 import {edit,feature,deleteAlum} from '../lib/utils.js';
 import axios from 'axios'; //for mounting component with query info
 
+
 class editPage extends React.Component {
   constructor(props) {
     super(props);
-
+    this.deleteConfirmed = false; //set to true if user confirms they want to delete
     this.state = { id : 0, firstname: "", middlename: "", lastname: "", occupation: "", email: "", emailUpdates: "y",
                 personalUpdates: "", gradYear: 0, major: ""};
     }
@@ -82,19 +83,22 @@ class editPage extends React.Component {
             });
           } 
           console.log(results);
-          Router.replace("/advancedSearch"); //go back to search
+          alert("Alumnus Information Saved")
     }
 
     async handleFeature(evt) {
-        console.log("id=" +this.state.id)
         const results = await feature({id : this.state.id});
+        alert("Alumnus Featured")
         console.log(results);
     }
 
     async handleDelete(evt) {
-      const results = await deleteAlum({id : this.state.id});
-      console.log(results);
-      Router.replace("/advancedSearch"); //go back to search
+      let results;
+      if (confirm('Are you sure you want to delete this alumnus?')) {
+        results = await deleteAlum({id : this.state.id});
+        console.log(results);
+        Router.replace("/advancedSearch"); //go back to search
+      }
     }
 
     async handleBack(evt) {
@@ -109,7 +113,6 @@ class editPage extends React.Component {
         <title>ESAMS | Email</title>
       </head>
 
-      <Header/>
       <Layout>
       <div className={style.container}>
       <h2 className={style.heading}>Edit Information</h2>
