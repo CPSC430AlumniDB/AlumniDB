@@ -258,9 +258,9 @@ app.get('/search', async (req, res) => {
 
   try {
     if (Number.isInteger(parseInt(searchTerm.searchTerm))) {
-      template = "select firstname, middlename, lastname, gradyear, major, occupation, email, emailupdates from alumni where gradyear = '"+searchTerm.searchTerm+"'";
+      template = "select * from alumni where gradyear = '"+searchTerm.searchTerm+"'";
     } else {
-      template = "select firstname, middlename, lastname, gradyear, major, occupation, email, emailupdates from alumni where firstName ilike '"+searchTerm.searchTerm+"' OR middleName ilike '"+searchTerm.searchTerm+"' OR lastName ilike '"+searchTerm.searchTerm+"' OR occupation ilike '"+searchTerm.searchTerm+"' OR major ilike '"+searchTerm.searchTerm+"'";
+      template = "select * from alumni where firstName ilike '"+searchTerm.searchTerm+"' OR middleName ilike '"+searchTerm.searchTerm+"' OR lastName ilike '"+searchTerm.searchTerm+"' OR occupation ilike '"+searchTerm.searchTerm+"' OR major ilike '"+searchTerm.searchTerm+"'";
     }
     console.log(searchTerm.searchTerm);
     const dbresponse = await pool.query(template);
