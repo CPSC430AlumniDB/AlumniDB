@@ -1,6 +1,6 @@
 import Layout from "../components/MyLayout.js";
 import jsCookie from "js-cookie";
-import { getLoggedInfo } from "../lib/utils";
+import { getLoggedInfo,saveForEdit } from "../lib/utils";
 import { Navigation } from '../components/Nav.js';
 import Router from "next/router";
 import styles from '../styles/search.module.css'
@@ -38,6 +38,12 @@ class Home extends React.Component {
     this.handleUpdate(evt);
     this.handleSearch(evt);
 
+  }
+
+  async handleEdit(item) {
+    console.log(item)
+    await saveForEdit({id : item.id})
+    Router.replace('/editPage')
   }
 
  
@@ -97,6 +103,7 @@ class Home extends React.Component {
                                 <td className={styles.thing}>{item.occupation}</td>
                                 <td className={styles.thing}>{item.email}</td>
                                 <td className={styles.thing}>{item.emailupdates}</td>
+                                <td className={styles.button} onClick={() => that.handleEdit(item)}>Edit</td>
 
 
 

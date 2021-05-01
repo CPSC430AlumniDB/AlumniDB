@@ -209,7 +209,7 @@ module.exports = {
   feature: function(user_info) {
     return feature(user_info).catch(handleError);
   },
-  save: function(user_info) {
+  saveForEdit: function(user_info) {
     return save(user_info).catch(handleError);
   },
   deleteAlum: function(user_info) {
