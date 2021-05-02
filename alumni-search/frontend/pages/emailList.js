@@ -49,50 +49,50 @@ class EmailList extends React.Component {
  
 
   render() {
-    //if(jsCookie.get("username") == null){ return Index();}
-    
-		return (
-    <>
-      <head>
-        <title>ESAMS | Email</title>
-      </head>
+    if (jsCookie.get("username")) {
+      return (
+      <>
+        <head>
+          <title>ESAMS | Email</title>
+        </head>
 
-      <Navigation/>
-		  
-      <Layout>
-        <div className={emailstyles.containers}>
-            <div className={emailstyles.headings}>
-              <h2>Alumni Email List</h2>
-            </div>
+        <Navigation/>
+        
+        <Layout>
+          <div className={emailstyles.containers}>
+              <div className={emailstyles.headings}>
+                <h2>Alumni Email List</h2>
+              </div>
 
-    			<br></br>
-    			<br></br>
-    			{this.state.emails.length > 0 ? (
-          <table className={emailstyles.entry}>
-    				<tr>
-    					<th className={emailstyles.things}>First Name</th>
-    					<th className={emailstyles.things}>Last Name</th>
-    					<th className={emailstyles.things}>Email</th>
-    				</tr>
-            <tbody>{this.state.emails.map(function(item, key) {
-    					
-    					return (
-    						
-    					
-    						<tr key = {key}>			
-    						  <td className={emailstyles.things}>{item.firstname}</td>
-                  <td className={emailstyles.things}>{item.lastname}</td>
-                  <td className={emailstyles.things}>{item.email}</td>					  
-    						</tr>
-    					)
-    					
-    					})}</tbody>
-    			</table>
-    			) : null}
-        </div>
-      </Layout>
-    </>
-    );
+            <br></br>
+            <br></br>
+            {this.state.emails.length > 0 ? (
+            <table className={emailstyles.entry}>
+              <tr>
+                <th className={emailstyles.things}>First Name</th>
+                <th className={emailstyles.things}>Last Name</th>
+                <th className={emailstyles.things}>Email</th>
+              </tr>
+              <tbody>{this.state.emails.map(function(item, key) {
+                
+                return (
+                  
+                
+                  <tr key = {key}>			
+                    <td className={emailstyles.things}>{item.firstname}</td>
+                    <td className={emailstyles.things}>{item.lastname}</td>
+                    <td className={emailstyles.things}>{item.email}</td>					  
+                  </tr>
+                )
+                
+                })}</tbody>
+            </table>
+            ) : null}
+          </div>
+        </Layout>
+      </>
+      );
+    } else {return null;}
   }
 }
 

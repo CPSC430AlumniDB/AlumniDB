@@ -110,154 +110,156 @@ class editPage extends React.Component {
     }
 
   render() {
-    let that = this;
-		return (
-    <>
-      <head>
-        <title>ESAMS | Email</title>
-      </head>
+    if (jsCookie.get("username")) {
+      let that = this;
+      return (
+      <>
+        <head>
+          <title>ESAMS | Email</title>
+        </head>
 
-      <Layout>
-      <div className={style.container}>
-      <h2 className={style.heading}>Edit Information</h2>
-      <br/>
-      <div className={style.whole}>
-                <label htmlFor="firstname" className="text-style">
-                  First Name:{" "}
-                </label>
-                <input
-                  type="text"
-                  id="firstname"
-                  className="input-style"
-                  value={this.state.firstname}
-                  onChange={this.handleFirstNameUpdate.bind(this)}
-                />
-              </div>
+        <Layout>
+        <div className={style.container}>
+        <h2 className={style.heading}>Edit Information</h2>
+        <br/>
+        <div className={style.whole}>
+                  <label htmlFor="firstname" className="text-style">
+                    First Name:{" "}
+                  </label>
+                  <input
+                    type="text"
+                    id="firstname"
+                    className="input-style"
+                    value={this.state.firstname}
+                    onChange={this.handleFirstNameUpdate.bind(this)}
+                  />
+                </div>
 
-              <br />
-              <div className={style.whole}>
-                <label htmlFor="middlename" className="text-style">
-                  Middle Name:{" "}
-                </label>
-                <input
-                  type="text"
-                  id="middlename"
-                  className="input-style"
-                  value={this.state.middlename}
-                  onChange={this.handleMiddleNameUpdate.bind(this)}
-                />
-              </div>
+                <br />
+                <div className={style.whole}>
+                  <label htmlFor="middlename" className="text-style">
+                    Middle Name:{" "}
+                  </label>
+                  <input
+                    type="text"
+                    id="middlename"
+                    className="input-style"
+                    value={this.state.middlename}
+                    onChange={this.handleMiddleNameUpdate.bind(this)}
+                  />
+                </div>
 
-              <br/>
-              <div className={style.whole}>
-                <label htmlFor="lastname" className="text-style">
-                  Last Name:{" "}
-                </label>
-                <input
-                  type="text"
-                  id="lastname"
-                  className="input-style"
-                  value={this.state.lastname}
-                  onChange={this.handleLastNameUpdate.bind(this)}
-                />
-              </div>
+                <br/>
+                <div className={style.whole}>
+                  <label htmlFor="lastname" className="text-style">
+                    Last Name:{" "}
+                  </label>
+                  <input
+                    type="text"
+                    id="lastname"
+                    className="input-style"
+                    value={this.state.lastname}
+                    onChange={this.handleLastNameUpdate.bind(this)}
+                  />
+                </div>
 
-              <br />
-              <div className={style.whole}>
-                <label htmlFor="occupation" className="text-style">
-                  Occupation:{" "}
-                </label>
-                <input
-                  type="text"
-                  id="occupation"
-                  className="input-style"
-                  value={this.state.occupation}
-                  onChange={this.handleOccupationUpdate.bind(this)}
-                />
-              </div>
+                <br />
+                <div className={style.whole}>
+                  <label htmlFor="occupation" className="text-style">
+                    Occupation:{" "}
+                  </label>
+                  <input
+                    type="text"
+                    id="occupation"
+                    className="input-style"
+                    value={this.state.occupation}
+                    onChange={this.handleOccupationUpdate.bind(this)}
+                  />
+                </div>
 
-              <br/>
-              <div className={style.whole}>
-                <label htmlFor="email" className="text-style">
-                  Email:{" "}
-                </label>
-                <input
-                  type="text"
-                  id="email"
-                  className="input-style"
-                  value={this.state.email}
-                  onChange={this.handleEmailUpdate.bind(this)}      
-                />
-              </div>
+                <br/>
+                <div className={style.whole}>
+                  <label htmlFor="email" className="text-style">
+                    Email:{" "}
+                  </label>
+                  <input
+                    type="text"
+                    id="email"
+                    className="input-style"
+                    value={this.state.email}
+                    onChange={this.handleEmailUpdate.bind(this)}      
+                  />
+                </div>
 
-              <br/>
-              <div className={style.whole}>
-                <label htmlFor="personalUpdates" className="text-style">
-                  Personal Updates:{" "}
-                </label>
-                <input
-                  type="text"
-                  id="personalUpdates"
-                  className="input-style"
-                  value={this.state.personalUpdates}
-                  onChange={this.handlePersonalUpdatesUpdate.bind(this)}
-                />
-              </div>
+                <br/>
+                <div className={style.whole}>
+                  <label htmlFor="personalUpdates" className="text-style">
+                    Personal Updates:{" "}
+                  </label>
+                  <input
+                    type="text"
+                    id="personalUpdates"
+                    className="input-style"
+                    value={this.state.personalUpdates}
+                    onChange={this.handlePersonalUpdatesUpdate.bind(this)}
+                  />
+                </div>
 
-              <br /> 
-              <div className={style.whole}>
-                <label htmlFor="gradYear" className="text-style">
-                  Graduation Year:{" "}
-                </label>
-                <input
-                  type="number"
-                  id="gradYear"
-                  className="input-style"
-                  value={this.state.gradYear}
-                  onChange={this.handleGradYearUpdate.bind(this)}
-                />
-              </div>
+                <br /> 
+                <div className={style.whole}>
+                  <label htmlFor="gradYear" className="text-style">
+                    Graduation Year:{" "}
+                  </label>
+                  <input
+                    type="number"
+                    id="gradYear"
+                    className="input-style"
+                    value={this.state.gradYear}
+                    onChange={this.handleGradYearUpdate.bind(this)}
+                  />
+                </div>
 
-              <br/>
-              <div className={style.whole}>
-                <label htmlFor="major" className="text-style">
-                  Major:{" "}
-                </label>
-                <input
-                  type="text"
-                  id="major"
-                  className="input-style"
-                  value={this.state.major}
-                  onChange={this.handleMajorUpdate.bind(this)}
-                />
-              </div>
+                <br/>
+                <div className={style.whole}>
+                  <label htmlFor="major" className="text-style">
+                    Major:{" "}
+                  </label>
+                  <input
+                    type="text"
+                    id="major"
+                    className="input-style"
+                    value={this.state.major}
+                    onChange={this.handleMajorUpdate.bind(this)}
+                  />
+                </div>
 
-              <br /> 
-              <div className={style.whole}>
-                <label htmlFor="emailUpdates" className="text-style">
-                  Email Updates:{" "}
-                </label>
-                <input
-                  type="checkbox"
-                  id="emailUpdates"
-                  className="input-style"
-                  checked = {this.state.emailUpdates==='y' ? 'true': 'false'}
-                  onChange={this.handleEmailUpdatesUpdate.bind(this)}
-                />
-              </div>
-              <br/>
-              <div className={style.button} onClick={this.handleEdit.bind(that)} >Save</div>
-              <br/>
-              <div className={style.button} onClick={this.handleFeature.bind(that)}  >Feature</div>
-              <br/>
-              <div className={style.button} onClick={this.handleDelete.bind(that)} >Delete</div>
-              <br/>
-              <div className={style.button } onClick={this.handleBack.bind(that)} >Back</div>
-              <br/><br/>
-      </div>
-      </Layout>
-    </>
-    );
+                <br /> 
+                <div className={style.whole}>
+                  <label htmlFor="emailUpdates" className="text-style">
+                    Email Updates:{" "}
+                  </label>
+                  <input
+                    type="checkbox"
+                    id="emailUpdates"
+                    className="input-style"
+                    checked = {this.state.emailUpdates==='y' ? 'true': 'false'}
+                    onChange={this.handleEmailUpdatesUpdate.bind(this)}
+                  />
+                </div>
+                <br/>
+                <div className={style.button} onClick={this.handleEdit.bind(that)} >Save</div>
+                <br/>
+                <div className={style.button} onClick={this.handleFeature.bind(that)}  >Feature</div>
+                <br/>
+                <div className={style.button} onClick={this.handleDelete.bind(that)} >Delete</div>
+                <br/>
+                <div className={style.button } onClick={this.handleBack.bind(that)} >Back</div>
+                <br/><br/>
+        </div>
+        </Layout>
+      </>
+      );
+    } else {return null;}
   }
 }
 

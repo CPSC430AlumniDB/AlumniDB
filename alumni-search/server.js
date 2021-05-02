@@ -291,6 +291,26 @@ app.get('/search', async (req, res) => {
 }); 
 
 /*
+get matching name
+*/
+app.get('/findMatch', async (req, res) => {
+  let firstName = req.query.firstName; //the searchterm entered by the user
+  let lastName = req.query.lastName; //the username of the user, this is used with jscookie
+  let template, response;
+  try {
+    template = "select * from alumni where firstname = $1 AND lastname = $2";
+    response = await pool.query(template, [firstName,lastName]);
+    let results = response.rows.map((row) => {return row});
+      res.json(
+        results
+      )
+  } catch (err){
+  console.log(err);
+  }
+}); 
+
+
+/*
 Search database with more advanced filters
 */
 app.get('/advancedSearch', async (req, res) => {

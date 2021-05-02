@@ -93,54 +93,57 @@ eventHandler(evt){
 
 
   render() {
-    
-    const that = this;
-    return (
-      <>
-        <head>
-          <title>ESAMS | Register</title>
-        </head>
-        <Navigation/>
-        <Layout>
-          <div className={styles.container}>
-          <h2 className={styles.h2}>Register for an Account</h2>
+    if (jsCookie.get("username")) {
+      const that = this;
+      return (
+        <>
+          <head>
+            <title>ESAMS | Register</title>
+          </head>
+          <Navigation/>
+          <Layout>
+            <div className={styles.container}>
+            <h2 className={styles.h2}>Register for an Account</h2>
 
-          <div className={styles.whole}>
-          <label htmlFor="username" className="text-style">
-            Username:{" "}
-          </label>
-          <input
-            type="text"
-            id="username"
-            className="input-style"
-            value={this.state.username}
-            onChange={this.handleUsernameUpdate.bind(this)}
-          />
-          <span style={{color: "red"}}>{this.state.errors.username}</span>
-          </div>
-          <br /> <br />
+            <div className={styles.whole}>
+            <label htmlFor="username" className="text-style">
+              Username:{" "}
+            </label>
+            <input
+              type="text"
+              id="username"
+              className="input-style"
+              value={this.state.username}
+              onChange={this.handleUsernameUpdate.bind(this)}
+            />
+            <span style={{color: "red"}}>{this.state.errors.username}</span>
+            </div>
+            <br /> <br />
 
-          <div className={styles.whole}>
-          <label htmlFor="password" className="text-style">
-            Password:{" "}
-          </label>
-          <input
-            type="password"
-            id="password"
-            className="input-style"
-            value={this.state.password}
-            onChange={this.handlePasswordUpdate.bind(this)}
-          />
-          <span style={{color: "red"}}>{this.state.errors.password}</span>
-          </div>
-          <br /> <br /><br />
-          <div className={styles.button} onClick={this.eventHandler.bind(this)}>Submit</div>
-          <br /> <br />
-          </div>
-        </Layout>
-    </>
-    );
-  }
+            <div className={styles.whole}>
+            <label htmlFor="password" className="text-style">
+              Password:{" "}
+            </label>
+            <input
+              type="password"
+              id="password"
+              className="input-style"
+              value={this.state.password}
+              onChange={this.handlePasswordUpdate.bind(this)}
+            />
+            <span style={{color: "red"}}>{this.state.errors.password}</span>
+            </div>
+            <br /> <br /><br />
+            <div className={styles.button} onClick={this.eventHandler.bind(this)}>Submit</div>
+            <br /> <br />
+            </div>
+          </Layout>
+      </>
+      );
+    } else {
+      return null
+    }
+  } 
 }
 
 export default Login;
