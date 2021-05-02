@@ -85,7 +85,7 @@ function approve(user_info) {
 
 /*advanced search
 use filters to browse list
-*/
+
 function advancedSearch(user_info) {
   const header = {'Accept' : "application/json",
                   "Content-Type": "application/x-www-form-urlencoded"};
@@ -95,6 +95,12 @@ function advancedSearch(user_info) {
   body: searchParams}).then(function (resp){
     return resp.json();
   }); 
+}*/
+
+function advancedSearch(year,major,occupation){
+  return fetch(`http://localhost:8080/advancedSearch?year=${year}&major=${major}&occupation=${occupation}`).then(function(resp){
+      return resp.json();
+    })
 }
 
 /*reject an alumni

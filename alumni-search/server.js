@@ -7,6 +7,10 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const { json } = require("express");
 
+//default admin credentials
+const DEFAULT_USR = 'admin';
+const DEFAULT_PASS = 'pass';
+
 const app = express();
 
 app.set("port", 8080);
@@ -87,8 +91,20 @@ app.post("/login", async (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
   try {
-    const query = "SELECT username,password FROM admin WHERE username = $1";
-    const result = await pool.query(query, [username]);
+    //first check if admin account exists
+    let query = "SELECT username FROM admin";
+    let result = await pool.query(query);
+    //if no admin account created
+    if (result.rowCount < 1) {
+      //has default password
+      hash = await argon2.hash(DEFAULT_PASS);
+      //inset default admin account into db
+      query = "INSERT INTO admin (username, password) VALUES ($1, $2)";
+      result = await pool.query(query, [DEFAULT_USR, hash]);
+    }
+    //now move on to regular login
+    query = "SELECT username,password FROM admin WHERE username = $1";
+    result = await pool.query(query, [username]);
     console.log(result);
     if (result.rowCount == 1) {
       console.log(result.rows[0].password);
@@ -277,10 +293,10 @@ app.get('/search', async (req, res) => {
 /*
 Search database with more advanced filters
 */
-app.post('/advancedSearch', async (req, res) => {
-  let year = req.body.year; 
-  let occupation = req.body.occupation; 
-  let major = req.body.major; 
+app.get('/advancedSearch', async (req, res) => {
+  let year = req.query.year; 
+  let occupation = req.query.occupation; 
+  let major = req.query.major; 
 
   let template = "SELECT * FROM alumni"; //starter template
   let filterCount = 0; //if there has already been a where clause
