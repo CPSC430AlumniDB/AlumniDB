@@ -127,7 +127,7 @@ class Home extends React.Component {
           </Layout>
         </>
       );
-      } else {return null}
+    } else {return null}
   }
 }
 

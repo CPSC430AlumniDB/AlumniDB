@@ -32,17 +32,28 @@ class pending extends React.Component {
     
   }
 
+  getPendingList() {
+    axios.get(`http://localhost:8080/getPending`)
+	  .then(res => {
+		const pendingAlumni = res.data;
+		this.setState({ pendingAlumni: pendingAlumni });
+	  }) 
+    /*
+    for (let alum in this.state.pendingAlumni) {
+      axios.get(`http://localhost:8080/findMatch`)
+	    .then(res => {
+		  alum.match = res.data[0]
+      console.log(res.data[0])
+	  }) */
+
+  }
+
   componentDidMount() {
      //if not logged in
      if (!jsCookie.get("username") ) {
       Router.replace("/");
     }
-	  axios.get(`http://localhost:8080/getPending`)
-	  .then(res => {
-		const pendingAlumni = res.data;
-		this.setState({ pendingAlumni: pendingAlumni });
-
-	  })
+	  this.getPendingList(); //fill list
 
   }
 
@@ -58,7 +69,7 @@ class pending extends React.Component {
       id: item.id //pass in id
     });
     //location.reload(); //refresh
-    location.reload() //refresh sort of (maybe figure out a better way to do this?)
+    this.getPendingList(); //refresh
   }
 
     //Handle accept
@@ -72,7 +83,7 @@ class pending extends React.Component {
     let response = await reject({
       id: item.id //pass in id
     });
-    location.reload(); //refresh
+    this.getPendingList(); //refresh
   }
   
 

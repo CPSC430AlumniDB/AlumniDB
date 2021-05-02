@@ -155,6 +155,7 @@ class SubmitInfo extends React.Component {
           evt.preventDefault();
 
           if(this.handleValidation()){
+            this.handleSearch(evt);
             alert("Form submitted");
             Router.replace("/formConfirmation"); //replace with "thanks for submitting page"
           }else{
@@ -165,8 +166,6 @@ class SubmitInfo extends React.Component {
 
     eventHandler(evt){
       this.contactSubmit(evt);
-      this.handleSearch(evt);
-
     }
 
 
