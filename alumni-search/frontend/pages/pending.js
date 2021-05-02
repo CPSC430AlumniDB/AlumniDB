@@ -33,7 +33,11 @@ class pending extends React.Component {
   }
 
   componentDidMount() {
-	axios.get(`http://localhost:8080/getPending`)
+     //if not logged in
+     if (!jsCookie.get("username") ) {
+      Router.replace("/");
+    }
+	  axios.get(`http://localhost:8080/getPending`)
 	  .then(res => {
 		const pendingAlumni = res.data;
 		this.setState({ pendingAlumni: pendingAlumni });

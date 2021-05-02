@@ -66,6 +66,3 @@ VALUES
     ('Ashley', 'Katherine', 'Greene', 2019, 'CPSC', 'BP', 'akg@gmail.com', 'y');
 
 INSERT INTO admin
-    (username,password)
-VALUES
-    ('admin', 'password');

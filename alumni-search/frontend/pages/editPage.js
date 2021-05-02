@@ -16,6 +16,10 @@ class editPage extends React.Component {
     }
 
     componentDidMount() {
+      //if not logged in
+      if (!jsCookie.get("username") ) {
+        Router.replace("/");
+      }
       axios.get(`http://localhost:8080/showSaved`)
         .then(res => {
           const saved = res.data;

@@ -14,8 +14,16 @@ class Home extends React.Component {
       search: '',
       results: []
     };
-    
   }
+
+  //on load
+  componentDidMount() {
+    //if not logged in
+    if (!jsCookie.get("username") ) {
+      Router.replace("/");
+    }
+   }
+ 
 
   handleUpdate(evt) {
     this.setState({ search: evt.target.value }, this.handleSearch);    

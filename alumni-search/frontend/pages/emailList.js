@@ -3,7 +3,7 @@ import Layout from "../components/MyLayout.js";
 import emailstyles from '../styles/email.module.css';
 import axios from 'axios';
 import { Navigation } from '../components/Nav.js';
-
+import Router from "next/router";
 
 const indexLink = {
   display: "inline",
@@ -31,7 +31,11 @@ class EmailList extends React.Component {
   }
 
   componentDidMount() {
-	axios.get(`http://localhost:8080/getEmailList`)
+     //if not logged in
+     if (!jsCookie.get("username") ) {
+      Router.replace("/");
+    }
+	  axios.get(`http://localhost:8080/getEmailList`)
 	  .then(res => {
 		const emails = res.data;
 		this.setState({ emails: emails });

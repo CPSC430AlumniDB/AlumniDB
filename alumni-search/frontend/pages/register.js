@@ -1,4 +1,5 @@
 import Layout from "../components/MyLayout.js";
+import axios from 'axios';
 import Router from "next/router";
 import jsCookie from "js-cookie";
 import {createAccount} from '../lib/utils.js';
@@ -14,9 +15,18 @@ class Login extends React.Component {
     password: "",
     errors: {
       username: "",
-      password: ""
+      password: "" 
     }
   };
+
+  }
+
+  //on load
+  componentDidMount() {
+     //if not logged in
+    if (!jsCookie.get("username") ) {
+      Router.replace("/");
+    }
   }
 
   async handleUsernameUpdate(evt){
@@ -68,7 +78,7 @@ contactSubmit(evt){
 
       if(this.handleValidation()){
         alert("Form submitted");
-        Router.replace("/formConfirmation"); //replace with "thanks for submitting page"
+        Router.replace("/accountConfirmation"); //replace with "thanks for submitting page"
       }else{
         alert("Form has errors.")
       }
@@ -83,6 +93,7 @@ eventHandler(evt){
 
 
   render() {
+    
     const that = this;
     return (
       <>
