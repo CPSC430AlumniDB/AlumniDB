@@ -399,7 +399,7 @@ app.get('/advancedSearch', async (req, res) => {
       filters[filterCount] = major;
       filterCount++;
     }
-    template = template + "ORDER BY lastname, firstname"
+    template = template + " ORDER BY lastname, firstname"
     console.log(template);
     const dbresponse = await pool.query(template,filters);
     const results = dbresponse.rows.map((row) => {return row});
