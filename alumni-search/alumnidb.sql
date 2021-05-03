@@ -42,6 +42,11 @@ CREATE TABLE featured
     id int references alumni(id)
 );
 
+CREATE TABLE editing
+(
+    id int references alumni(id)
+);
+
 CREATE TABLE duplicates
 (
     pendingId int references pending(id),
@@ -61,6 +66,3 @@ VALUES
     ('Ashley', 'Katherine', 'Greene', 2019, 'CPSC', 'BP', 'akg@gmail.com', 'y');
 
 INSERT INTO admin
-    (username,password)
-VALUES
-    ('admin', 'password');

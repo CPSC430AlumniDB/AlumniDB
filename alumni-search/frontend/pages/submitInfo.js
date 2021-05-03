@@ -4,7 +4,10 @@ import jsCookie from "js-cookie";
 import {getSubmission} from '../lib/utils.js';
 import { Header } from '../components/Header.js'
 import style from '../styles/submitinfo.module.css'
+<<<<<<< HEAD
 import e from "cors";
+=======
+>>>>>>> 2b7b506f9f3be920966c7fd11036ce4ca0c1275b
 
 //this page needs to be styled but is otherwise done
 class SubmitInfo extends React.Component {
@@ -18,7 +21,7 @@ class SubmitInfo extends React.Component {
       lastname: "", 
       occupation: "", 
       email: "", 
-      emailUpdates: false,
+      emailUpdates: 'n', //unchecked
       personalUpdates: "", 
       gradYear: '',
       major: "", 
@@ -156,6 +159,7 @@ class SubmitInfo extends React.Component {
           evt.preventDefault();
 
           if(this.handleValidation()){
+            this.handleSearch(evt);
             alert("Form submitted");
             Router.replace("/formConfirmation"); //replace with "thanks for submitting page"
           }else{
@@ -166,8 +170,6 @@ class SubmitInfo extends React.Component {
 
     eventHandler(evt){
       this.contactSubmit(evt);
-      this.handleSearch(evt);
-
     }
 
 

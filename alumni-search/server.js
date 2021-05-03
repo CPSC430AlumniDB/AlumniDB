@@ -7,6 +7,10 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const { json } = require("express");
 
+//default admin credentials
+const DEFAULT_USR = 'admin';
+const DEFAULT_PASS = 'pass';
+
 const app = express();
 
 app.set("port", 8080);
@@ -87,8 +91,20 @@ app.post("/login", async (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
   try {
-    const query = "SELECT username,password FROM admin WHERE username = $1";
-    const result = await pool.query(query, [username]);
+    //first check if admin account exists
+    let query = "SELECT username FROM admin";
+    let result = await pool.query(query);
+    //if no admin account created
+    if (result.rowCount < 1) {
+      //has default password
+      hash = await argon2.hash(DEFAULT_PASS);
+      //inset default admin account into db
+      query = "INSERT INTO admin (username, password) VALUES ($1, $2)";
+      result = await pool.query(query, [DEFAULT_USR, hash]);
+    }
+    //now move on to regular login
+    query = "SELECT username,password FROM admin WHERE username = $1";
+    result = await pool.query(query, [username]);
     console.log(result);
     if (result.rowCount == 1) {
       console.log(result.rows[0].password);
@@ -258,9 +274,9 @@ app.get('/search', async (req, res) => {
 
   try {
     if (Number.isInteger(parseInt(searchTerm.searchTerm))) {
-      template = "select firstname, middlename, lastname, gradyear, major, occupation, email, emailupdates from alumni where gradyear = '"+searchTerm.searchTerm+"'";
+      template = "select * from alumni where gradyear = '"+searchTerm.searchTerm+"'";
     } else {
-      template = "select firstname, middlename, lastname, gradyear, major, occupation, email, emailupdates from alumni where firstName ilike '"+searchTerm.searchTerm+"' OR middleName ilike '"+searchTerm.searchTerm+"' OR lastName ilike '"+searchTerm.searchTerm+"' OR occupation ilike '"+searchTerm.searchTerm+"' OR major ilike '"+searchTerm.searchTerm+"'";
+      template = "select * from alumni where firstName ilike '"+searchTerm.searchTerm+"' OR middleName ilike '"+searchTerm.searchTerm+"' OR lastName ilike '"+searchTerm.searchTerm+"' OR occupation ilike '"+searchTerm.searchTerm+"' OR major ilike '"+searchTerm.searchTerm+"'";
     }
     console.log(searchTerm.searchTerm);
     const dbresponse = await pool.query(template);
@@ -322,12 +338,40 @@ app.get('/occupationInfo', async (req, res) => {
 });
 
 /*
+get matching name
+*/
+app.get('/findMatch', async (req, res) => {
+  let firstName = req.query.firstName; //the searchterm entered by the user
+  let lastName = req.query.lastName; //the username of the user, this is used with jscookie
+  let template, response;
+  try {
+    template = "select * from alumni where firstname = $1 AND lastname = $2";
+    response = await pool.query(template, [firstName,lastName]);
+    let results = response.rows.map((row) => {return row});
+      res.json(
+        results
+      )
+  } catch (err){
+  console.log(err);
+  }
+}); 
+
+
+/*
 Search database with more advanced filters
+<<<<<<< HEAD
 *///this is overly complicated we can have a separate query for each advanced search feature, if they click on majors then query majors and same for 
 app.get('/advancedSearch', async (req, res) => {
   let year = req.body.year; 
   let occupation = req.body.occupation; 
   let major = req.body.major; 
+=======
+*/
+app.get('/advancedSearch', async (req, res) => {
+  let year = req.query.year; 
+  let occupation = req.query.occupation; 
+  let major = req.query.major; 
+>>>>>>> 2b7b506f9f3be920966c7fd11036ce4ca0c1275b
 
   let template = "SELECT * FROM alumni"; //starter template
   let filterCount = 0; //if there has already been a where clause
@@ -472,11 +516,22 @@ RETURNS
   success or failure message
 */
 app.post('/delete', async (req, res) => {
-  let id = parseInt(req.body.id);
+  let id = parseInt(req.body.id)
   try {
-    let template = "delete from alumni WHERE id = $1";
+    //remove it from being edited
+    let template = "DELETE FROM editing";
+    let result = await pool.query(template);
+    template = "select id from featured"
+    results = await pool.query(template);
+    //if alumni to delete is featured
+    if (results.rows[0].id == id) {
+      //remove them from featured
+      template = "DELETE FROM featured"
+      results = await pool.query(template);
+    }
+    template = "delete from alumni WHERE id = $1";
     const dbresponse = await pool.query(template,[id]);
-    const results = dbresponse.rows.map((row) => {return row});
+    results = dbresponse.rows.map((row) => {return row});
     res.json({ msg: "deleted" });
     } catch (err){
       console.log(err);
@@ -504,9 +559,9 @@ RETURNS
 app.post("/edit", async (req, res) => {
   //console.log(req.body)
   const id = parseInt(req.body.id);
-  const firstName = req.body.firstName;
-  const middleName = req.body.middleName;
-  const lastName = req.body.lastName;
+  const firstName = req.body.firstname;
+  const middleName = req.body.middlename;
+  const lastName = req.body.lastname;
   const occupation = req.body.occupation;
   const email = req.body.email;
   const emailUpdates = req.body.emailUpdates; //todo check this
@@ -540,10 +595,13 @@ RETURNS
 deletes all pending forms
 */
 app.post('/feature', async (req, res) => {
+  console.log("Id = " + req.body.id)
   let id = parseInt(req.body.id);
   try {
-    let template = "INSERT INTO featured (id) VALUES ($1)";
-    let result = await pool.query(template,[id]);
+    let template = "DELETE FROM featured";
+    let result = await pool.query(template);
+    template = "INSERT INTO featured (id) VALUES ($1)";
+    result = await pool.query(template,[id]);
     res.json({ msg: "featured" });
     } catch (err){
       console.log(err);
@@ -588,9 +646,16 @@ app.get('/showFeatured', async (req, res) => {
   try {
     let template = `select id from featured`;
     let results = await pool.query(template);
-    let id = parseInt(results.rows[0].id)
-    template = `select * from alumni WHERE id = $1`;
-    results = await pool.query(template,[id]);
+    if (results.rowCount == 0) {
+      //if no featured alumni, feature first by default
+      template = `select * from alumni LIMIT 1`;
+      results = await pool.query(template);
+    } else { //if there is a featured alumni
+      let id = parseInt(results.rows[0].id)
+      template = `select * from alumni WHERE id = $1`;
+      results = await pool.query(template,[id]);
+    }
+    
     results = results.rows.map((row) => {return row});
       res.json(
         results
@@ -600,6 +665,47 @@ app.get('/showFeatured', async (req, res) => {
   console.log(err);
   }
 }); 
+
+/* 
+show saved state
+This is used by the edit page to remember which alumni is being edited between pages
+*/
+app.get('/showSaved', async (req, res) => {
+  try {
+    //first get the id
+    let template = `select id from editing`;
+    let results = await pool.query(template);
+    //then fine the alumni information
+    let id = parseInt(results.rows[0].id)
+    template = `select * from alumni WHERE id = $1`;
+    results = await pool.query(template,[id]);
+    //return it
+    results = results.rows.map((row) => {return row});
+      res.json(results)
+  } catch (err){
+  console.log(err);
+  }
+}); 
+
+/* 
+This function takes an id, and saves that id between page loads
+this will be used excluviely by the editing page
+*/
+app.post('/save', async (req, res) => {
+  console.log("Id = " + req.body.id)
+  let id = parseInt(req.body.id);
+  try {
+    let template = "DELETE FROM editing";
+    let result = await pool.query(template);
+    template = "INSERT INTO editing (id) VALUES ($1)";
+    result = await pool.query(template,[id]);
+    res.json({ msg: "saved" });
+    } catch (err){
+      console.log(err);
+    }
+}); 
+
+
 
 
 var pool = new Pool(config);

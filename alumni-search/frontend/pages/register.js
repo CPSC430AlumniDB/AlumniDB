@@ -1,4 +1,5 @@
 import Layout from "../components/MyLayout.js";
+import axios from 'axios';
 import Router from "next/router";
 import jsCookie from "js-cookie";
 import {createAccount} from '../lib/utils.js';
@@ -14,9 +15,18 @@ class Login extends React.Component {
     password: "",
     errors: {
       username: "",
-      password: ""
+      password: "" 
     }
   };
+
+  }
+
+  //on load
+  componentDidMount() {
+     //if not logged in
+    if (!jsCookie.get("username") ) {
+      Router.replace("/");
+    }
   }
 
   async handleUsernameUpdate(evt){
@@ -68,7 +78,7 @@ contactSubmit(evt){
 
       if(this.handleValidation()){
         alert("Form submitted");
-        Router.replace("/formConfirmation"); //replace with "thanks for submitting page"
+        Router.replace("/accountConfirmation"); //replace with "thanks for submitting page"
       }else{
         alert("Form has errors.")
       }
@@ -83,53 +93,57 @@ eventHandler(evt){
 
 
   render() {
-    const that = this;
-    return (
-      <>
-        <head>
-          <title>ESAMS | Register</title>
-        </head>
-        <Navigation/>
-        <Layout>
-          <div className={styles.container}>
-          <h2 className={styles.h2}>Register for an Account</h2>
+    if (jsCookie.get("username")) {
+      const that = this;
+      return (
+        <>
+          <head>
+            <title>ESAMS | Register</title>
+          </head>
+          <Navigation/>
+          <Layout>
+            <div className={styles.container}>
+            <h2 className={styles.h2}>Register for an Account</h2>
 
-          <div className={styles.whole}>
-          <label htmlFor="username" className="text-style">
-            Username:{" "}
-          </label>
-          <input
-            type="text"
-            id="username"
-            className="input-style"
-            value={this.state.username}
-            onChange={this.handleUsernameUpdate.bind(this)}
-          />
-          <span style={{color: "red"}}>{this.state.errors.username}</span>
-          </div>
-          <br /> <br />
+            <div className={styles.whole}>
+            <label htmlFor="username" className="text-style">
+              Username:{" "}
+            </label>
+            <input
+              type="text"
+              id="username"
+              className="input-style"
+              value={this.state.username}
+              onChange={this.handleUsernameUpdate.bind(this)}
+            />
+            <span style={{color: "red"}}>{this.state.errors.username}</span>
+            </div>
+            <br /> <br />
 
-          <div className={styles.whole}>
-          <label htmlFor="password" className="text-style">
-            Password:{" "}
-          </label>
-          <input
-            type="password"
-            id="password"
-            className="input-style"
-            value={this.state.password}
-            onChange={this.handlePasswordUpdate.bind(this)}
-          />
-          <span style={{color: "red"}}>{this.state.errors.password}</span>
-          </div>
-          <br /> <br /><br />
-          <div className={styles.button} onClick={this.eventHandler.bind(this)}>Submit</div>
-          <br /> <br />
-          </div>
-        </Layout>
-    </>
-    );
-  }
+            <div className={styles.whole}>
+            <label htmlFor="password" className="text-style">
+              Password:{" "}
+            </label>
+            <input
+              type="password"
+              id="password"
+              className="input-style"
+              value={this.state.password}
+              onChange={this.handlePasswordUpdate.bind(this)}
+            />
+            <span style={{color: "red"}}>{this.state.errors.password}</span>
+            </div>
+            <br /> <br /><br />
+            <div className={styles.button} onClick={this.eventHandler.bind(this)}>Submit</div>
+            <br /> <br />
+            </div>
+          </Layout>
+      </>
+      );
+    } else {
+      return null
+    }
+  } 
 }
 
 export default Login;

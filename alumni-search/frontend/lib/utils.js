@@ -85,7 +85,7 @@ function approve(user_info) {
 
 /*advanced search
 use filters to browse list
-*/
+
 function advancedSearch(user_info) {
   // const header = {'Accept' : "application/json",
   //                 "Content-Type": "application/x-www-form-urlencoded"};
@@ -114,6 +114,12 @@ function advancedOccupationSearch(occupation) {
     return resp.json();
 
   }); 
+}*/
+
+function advancedSearch(year,major,occupation){
+  return fetch(`http://localhost:8080/advancedSearch?year=${year}&major=${major}&occupation=${occupation}`).then(function(resp){
+      return resp.json();
+    })
 }
 
 /*reject an alumni
@@ -123,6 +129,59 @@ function reject(user_info) {
                   "Content-Type": "application/x-www-form-urlencoded"};
   const searchParams = new URLSearchParams(user_info);
   return fetch(`http://localhost:8080/reject`, { method: "POST",
+  headers: header,
+  body: searchParams}).then(function (resp){
+    return resp.json();
+  }); 
+}
+
+/*edit an alumni
+*/
+function edit(user_info) {
+  const header = {'Accept' : "application/json",
+                  "Content-Type": "application/x-www-form-urlencoded"};
+  const searchParams = new URLSearchParams(user_info);
+  return fetch(`http://localhost:8080/edit`, { method: "POST",
+  headers: header,
+  body: searchParams}).then(function (resp){
+    return resp.json();
+  }); 
+}
+
+/*feature an alumni
+*/
+function feature(user_info) {
+  const header = {'Accept' : "application/json",
+                  "Content-Type": "application/x-www-form-urlencoded"};
+  const searchParams = new URLSearchParams(user_info);
+  return fetch(`http://localhost:8080/feature`, { method: "POST",
+  headers: header,
+  body: searchParams}).then(function (resp){
+    return resp.json();
+  }); 
+}
+
+/*save alumni info, to be edited
+*/
+function save(user_info) {
+  const header = {'Accept' : "application/json",
+                  "Content-Type": "application/x-www-form-urlencoded"};
+  const searchParams = new URLSearchParams(user_info);
+  return fetch(`http://localhost:8080/save`, { method: "POST",
+  headers: header,
+  body: searchParams}).then(function (resp){
+    return resp.json();
+  }); 
+}
+
+
+/*delete an alumni
+*/
+function deleteAlum(user_info) {
+  const header = {'Accept' : "application/json",
+                  "Content-Type": "application/x-www-form-urlencoded"};
+  const searchParams = new URLSearchParams(user_info);
+  return fetch(`http://localhost:8080/delete`, { method: "POST",
   headers: header,
   body: searchParams}).then(function (resp){
     return resp.json();
@@ -169,6 +228,7 @@ module.exports = {
   listOccupations: function() {
     return listOccupations().catch(handleError);
   },
+<<<<<<< HEAD
   getAdvancedMajors: function(major) {
     return advancedMajorSearch(major).catch(handleError);
   },
@@ -177,6 +237,20 @@ module.exports = {
   },
   getAdvancedOccupation: function(occupation) {
     return advancedOccupationSearch(occupation).catch(handleError);
+=======
+  edit: function(user_info) {
+    return edit(user_info).catch(handleError);
+  },
+  feature: function(user_info) {
+    return feature(user_info).catch(handleError);
+  },
+  saveForEdit: function(user_info) {
+    return save(user_info).catch(handleError);
+  },
+  deleteAlum: function(user_info) {
+    return deleteAlum(user_info).catch(handleError);
+>>>>>>> 2b7b506f9f3be920966c7fd11036ce4ca0c1275b
   }
+
 };
 
