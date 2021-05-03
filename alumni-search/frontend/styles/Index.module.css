@@ -29,3 +29,11 @@
 .alumni {
 	text-align: center
 }
+
+.showMajorMenu{
+    display: block;
+}
+
+.hideMajorMenu{
+    display: none!important;
+}

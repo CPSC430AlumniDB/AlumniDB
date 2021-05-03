@@ -4,7 +4,6 @@ import jsCookie from "js-cookie";
 import {getSubmission} from '../lib/utils.js';
 import { Header } from '../components/Header.js'
 import style from '../styles/submitinfo.module.css'
-import { useForm } from "react-hook-form";
 import e from "cors";
 
 //this page needs to be styled but is otherwise done

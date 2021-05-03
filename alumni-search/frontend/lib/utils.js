@@ -87,13 +87,32 @@ function approve(user_info) {
 use filters to browse list
 */
 function advancedSearch(user_info) {
-  const header = {'Accept' : "application/json",
-                  "Content-Type": "application/x-www-form-urlencoded"};
-  const searchParams = new URLSearchParams(user_info);
-  return fetch(`http://localhost:8080/advancedSearch`, { method: "POST",
-  headers: header,
-  body: searchParams}).then(function (resp){
+  // const header = {'Accept' : "application/json",
+  //                 "Content-Type": "application/x-www-form-urlencoded"};
+  // const searchParams = new URLSearchParams(user_info);
+  return fetch(`http://localhost:8080/advancedSearch`).then(function (resp){
     return resp.json();
+  }); 
+}
+
+function advancedMajorSearch(major) {
+  return fetch(`http://localhost:8080/majorInfo?major=${major}`).then(function (resp){
+    return resp.json();
+
+  }); 
+}
+
+function advancedYearSearch(gradyear) {
+  return fetch(`http://localhost:8080/yearInfo?gradyear=${gradyear}`).then(function (resp){
+    return resp.json();
+
+  }); 
+}
+
+function advancedOccupationSearch(occupation) {
+  return fetch(`http://localhost:8080/occupationInfo?occupation=${occupation}`).then(function (resp){
+    return resp.json();
+
   }); 
 }
 
@@ -149,6 +168,15 @@ module.exports = {
   },
   listOccupations: function() {
     return listOccupations().catch(handleError);
+  },
+  getAdvancedMajors: function(major) {
+    return advancedMajorSearch(major).catch(handleError);
+  },
+  getAdvancedYears: function(year) {
+    return advancedYearSearch(year).catch(handleError);
+  },
+  getAdvancedOccupation: function(occupation) {
+    return advancedOccupationSearch(occupation).catch(handleError);
   }
 };
 
