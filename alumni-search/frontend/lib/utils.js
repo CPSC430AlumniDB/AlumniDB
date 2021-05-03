@@ -83,17 +83,6 @@ function approve(user_info) {
   }); 
 }
 
-
-
-// function advancedSearch(user_info) {
-//   // const header = {'Accept' : "application/json",
-//   //                 "Content-Type": "application/x-www-form-urlencoded"};
-//   // const searchParams = new URLSearchParams(user_info);
-//   return fetch(`http://localhost:8080/advancedSearch`).then(function (resp){
-//     return resp.json();
-//   }); 
-// }
-
 function advancedMajorSearch(major) {
   return fetch(`http://localhost:8080/majorInfo?major=${major}`).then(function (resp){
     return resp.json();
@@ -215,8 +204,8 @@ module.exports = {
   reject: function (user_info) {
     return reject(user_info).catch(handleError);
   },
-  advSearch: function (user_info) {
-    return advancedSearch(user_info).catch(handleError);
+  advSearch: function (year,major,occupation) {
+    return advancedSearch(year,major,occupation).catch(handleError);
   },
   listMajors: function() {
     return listMajors().catch(handleError);

@@ -4,10 +4,6 @@ import jsCookie from "js-cookie";
 import {getSubmission} from '../lib/utils.js';
 import { Header } from '../components/Header.js'
 import style from '../styles/submitinfo.module.css'
-<<<<<<< HEAD
-import e from "cors";
-=======
->>>>>>> 2b7b506f9f3be920966c7fd11036ce4ca0c1275b
 
 //this page needs to be styled but is otherwise done
 class SubmitInfo extends React.Component {
@@ -280,7 +276,7 @@ class SubmitInfo extends React.Component {
                   Graduation Year:{" "}
                 </label>
                 <input
-                  type="number" 
+                  type="text" 
                   id="gradYear"
                   className="input-style"
                   value={this.state.gradYear}

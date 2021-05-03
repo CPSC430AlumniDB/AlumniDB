@@ -11,7 +11,7 @@ class editPage extends React.Component {
   constructor(props) {
     super(props);
     this.deleteConfirmed = false; //set to true if user confirms they want to delete
-    this.state = { id : 0, firstname: "", middlename: "", lastname: "", occupation: "", email: "", emailUpdates: "y",
+    this.state = { id : 0, firstname: "", middlename: "", lastname: "", occupation: "", email: "", emailUpdates: "",
                 personalUpdates: "", gradYear: 0, major: ""};
     }
 
@@ -30,7 +30,6 @@ class editPage extends React.Component {
             gradYear: saved[0].gradyear, major: saved[0].major});
 
         })
-
     }
     
     async handleFirstNameUpdate(evt){
@@ -242,7 +241,8 @@ class editPage extends React.Component {
                     type="checkbox"
                     id="emailUpdates"
                     className="input-style"
-                    checked = {this.state.emailUpdates==='y' ? 'true': 'false'}
+                    value = "true"
+                    checked = {this.state.emailUpdates=='y' ? "true": null}
                     onChange={this.handleEmailUpdatesUpdate.bind(this)}
                   />
                 </div>

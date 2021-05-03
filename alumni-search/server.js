@@ -193,7 +193,7 @@ RETURNS
 */ 
 app.get('/listMajors', async (req, res) => {
   try {
-    let template = "Select distinct major from alumni";
+    let template = "Select distinct major from alumni ORDER BY major";
     const dbresponse = await pool.query(template);
     const results = dbresponse.rows.map((row) => {return row});
       res.json(
@@ -210,7 +210,7 @@ RETURNS
 */ 
 app.get('/listOccupations', async (req, res) => {
   try {
-    let template = "Select distinct occupation from alumni";
+    let template = "Select distinct occupation from alumni ORDER BY occupation";
     const dbresponse = await pool.query(template);
     const results = dbresponse.rows.map((row) => {return row});
       res.json(
@@ -227,7 +227,7 @@ RETURNS
 */ 
 app.get('/listYears', async (req, res) => {
   try {
-    let template = "Select distinct gradyear from alumni";
+    let template = "Select distinct gradyear from alumni ORDER BY gradyear";
     const dbresponse = await pool.query(template);
     const results = dbresponse.rows.map((row) => {return row});
       res.json(
@@ -274,7 +274,7 @@ app.get('/search', async (req, res) => {
     if (Number.isInteger(parseInt(searchTerm.searchTerm))) {
       template = "select * from alumni where gradyear = '"+searchTerm.searchTerm+"'";
     } else {
-      template = "select * from alumni where firstName ilike '"+searchTerm.searchTerm+"' OR middleName ilike '"+searchTerm.searchTerm+"' OR lastName ilike '"+searchTerm.searchTerm+"' OR occupation ilike '"+searchTerm.searchTerm+"' OR major ilike '"+searchTerm.searchTerm+"'";
+      template = "select * from alumni where firstName ilike '"+searchTerm.searchTerm+"' OR middleName ilike '"+searchTerm.searchTerm+"' OR lastName ilike '"+searchTerm.searchTerm+"' OR occupation ilike '"+searchTerm.searchTerm+"' OR major ilike '"+searchTerm.searchTerm+"' ORDER BY lastname,firstname";
     }
     console.log(searchTerm.searchTerm);
     const dbresponse = await pool.query(template);
@@ -357,64 +357,59 @@ app.get('/findMatch', async (req, res) => {
 
 /*
 Search database with more advanced filters
-<<<<<<< HEAD
-*///this is overly complicated we can have a separate query for each advanced search feature, if they click on majors then query majors and same for 
-// app.get('/advancedSearch', async (req, res) => {
-//   let year = req.body.year; 
-//   let occupation = req.body.occupation; 
-//   let major = req.body.major; 
+*/
+app.get('/advancedSearch', async (req, res) => {
+  console.log("advance search")
+  let year = req.query.year; 
+  let occupation = req.query.occupation; 
+  let major = req.query.major; 
 
-
-// app.get('/advancedSearch', async (req, res) => {
-//   let year = req.query.year; 
-//   let occupation = req.query.occupation; 
-//   let major = req.query.major; 
-
-//   let template = "SELECT * FROM alumni"; //starter template
-//   let filterCount = 0; //if there has already been a where clause
-//   let filters = []; //array of variables to pass in to query
-//   let filterVars = ["$1","$2","$3"]; 
-//   try {
-//     //year defaults to 0 if no year filter is used
-//     if (year > 0) {
-//       //concatanate this part of the search
-//       template = template + " WHERE gradYear = " + filterVars[filterCount];
-//       filters[filterCount] = year; //the first array element now contains year
-//       filterCount++; //mark that $1 has now been used
-//     }
-//     //occupation and major default to - if no filter
-//     if (occupation !== "-") {
-//       if (filterCount == 0) { //if no year filter
-//         template = template + " WHERE "; //add where
-//       } else {
-//         template = template + " AND " //gonna add another clause
-//       }
-//       //this part executed regardless
-//       template = template + "occupation = " + filterVars[filterCount];
-//       filters[filterCount] = occupation;
-//       filterCount++;
-//     }
-//     if (major !== "-") {
-//       if (filterCount == 0) { //if no filter
-//         template = template + " WHERE "; //add where
-//       } else {
-//         template = template + " AND " //add another clause
-//       }
-//       //this part executed regardless
-//       template = template + "major = " + filterVars[filterCount];
-//       filters[filterCount] = major;
-//       filterCount++;
-//     }
-//     console.log(template);
-//     const dbresponse = await pool.query(template,filters);
-//     const results = dbresponse.rows.map((row) => {return row});
-//       res.json(
-//         results
-//       )
-//   } catch (err){
-//   console.log(err);
-//   }
-// }); 
+  let template = "SELECT * FROM alumni"; //starter template
+  let filterCount = 0; //if there has already been a where clause
+  let filters = []; //array of variables to pass in to query
+  let filterVars = ["$1","$2","$3"]; 
+  try {
+    //year defaults to 0 if no year filter is used
+    if (year > 0) {
+      //concatanate this part of the search
+      template = template + " WHERE gradYear = " + filterVars[filterCount];
+      filters[filterCount] = year; //the first array element now contains year
+      filterCount++; //mark that $1 has now been used
+    }
+    //occupation and major default to - if no filter
+    if (occupation !== "-") {
+      if (filterCount == 0) { //if no year filter
+        template = template + " WHERE "; //add where
+      } else {
+        template = template + " AND " //gonna add another clause
+      }
+      //this part executed regardless
+      template = template + "occupation = " + filterVars[filterCount];
+      filters[filterCount] = occupation;
+      filterCount++;
+    }
+    if (major !== "-") {
+      if (filterCount == 0) { //if no filter
+        template = template + " WHERE "; //add where
+      } else {
+        template = template + " AND " //add another clause
+      }
+      //this part executed regardless
+      template = template + "major = " + filterVars[filterCount];
+      filters[filterCount] = major;
+      filterCount++;
+    }
+    template = template + "ORDER BY lastname, firstname"
+    console.log(template);
+    const dbresponse = await pool.query(template,filters);
+    const results = dbresponse.rows.map((row) => {return row});
+      res.json(
+        results
+      )
+  } catch (err){
+  console.log(err);
+  }
+}); 
 
 
 /*VERIFY THIS WORKS
