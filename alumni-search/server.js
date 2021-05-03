@@ -238,8 +238,6 @@ app.get('/listYears', async (req, res) => {
   }
 }); 
 
-/*
-*/
 
 
 
@@ -361,63 +359,62 @@ app.get('/findMatch', async (req, res) => {
 Search database with more advanced filters
 <<<<<<< HEAD
 *///this is overly complicated we can have a separate query for each advanced search feature, if they click on majors then query majors and same for 
-app.get('/advancedSearch', async (req, res) => {
-  let year = req.body.year; 
-  let occupation = req.body.occupation; 
-  let major = req.body.major; 
-=======
-*/
-app.get('/advancedSearch', async (req, res) => {
-  let year = req.query.year; 
-  let occupation = req.query.occupation; 
-  let major = req.query.major; 
->>>>>>> 2b7b506f9f3be920966c7fd11036ce4ca0c1275b
+// app.get('/advancedSearch', async (req, res) => {
+//   let year = req.body.year; 
+//   let occupation = req.body.occupation; 
+//   let major = req.body.major; 
 
-  let template = "SELECT * FROM alumni"; //starter template
-  let filterCount = 0; //if there has already been a where clause
-  let filters = []; //array of variables to pass in to query
-  let filterVars = ["$1","$2","$3"]; 
-  try {
-    //year defaults to 0 if no year filter is used
-    if (year > 0) {
-      //concatanate this part of the search
-      template = template + " WHERE gradYear = " + filterVars[filterCount];
-      filters[filterCount] = year; //the first array element now contains year
-      filterCount++; //mark that $1 has now been used
-    }
-    //occupation and major default to - if no filter
-    if (occupation !== "-") {
-      if (filterCount == 0) { //if no year filter
-        template = template + " WHERE "; //add where
-      } else {
-        template = template + " AND " //gonna add another clause
-      }
-      //this part executed regardless
-      template = template + "occupation = " + filterVars[filterCount];
-      filters[filterCount] = occupation;
-      filterCount++;
-    }
-    if (major !== "-") {
-      if (filterCount == 0) { //if no filter
-        template = template + " WHERE "; //add where
-      } else {
-        template = template + " AND " //add another clause
-      }
-      //this part executed regardless
-      template = template + "major = " + filterVars[filterCount];
-      filters[filterCount] = major;
-      filterCount++;
-    }
-    console.log(template);
-    const dbresponse = await pool.query(template,filters);
-    const results = dbresponse.rows.map((row) => {return row});
-      res.json(
-        results
-      )
-  } catch (err){
-  console.log(err);
-  }
-}); 
+
+// app.get('/advancedSearch', async (req, res) => {
+//   let year = req.query.year; 
+//   let occupation = req.query.occupation; 
+//   let major = req.query.major; 
+
+//   let template = "SELECT * FROM alumni"; //starter template
+//   let filterCount = 0; //if there has already been a where clause
+//   let filters = []; //array of variables to pass in to query
+//   let filterVars = ["$1","$2","$3"]; 
+//   try {
+//     //year defaults to 0 if no year filter is used
+//     if (year > 0) {
+//       //concatanate this part of the search
+//       template = template + " WHERE gradYear = " + filterVars[filterCount];
+//       filters[filterCount] = year; //the first array element now contains year
+//       filterCount++; //mark that $1 has now been used
+//     }
+//     //occupation and major default to - if no filter
+//     if (occupation !== "-") {
+//       if (filterCount == 0) { //if no year filter
+//         template = template + " WHERE "; //add where
+//       } else {
+//         template = template + " AND " //gonna add another clause
+//       }
+//       //this part executed regardless
+//       template = template + "occupation = " + filterVars[filterCount];
+//       filters[filterCount] = occupation;
+//       filterCount++;
+//     }
+//     if (major !== "-") {
+//       if (filterCount == 0) { //if no filter
+//         template = template + " WHERE "; //add where
+//       } else {
+//         template = template + " AND " //add another clause
+//       }
+//       //this part executed regardless
+//       template = template + "major = " + filterVars[filterCount];
+//       filters[filterCount] = major;
+//       filterCount++;
+//     }
+//     console.log(template);
+//     const dbresponse = await pool.query(template,filters);
+//     const results = dbresponse.rows.map((row) => {return row});
+//       res.json(
+//         results
+//       )
+//   } catch (err){
+//   console.log(err);
+//   }
+// }); 
 
 
 /*VERIFY THIS WORKS

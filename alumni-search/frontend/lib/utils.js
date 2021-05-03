@@ -83,17 +83,16 @@ function approve(user_info) {
   }); 
 }
 
-/*advanced search
-use filters to browse list
 
-function advancedSearch(user_info) {
-  // const header = {'Accept' : "application/json",
-  //                 "Content-Type": "application/x-www-form-urlencoded"};
-  // const searchParams = new URLSearchParams(user_info);
-  return fetch(`http://localhost:8080/advancedSearch`).then(function (resp){
-    return resp.json();
-  }); 
-}
+
+// function advancedSearch(user_info) {
+//   // const header = {'Accept' : "application/json",
+//   //                 "Content-Type": "application/x-www-form-urlencoded"};
+//   // const searchParams = new URLSearchParams(user_info);
+//   return fetch(`http://localhost:8080/advancedSearch`).then(function (resp){
+//     return resp.json();
+//   }); 
+// }
 
 function advancedMajorSearch(major) {
   return fetch(`http://localhost:8080/majorInfo?major=${major}`).then(function (resp){
@@ -114,7 +113,7 @@ function advancedOccupationSearch(occupation) {
     return resp.json();
 
   }); 
-}*/
+}
 
 function advancedSearch(year,major,occupation){
   return fetch(`http://localhost:8080/advancedSearch?year=${year}&major=${major}&occupation=${occupation}`).then(function(resp){
@@ -228,7 +227,6 @@ module.exports = {
   listOccupations: function() {
     return listOccupations().catch(handleError);
   },
-<<<<<<< HEAD
   getAdvancedMajors: function(major) {
     return advancedMajorSearch(major).catch(handleError);
   },
@@ -237,7 +235,7 @@ module.exports = {
   },
   getAdvancedOccupation: function(occupation) {
     return advancedOccupationSearch(occupation).catch(handleError);
-=======
+  },
   edit: function(user_info) {
     return edit(user_info).catch(handleError);
   },
@@ -249,7 +247,6 @@ module.exports = {
   },
   deleteAlum: function(user_info) {
     return deleteAlum(user_info).catch(handleError);
->>>>>>> 2b7b506f9f3be920966c7fd11036ce4ca0c1275b
   }
 
 };
