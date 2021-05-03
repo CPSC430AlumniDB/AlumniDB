@@ -211,7 +211,7 @@ RETURNS
 */ 
 app.get('/listYears', async (req, res) => {
   try {
-    let template = "Select distinct gradYear from alumni";
+    let template = "Select distinct gradyear from alumni";
     const dbresponse = await pool.query(template);
     const results = dbresponse.rows.map((row) => {return row});
       res.json(
@@ -274,10 +274,57 @@ app.get('/search', async (req, res) => {
   }
 }); 
 
+app.get('/majorInfo', async (req, res) => {
+  console.log("WE HERE??");
+  let major = req.query.major;
+  try{
+  let template  = "select * from alumni where major = '"+major+"'";
+  const dbresponse = await pool.query(template);
+    const results = dbresponse.rows.map((row) => {return row});
+      res.json(
+        results)
+    console.log(results);
+  } catch (err){
+  console.log(err);
+  }
+});
+
+app.get('/yearInfo', async (req, res) => {
+  console.log("WE HERE?xxxxx?");
+  let gradyear = req.query.gradyear;
+
+  try{
+  let template  = "select * from alumni where gradyear = '"+gradyear+"'";
+  const dbresponse = await pool.query(template);
+    const results = dbresponse.rows.map((row) => {return row});
+      res.json(
+        results)
+    console.log(results);
+  } catch (err){
+  console.log(err);
+  }
+});
+
+app.get('/occupationInfo', async (req, res) => {
+  console.log("WE HERE?xxxxx?");
+  let occupation = req.query.occupation;
+
+  try{
+  let template  = "select * from alumni where occupation = '"+occupation+"'";
+  const dbresponse = await pool.query(template);
+    const results = dbresponse.rows.map((row) => {return row});
+      res.json(
+        results)
+    console.log(results);
+  } catch (err){
+  console.log(err);
+  }
+});
+
 /*
 Search database with more advanced filters
-*/
-app.post('/advancedSearch', async (req, res) => {
+*///this is overly complicated we can have a separate query for each advanced search feature, if they click on majors then query majors and same for 
+app.get('/advancedSearch', async (req, res) => {
   let year = req.body.year; 
   let occupation = req.body.occupation; 
   let major = req.body.major; 
