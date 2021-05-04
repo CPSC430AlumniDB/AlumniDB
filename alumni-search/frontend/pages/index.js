@@ -54,50 +54,39 @@ class Index extends React.Component{
             <Layout>
               <section className={styles.showcase}>
                  <h1>Environmental Science Alumni Management System</h1>
-                 <p>Maybe put a description or a quote the esci department uses</p>
+                 <p>The environment is where we all meet; where we all have a mutual interest; it is the one thing all of us share</p>
+                 <p>-Lady Bird Johnson</p>
+                 <br/>
                </section>
                <section className={styles.alumni}>
-                 <h1>Alumni of the Month</h1>
-                 {this.state.featured.length > 0 ? (
-              <table id="entries">
-              <tbody>{this.state.featured.map(function(item, key) {
-                     
-                       return (
-                         
-                        
-                          <tr key = {key}>
-                            
-                              <td>{item.firstname}</td>
-                              <td>{item.lastname}</td>
-                              <td>{item.major}</td>
-                              <td>{item.occupation}</td>
-                              <td>{item.personalupdates}</td>
+                  <h1>Alumni of the Month</h1>
+                </section>
+                  {this.state.featured.length > 0 ? (
+                <div className={styles.monthly}>
+                <table className={styles.entries}>
+                <tbody>{this.state.featured.map(function(item, key) {
+                      
+                        return (
+                          
+                          
+                            <tr key = {key}>
+                                <div className={styles.idk}>
+                                  <td className={styles.Fname}>{item.firstname}</td>
+                                  <td className={styles.Lname}>{item.lastname}</td>
+                                </div>
+                                <td className={styles.major}>{item.major}</td>
+                                <td className={styles.job}>{item.occupation}</td>
+                                <td className={styles.update}>{item.personalupdates}</td>
 
 
 
-                          </tr>
-                        )
-                     
-                     })}</tbody>
-               </table>
-            ) : null}
-               </section>
-               <section className={styles.boxes}>
-                 <article className={styles.box}>
-                   <h3>Place holder</h3>
-                   <p>place holder</p>
-                 </article> 
-                 <article className={styles.box}>
-                   <h3>Place holder</h3>
-                   <p>place holder</p>
-                 </article> 
-               </section>
-
-              <br /> <br />   
-              <br />
-              <br />
-              <br />
-              <br /> <br />
+                            </tr>
+                          )
+                      
+                      })}</tbody>
+                </table>
+                </div>
+              ) : null}             
             </Layout>
             </div>
           </>

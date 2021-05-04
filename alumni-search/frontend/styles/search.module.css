@@ -36,15 +36,32 @@
 }
 
 .button {
-	border: solid 1.5px;
+	border: solid 1px;
 	border-color: black;
 	padding-right: 10px;
 	padding-left: 10px;
-	padding-bottom: 2px;
+	padding-bottom: 2px;	
 }
 
 .button:hover {
 	background-color: #c9c7c5f3;
 }
 
-/*fix border */
+.button1 {
+	border: solid 1px;
+	border-color: black;
+	padding-right: 10px;
+	padding-left: 10px;
+	padding-bottom: 2px;	
+	align-content: center;
+	text-align: center;
+	float: center;
+}
+
+.button1:hover {
+	background-color: #c9c7c5f3;
+}
+
+.menu li{
+	list-style: none;
+}

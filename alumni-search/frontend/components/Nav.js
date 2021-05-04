@@ -48,7 +48,7 @@ const Navigation = () => {
           min-height: 40px;
           font-family: "Arial";
           line-height: 2.5;
-          font-size: 1.25rem;
+          font-size: 1.2rem;
         }
 
         a {
