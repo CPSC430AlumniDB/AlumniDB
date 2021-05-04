@@ -239,7 +239,7 @@ app.get('/search', async (req, res) => {
     if (Number.isInteger(parseInt(searchTerm.searchTerm))) {
       template = "select * from alumni where gradyear = $1";
     } else {
-      template = "select * from alumni where $1 ILIKE '%'||firstname||'%' OR firstname ILIKE '%'||$1||'%' OR $1 ILIKE '%'||lastname||'%' OR lastName ILIKE '%'||$1||'%' OR $1 ILIKE '%'||occupation||'%' OR occupation ILIKE '%'||$1||'%' OR $1 ILIKE '%'||major||'%' OR major ILIKE '%'||$1||'%' ORDER BY lastname,firstname";
+      template = "select * from alumni where $1 ILIKE '%'||firstname||'%' OR firstname ILIKE '%'||$1||'%' OR $1 ILIKE '%'||lastname||'%' OR lastName ILIKE '%'||$1||'%' OR ($1 ILIKE '%'||occupation||'%' AND occupation NOT LIKE '') OR occupation ILIKE '%'||$1||'%' OR ($1 ILIKE '%'||major||'%' AND major NOT LIKE '') OR major ILIKE '%'||$1||'%' ORDER BY lastname,firstname";
     }
     const dbresponse = await pool.query(template,[searchTerm.searchTerm]);
     const results = dbresponse.rows.map((row) => {return row});
