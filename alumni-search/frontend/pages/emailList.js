@@ -12,11 +12,6 @@ const indexLink = {
   textColor: "#000000"
 
 }
-// export default function Pending(){
-// 	if(jsCookie.get("username") == null){return Index();}
-// 	return "Placeholder for Pending Page";
-// }
-
 
 class EmailList extends React.Component {
   constructor(props) {

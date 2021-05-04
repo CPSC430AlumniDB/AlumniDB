@@ -64,12 +64,7 @@ function listYears(){
     })
 }
 
-async function checkLogin(userpw){
-  console.log(userpw);//{username: , password: }
-  const info = await getLoginInfo(userpw);
-  console.log(info);//{status: , screenname: }
-  console.log(info.status);
-}
+
 /*approve an alumni
 */
 function approve(user_info) {
@@ -83,26 +78,6 @@ function approve(user_info) {
   }); 
 }
 
-function advancedMajorSearch(major) {
-  return fetch(`http://localhost:8080/majorInfo?major=${major}`).then(function (resp){
-    return resp.json();
-
-  }); 
-}
-
-function advancedYearSearch(gradyear) {
-  return fetch(`http://localhost:8080/yearInfo?gradyear=${gradyear}`).then(function (resp){
-    return resp.json();
-
-  }); 
-}
-
-function advancedOccupationSearch(occupation) {
-  return fetch(`http://localhost:8080/occupationInfo?occupation=${occupation}`).then(function (resp){
-    return resp.json();
-
-  }); 
-}
 
 function advancedSearch(year,major,occupation){
   return fetch(`http://localhost:8080/advancedSearch?year=${year}&major=${major}&occupation=${occupation}`).then(function(resp){
@@ -215,15 +190,6 @@ module.exports = {
   },
   listOccupations: function() {
     return listOccupations().catch(handleError);
-  },
-  getAdvancedMajors: function(major) {
-    return advancedMajorSearch(major).catch(handleError);
-  },
-  getAdvancedYears: function(year) {
-    return advancedYearSearch(year).catch(handleError);
-  },
-  getAdvancedOccupation: function(occupation) {
-    return advancedOccupationSearch(occupation).catch(handleError);
   },
   edit: function(user_info) {
     return edit(user_info).catch(handleError);

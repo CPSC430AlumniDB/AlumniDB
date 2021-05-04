@@ -6,7 +6,6 @@ import {createAccount} from '../lib/utils.js';
 import { Navigation } from '../components/Nav.js';
 import styles from '../styles/login.module.css'
 
-//this page is done
 class Login extends React.Component {
   constructor(props) {
     super(props);
@@ -21,7 +20,6 @@ class Login extends React.Component {
 
   }
 
-  //on load
   componentDidMount() {
      //if not logged in
     if (!jsCookie.get("username") ) {
@@ -44,10 +42,6 @@ async handleSearch(evt){
   });
   console.log(loggedInUser);
   this.setState({loggedInUser});
-  // if (loggedInUser.status == "success"){
-  //   jsCookie.set("username", loggedInUser.username);
-  //   Router.replace("/");
-  // }
 }
 
 handleValidation(){

@@ -5,7 +5,6 @@ import {getSubmission} from '../lib/utils.js';
 import { Header } from '../components/Header.js'
 import style from '../styles/submitinfo.module.css'
 
-//this page needs to be styled but is otherwise done
 class SubmitInfo extends React.Component {
   constructor(props) {
     super(props);
@@ -17,7 +16,7 @@ class SubmitInfo extends React.Component {
       lastname: "", 
       occupation: "", 
       email: "", 
-      emailUpdates: 'n', //unchecked
+      emailUpdates: 'n', 
       personalUpdates: "", 
       gradYear: '',
       major: "", 
@@ -84,7 +83,7 @@ class SubmitInfo extends React.Component {
               results: []    
             });
           } 
-          console.log(results);//this message gets triggered no matter if the input is valid or not
+          console.log(results);
           
     }
 
@@ -323,214 +322,6 @@ class SubmitInfo extends React.Component {
     }
 }
 
-          /*
-          <Layout
-            style={{ margin: "auto auto", width: "600px", textAlign: "center" }}
-          >
-            <h2>Submit Your Information</h2>
-            <label htmlFor="firstname" className="text-style">
-              First Name:{" "}
-            </label>
-            <input
-              type="text"
-              id="firstname"
-              className="input-style"
-              value={this.state.firstname}
-              onChange={this.handleFirstNameUpdate.bind(this)}
-    
-            />
-            <br /> <br />
-            <label htmlFor="middlename" className="text-style">
-              Middle Name:{" "}
-            </label>
-            <input
-              type="text"
-              id="middlename"
-              className="input-style"
-              value={this.state.middlename}
-              onChange={this.handleMiddleNameUpdate.bind(this)}
-    
-            />
-            <label htmlFor="lastname" className="text-style">
-              Last Name:{" "}
-            </label>
-            <input
-              type="text"
-              id="lastname"
-              className="input-style"
-              value={this.state.lastname}
-              onChange={this.handleLastNameUpdate.bind(this)}
-    
-            />
-            <br /> <br />
-            <label htmlFor="occupation" className="text-style">
-              Occupation:{" "}
-            </label>
-            <input
-              type="text"
-              id="occupation"
-              className="input-style"
-              value={this.state.occupation}
-              onChange={this.handleOccupationUpdate.bind(this)}
-    
-            />
-            <label htmlFor="email" className="text-style">
-              Email:{" "}
-            </label>
-            <input
-              type="text"
-              id="email"
-              className="input-style"
-              value={this.state.email}
-              onChange={this.handleEmailUpdate.bind(this)}
-    
-            />
-            <br /> <br />
-            <label htmlFor="emailUpdates" className="text-style">
-              Email Updates (Enter Y or N):{" "}
-            </label>
-            <input
-              type="text"
-              id="emailUpdates"
-              className="input-style"
-              value={this.state.emailUpdates}
-              onChange={this.handleEmailUpdatesUpdate.bind(this)}
-    
-            />
-            <label htmlFor="personalUpdates" className="text-style">
-              Personal Updates:{" "}
-            </label>
-            <input
-              type="text"
-              id="personalUpdates"
-              className="input-style"
-              value={this.state.personalUpdates}
-              onChange={this.handlePersonalUpdatesUpdate.bind(this)}
-    
-            />
-            <br /> <br />
-            <label htmlFor="gradYear" className="text-style">
-              Graduation Year:{" "}
-            </label>
-            <input
-              type="number"
-              id="gradYear"
-              className="input-style"
-              value={this.state.gradYear}
-              onChange={this.handleGradYearUpdate.bind(this)}
-    
-            />
-            <label htmlFor="major" className="text-style">
-              Major:{" "}
-            </label>
-            <input
-              type="text"
-              id="major"
-              className="input-style"
-              value={this.state.major}
-              onChange={this.handleMajorUpdate.bind(this)}
-    
-            />
-            
-            <br />
-            <br />
-            <br />
-            <div className="button-style" onClick={this.handleSearch.bind(that)}>Submit</div>
-            <br /> <br />
-            <style jsx>{`
-              h1,
-              h2,
-              h3,
-              h4,
-              a,
-              p {
-                color: #1f618d;
-                font-family: "Arial";
-              }
-    
-              .button-style {
-                margin: auto auto;
-                cursor: pointer;
-                background-color: #1f618d;
-                color: #ffffff;
-                width: 150px;
-                height: 45px;
-                font-family: "Arial";
-                line-height: 1.9;
-                font-size: 1.4rem;
-              }
-    
-              .text-style {
-                font-size: 1.4rem;
-                line-height: 1.6rem;
-                font-family: "Arial";
-                width: 50px;
-                align: right;
-              }
-    
-              .error-style {
-                font-size: 1.4rem;
-                line-height: 1.6rem;
-                font-family: "Arial";
-                color: red;
-              }
-    
-              .input-style {
-                font-size: 1.4rem;
-                line-height: 1.6rem;
-              }
-    
-              .description {
-                font-family: "Arial";
-                font-size: "10px";
-              }
-    
-              ul {
-                padding: 0;
-              }
-    
-              li {
-                list-style: none;
-                margin: 5px 0;
-              }
-    
-              a {
-                text-decoration: none;
-                color: blue;
-              }
-    
-              input {
-                margin: auto auto;
-                width: 200px;
-              }
-    
-              .description {
-                font-family: "Arial";
-                font-size: "10px";
-              }
-    
-              ul {
-                padding: 0;
-              }
-    
-              li {
-                list-style: none;
-                margin: 5px 0;
-              }
-    
-              a {
-                text-decoration: none;
-                color: blue;
-              }
-    
-              a:hover {
-                opacity: 0.6;
-              }
-            `}</style>
-          </Layout>
-        );
-    }
-}
-    */
+          
 export default SubmitInfo;
 

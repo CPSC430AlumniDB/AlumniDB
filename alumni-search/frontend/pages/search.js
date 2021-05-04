@@ -5,7 +5,6 @@ import { Navigation } from '../components/Nav.js';
 import Router from "next/router";
 import styles from '../styles/search.module.css'
 
-//This page needs to be styled but is otherwise done
 class Home extends React.Component {
   constructor(props) {
     super(props);
@@ -16,7 +15,6 @@ class Home extends React.Component {
     };
   }
 
-  //on load
   componentDidMount() {
     //if not logged in
     if (!jsCookie.get("username") ) {
@@ -59,7 +57,6 @@ class Home extends React.Component {
   render() {
     if (jsCookie.get("username")) {
       const that = this;
-      //if(jsCookie.get("username") == null){ return Index();}
       return (
         <>
           <head>

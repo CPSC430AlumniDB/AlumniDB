@@ -1,4 +1,3 @@
-import jsCookie from "js-cookie"
 import Layout from "../components/MyLayout.js";
 import Style from "../styles/submitinfo.module.css";
 import { Header } from '../components/Header.js';
