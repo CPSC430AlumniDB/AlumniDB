@@ -238,7 +238,7 @@ app.get('/search', async (req, res) => {
     if (Number.isInteger(parseInt(searchTerm.searchTerm))) {
       template = "select * from alumni where gradyear = '"+searchTerm.searchTerm+"'";
     } else {
-      template = "select * from alumni where firstName ILIKE '%'||$1||'%' OR lastName ILIKE '%'||$1||'%' OR occupation ILIKE '%'||$1||'%' OR major ILIKE '%'||$1||'%' ORDER BY lastname,firstname";
+      template = "select * from alumni where $1 ILIKE '%'||firstname||'%' OR firstname ILIKE '%'||$1||'%' OR $1 ILIKE '%'||lastname||'%' OR lastName ILIKE '%'||$1||'%' OR $1 ILIKE '%'||occupation||'%' OR occupation ILIKE '%'||$1||'%' OR $1 ILIKE '%'||major||'%' OR major ILIKE '%'||$1||'%' ORDER BY lastname,firstname";
     }
     const dbresponse = await pool.query(template,[searchTerm.searchTerm]);
     const results = dbresponse.rows.map((row) => {return row});
@@ -251,7 +251,6 @@ app.get('/search', async (req, res) => {
 }); 
 
 app.get('/majorInfo', async (req, res) => {
-  console.log("WE HERE??");
   let major = req.query.major;
   try{
   let template  = "select * from alumni where major = '"+major+"'";
@@ -265,7 +264,6 @@ app.get('/majorInfo', async (req, res) => {
 });
 
 app.get('/yearInfo', async (req, res) => {
-  console.log("WE HERE?xxxxx?");
   let gradyear = req.query.gradyear;
 
   try{
@@ -280,7 +278,6 @@ app.get('/yearInfo', async (req, res) => {
 });
 
 app.get('/occupationInfo', async (req, res) => {
-  console.log("WE HERE?xxxxx?");
   let occupation = req.query.occupation;
 
   try{
