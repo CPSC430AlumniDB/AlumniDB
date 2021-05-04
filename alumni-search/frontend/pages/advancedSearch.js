@@ -22,13 +22,6 @@ class advancedSearch extends React.Component {
       showMajors: false,
       showOccupations: false,
       showYear: false,
-      // majorResults: [],
-      // yearResults: [],
-      // major: [],
-      // gradyear: [],
-      // occupation: [],
-      // occupationResults: [],
-      //default searchterm values
       majorSearchTerm: '-', 
       occupationSearchTerm: '-',
       yearSearchTerm: 0,
@@ -38,7 +31,6 @@ class advancedSearch extends React.Component {
     this.toggleOccupationsMenu = this.toggleOccupationsMenu.bind(this);
     this.toggleMajorsMenu = this.toggleMajorsMenu.bind(this);
     this.toggleYearsMenu = this.toggleYearsMenu.bind(this);
-    //this.closeMenu = this.closeMenu.bind(this);
     this.getAllMajors = this.getAllMajors.bind(this);
     this.handleMajorUpdate = this.handleMajorUpdate.bind(this);
     this.handleYearUpdate = this.handleYearUpdate.bind(this);
@@ -88,20 +80,6 @@ class advancedSearch extends React.Component {
     this.setState({ showYears: !this.state.showYears });
   }
 
-
-
-  // closeMenu(event) {
-    
-  //   if (!this.dropdownMenu.contains(event.target)) {
-      
-  //     this.setState({ showMenu: false }, () => {
-  //       document.removeEventListener('click', this.closeMenu);
-  //     });  
-      
-  //   }
-  // }
-
-
   getAllMajors() {
     axios.get(`http://localhost:8080/listMajors`)
       .then(res => {
@@ -129,14 +107,6 @@ class advancedSearch extends React.Component {
       })
     }
 
-    // getMajorsAdvanced(major_info){
-    //   axios.get(`http://localhost:8080/getMajorInfo=${this.state.major}`)
-    //   .then(res => {
-    //     const advancedMajors = res.data;
-    //     this.setState({ major: advancedMajors });
-
-    //   })
-    // }
     async handleAdvSearch(evt) {
       const searchResults = await advSearch(this.state.yearSearchTerm, this.state.majorSearchTerm, this.state.occupationSearchTerm);
       console.log(searchResults)
@@ -150,45 +120,6 @@ class advancedSearch extends React.Component {
       
   }
 
-//     async handleMajorSearch(evt) {
-    
-//       const majorResults = await getAdvancedMajors(this.state.major);
-//       if(majorResults){
-//         this.setState({ majorResults: majorResults});
-//       } else {
-//         this.setState({ 
-//           majorResults: []    
-//         });
-//       } 
-//       console.log(majorResults);
-//   }
-
-//   async handleOccupationSearch(evt) {
-    
-//     const occupationResults = await getAdvancedOccupation(this.state.occupation);
-//     if(occupationResults){
-//       this.setState({ occupationResults: occupationResults});
-//     } else {
-//       this.setState({ 
-//         occupationResults: []    
-//       });
-//     } 
-//     console.log(occupationResults);
-// }
-
-//   async handleYearSearch(evt) {
-    
-//     const yearResults = await getAdvancedYears(this.state.gradyear);
-//     if(yearResults){
-//       this.setState({ yearResults: yearResults});
-//     } else {
-//       this.setState({ 
-//         yearResults: []    
-//       });
-//     } 
-//     console.log(yearResults);
-// }
-
     handleMajorUpdate(evt) {
       this.setState({ majorSearchTerm: evt.target.value}, this.handleAdvSearch);    
     }
@@ -200,41 +131,6 @@ class advancedSearch extends React.Component {
     handleYearUpdate(evt) {
       this.setState({ yearSearchTerm: evt.target.value}, this.handleAdvSearch);    
     }
-
-
-    
-
-
-
-
-    /* JP's notes for backend functions
-  Getting dropdown box fields:
-    listYears()
-    listOccupations()
-    listMajors()
-
-  advanced search query
-  advancedSearch() (in utils I put it as advSearch() so that it doesnt conflict with the class name of this page)
-    Takes three body parameters
-    -occupation (string) : if query is blank, put "-"
-    -major (string) : if query is blank, put "-"
-    -year (signed int) : if query is blank, put 0
-    example: User selects in "environmental science" from dropdown, and leaves the other fields blank
-      the body of the request would be:
-       occupation: "-"
-       year: 0
-       major: "environmental science"
-
-    the backend function will do a query for just the actual
-
-    Make sure default state is 
-      occupation: "-"
-       year: 0
-       major: "-"
-    this will ensure that when you first click advanced search, you see all the alumni, and then narrow it down
-
-  */
- 
 
   render() {
     if (jsCookie.get("username")) {
@@ -301,7 +197,7 @@ class advancedSearch extends React.Component {
                       <div>{this.state.occupations.map((item, key) => {  
                       
                         return (
-                          //need to pass this.state.major as a value of the button that is clicked
+                          
                             <li key = {key}>
                                       
                                   <button value={item.occupation} onClick={(e) => {
@@ -336,7 +232,7 @@ class advancedSearch extends React.Component {
                       <div>{this.state.majors.map((item, key) => {  
                       
                         return (
-                          //need to pass this.state.major as a value of the button that is clicked
+                          
                             <li key = {key}>
                                       
                                   <button value={item.major} onClick={(e) => {

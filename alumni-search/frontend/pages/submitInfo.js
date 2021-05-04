@@ -5,7 +5,6 @@ import {getSubmission} from '../lib/utils.js';
 import { Header } from '../components/Header.js'
 import style from '../styles/submitinfo.module.css'
 
-//this page needs to be styled but is otherwise done
 class SubmitInfo extends React.Component {
   constructor(props) {
     super(props);
@@ -17,7 +16,7 @@ class SubmitInfo extends React.Component {
       lastname: "", 
       occupation: "", 
       email: "", 
-      emailUpdates: 'n', //unchecked
+      emailUpdates: 'n', 
       personalUpdates: "", 
       gradYear: '',
       major: "", 
@@ -84,7 +83,7 @@ class SubmitInfo extends React.Component {
               results: []    
             });
           } 
-          console.log(results);//this message gets triggered no matter if the input is valid or not
+          console.log(results);
           
     }
 
@@ -323,5 +322,6 @@ class SubmitInfo extends React.Component {
     }
 }
 
+          
 export default SubmitInfo;
 

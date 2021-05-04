@@ -8,7 +8,7 @@ import Router from "next/router";
 import axios from 'axios';
 import jsCookie from "js-cookie"
 
-//this page is working as expected, need to add buttoms for approval/rejection and handle that accordingly
+
 const indexLink = {
   display: "inline",
   textAlign: "center",

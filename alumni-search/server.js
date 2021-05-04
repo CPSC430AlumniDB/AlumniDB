@@ -46,37 +46,11 @@ app.post("/submit", async (req, res) => {
   const major = req.body.major;
   let query,result,originalId,pendingId; //vars
   try {
-    console.log(gradyear)
-    //we dont need any check here, this function should just submit a form to the pending table
-    // //check if email already exists in pending
-    // //delete it
-    // query = "DELETE FROM pending where email = $1"//need to actually check if an email exists, this does not do that. 
-    // result = await pool.query(query, [email]);
-
     //insert pending form
     query = "insert into pending (firstname, middlename, lastname, gradyear, major, occupation, email, emailupdates, personalupdates) values ($1, $2, $3, $4, $5, $6, $7, $8, $9)";
     result = await pool.query(query, [firstname, middlename, lastname, gradyear, major, occupation, email, emailupdates, personalupdates]);
     console.log(result);
-
-    //********WE DON'T NEED THIS HERE ***********/
-    //now check if the form just added matches one in the alumni DB
-    // query = "SELECT id FROM alumni where (firstName = $1 AND middleName = $2 AND lastName = $3) OR email = $4";
-    // result = await pool.query(query, [firstName,middleName,lastName,email]);
-    // console.log("checked if form matched")
-    // //if alumni with matching name exists in database
-    // if (result.rowCount > 0) { 
-    //   originalId = result.rows[0].id;
-    //   //get the ID of the pending form just submitted
-    //   query = "SELECT id FROM pending where email = $1";
-    //   result = await pool.query(query, [email]);
-    //   pendingId = result.rows[0].id;
-    //   //mark as duplicate
-    //   query = "INSERT into duplicates (pendingId,alumniId) VALUES ($1,$2)";
-    //   result = await pool.query(query,[pendingId,originalId])
-    //   res.json({ msg: "created as duplicate" });
-    // } else {
     res.json({ msg: "created" });
-    // }
   }
   catch (err) {
     console.log("ERROR " + err);
@@ -161,8 +135,7 @@ app.get('/getPending', async (req, res) => {
     const dbresponse = await pool.query(template);
     const results = dbresponse.rows.map((row) => {return row});
       res.json(
-        results)
-    console.log(results);
+        results);
   } catch (err){
   console.log(err);
   }
@@ -180,8 +153,7 @@ app.get('/getEmailList', async (req, res) => {
     const dbresponse = await pool.query(template,['y']);
     const results = dbresponse.rows.map((row) => {return row});
       res.json(
-        results)
-    console.log(results);
+        results);
   } catch (err){
   console.log(err);
   }
@@ -197,8 +169,7 @@ app.get('/listMajors', async (req, res) => {
     const dbresponse = await pool.query(template);
     const results = dbresponse.rows.map((row) => {return row});
       res.json(
-        results)
-    console.log(results);
+        results);
   } catch (err){
   console.log(err);
   }
@@ -214,8 +185,7 @@ app.get('/listOccupations', async (req, res) => {
     const dbresponse = await pool.query(template);
     const results = dbresponse.rows.map((row) => {return row});
       res.json(
-        results)
-    console.log(results);
+        results);
   } catch (err){
   console.log(err);
   }
@@ -231,14 +201,11 @@ app.get('/listYears', async (req, res) => {
     const dbresponse = await pool.query(template);
     const results = dbresponse.rows.map((row) => {return row});
       res.json(
-        results)
-    console.log(results);
+        results);
   } catch (err){
   console.log(err);
   }
 }); 
-
-
 
 
 /* TEST FUNCTION (not used in application)
@@ -267,22 +234,17 @@ app.get('/search', async (req, res) => {
   let username = req.query; //the username of the user, this is used with jscookie
   let template;
 
-
-  console.log(`Search for ${searchTerm.searchTerm}, ${username.username}`);
-
   try {
     if (Number.isInteger(parseInt(searchTerm.searchTerm))) {
       template = "select * from alumni where gradyear = '"+searchTerm.searchTerm+"'";
     } else {
       template = "select * from alumni where firstName ilike '"+searchTerm.searchTerm+"' OR middleName ilike '"+searchTerm.searchTerm+"' OR lastName ilike '"+searchTerm.searchTerm+"' OR occupation ilike '"+searchTerm.searchTerm+"' OR major ilike '"+searchTerm.searchTerm+"' ORDER BY lastname,firstname";
     }
-    console.log(searchTerm.searchTerm);
     const dbresponse = await pool.query(template);
     const results = dbresponse.rows.map((row) => {return row});
       res.json(
         results
-      )
-    console.log(results);
+      );
   } catch (err){
   console.log(err);
   }
@@ -296,8 +258,7 @@ app.get('/majorInfo', async (req, res) => {
   const dbresponse = await pool.query(template);
     const results = dbresponse.rows.map((row) => {return row});
       res.json(
-        results)
-    console.log(results);
+        results);
   } catch (err){
   console.log(err);
   }
@@ -312,8 +273,7 @@ app.get('/yearInfo', async (req, res) => {
   const dbresponse = await pool.query(template);
     const results = dbresponse.rows.map((row) => {return row});
       res.json(
-        results)
-    console.log(results);
+        results);
   } catch (err){
   console.log(err);
   }
@@ -328,8 +288,7 @@ app.get('/occupationInfo', async (req, res) => {
   const dbresponse = await pool.query(template);
     const results = dbresponse.rows.map((row) => {return row});
       res.json(
-        results)
-    console.log(results);
+        results);
   } catch (err){
   console.log(err);
   }
@@ -348,7 +307,7 @@ app.get('/findMatch', async (req, res) => {
     let results = response.rows.map((row) => {return row});
       res.json(
         results
-      )
+      );
   } catch (err){
   console.log(err);
   }
@@ -405,7 +364,7 @@ app.get('/advancedSearch', async (req, res) => {
     const results = dbresponse.rows.map((row) => {return row});
       res.json(
         results
-      )
+      );
   } catch (err){
   console.log(err);
   }
@@ -496,7 +455,6 @@ app.post('/reject', async (req, res) => {
     } catch (err){
       console.log(err);
     }
-
 }); 
 
 /*delete alumnus
@@ -616,14 +574,12 @@ app.get('/showAlumni', async (req, res) => {
     results = results.rows.map((row) => {return row});
       res.json(
         results
-      )
-    console.log(results);
+      );
   } catch (err){
   console.log(err);
   }
 }); 
 
-  
 
 /* 
 show featured
@@ -651,8 +607,7 @@ app.get('/showFeatured', async (req, res) => {
     results = results.rows.map((row) => {return row});
       res.json(
         results
-      )
-    console.log(results);
+      );
   } catch (err){
   console.log(err);
   }

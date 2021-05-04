@@ -14,10 +14,7 @@ const indexLink = {
   textColor: "#000000"
 
 }
-// export default function Pending(){
-// 	if(jsCookie.get("username") == null){return Index();}
-// 	return "Placeholder for Pending Page";
-// }
+
 
 
 class pending extends React.Component {
@@ -38,13 +35,6 @@ class pending extends React.Component {
 		const pendingAlumni = res.data;
 		this.setState({ pendingAlumni: pendingAlumni });
 	  }) 
-    /*
-    for (let alum in this.state.pendingAlumni) {
-      axios.get(`http://localhost:8080/findMatch`)
-	    .then(res => {
-		  alum.match = res.data[0]
-      console.log(res.data[0])
-	  }) */
 
   }
 
