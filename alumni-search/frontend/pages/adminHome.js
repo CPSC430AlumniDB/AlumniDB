@@ -78,7 +78,7 @@ class Index extends React.Component{
                                 </div>
                                 <td className={styles.major}>{item.major}</td>
                                 <td className={styles.job}>{item.occupation}</td>
-                                <td className={styles.update}>{item.personalupdates}</td>
+                                {item.personalupdates !== "null" ? <td className={styles.update}>{item.personalupdates}</td> :null}
 
 
 
