@@ -104,17 +104,18 @@ app.post("/create", async (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
   try {
+    //check if username already exists
+    let query = "SELECT username FROM admin WHERE username = $1";
+    let result = await pool.query(query,[username]);
     hash = await argon2.hash(password);
-    console.log("HASH" + hash);
-    const query =
-      "INSERT INTO admin (username, password) VALUES ($1, $2)";
-    const result = await pool.query(query, [username, hash]);
-    //console.log(result);
-    if (result.rowCount == 1) {
-      console.log(username);
+    if (result.rowCount < 1) {
+      console.log("HASH" + hash);
+      query =
+        "INSERT INTO admin (username, password) VALUES ($1, $2)";
+      result = await pool.query(query, [username, hash]);
       res.json({ status: "success", username: username });
     } else {
-      res.json({ error: "User not created" });
+      res.json({ error: "User already exists" });
     }
   } catch (err) {
     console.log("ERROR " + err);
